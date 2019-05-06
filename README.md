@@ -20,4 +20,4 @@
 - Someone who active in Discord.
 
 # Add me on Discord!
-Ni3zam#9135
+иυя_αмiяαн#9135
