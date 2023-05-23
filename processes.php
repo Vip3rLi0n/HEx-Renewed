@@ -1,42 +1,239 @@
 <?php
-require_once('module/template.php');
-require_once('module/processes/p-design.php');
-$_SESSION["current-site"] = basename(__FILE__, '.php');
-$name = "Task manager";
-$pbar_info = '';
 
+require 'config.php';
+require 'classes/System.class.php';
+require 'classes/Session.class.php';
+require 'classes/Player.class.php';
+require 'classes/Process.class.php';
 
-if($_GET){
-	if($_GET["pid"] && $_GET["del"]){
-			dbRemoveProcess(connect(), $_GET["pid"], $_SESSION["uid"]);
-			header('Location: processes');
-	}
-	
-	if($_GET["pid"]) {
-		checkProcessComplete($_GET["pid"]);
-	}
+$session = new Session();
+$system = new System();
+ob_start();
+require 'template/contentStart.php';
+   
+$process = new Process();
+
+$gotGet = '0';
+if($system->issetGet('pid')){
+
+    $getInfo = $system->verifyNumericGet('pid');
+
+    if($getInfo['IS_NUMERIC'] == '1'){
+
+        if($process->issetPID($getInfo['GET_VALUE'])){
+
+            $gotGet = '1';
+
+        } else {
+
+            $system->handleError('PROC_NOT_FOUND');
+
+        }          
+
+    } else {
+        $system->handleError('INVALID_GET', 'processes.php');
+    }
+
 }
 
-head($name); 
-echo '<body class="processes">';
-unk_header();
-user_navbar();
-echo '<span id="notify"></span>';
-sidebar(); 
-echo '<div id="content">';
-header_info($name);
-breadcrumb();
-echo '<div class="container-fluid"><div class="row-fluid"><div class="widget-box"><div class="widget-title">';
-nav_tabs();
-echo '</div><div class="widget-content padding noborder"><ul class="list">';
-$pbar_info = checkProcesses($_SESSION["uid"], connect());
-echo'</ul></div><div style="clear: both;" class="nav nav-tabs"></div></div></div></div>';
+if($system->issetGet('del')){
 
-$pbar = <<< ASD
-<script type="text/javascript">$(document).ready(function(){jQuery.fn.anim_progressbar=function(aOpts){var iCms=1000;var iMms=60*iCms;var iHms=3600*iCms;var iDms=24*3600*iCms;var vPb=this;return this.each(function(){var iDuration=aOpts.finish-aOpts.start;$(vPb).children('.pbar').progressbar();var vInterval=setInterval(function(){var iLeftMs=aOpts.finish-new Date();var iElapsedMs=new Date()-aOpts.start,iDays=parseInt(iLeftMs/iDms),iHours=parseInt((iLeftMs-(iDays*iDms))/iHms),iMin=parseInt((iLeftMs-(iDays*iDms)-(iHours*iHms))/iMms),iSec=parseInt((iLeftMs-(iDays*iDms)-(iMin*iMms)-(iHours*iHms))/iCms),iPerc=(iElapsedMs>0)?iElapsedMs/iDuration*100:0;$(vPb).children('.percent').html('<b>'+iPerc.toFixed(1)+'%</b>');$(vPb).children('.elapsed').html(iHours+'h:'+iMin+'m:'+iSec+'s</b>');$(vPb).children('.pbar').children('.ui-progressbar-value').css('width',iPerc+'%');if(iPerc>=100){clearInterval(vInterval);$(vPb).children('.percent').html('<b>100%</b>');$(vPb).children('.elapsed').html('<b>Finished</b>');if(aOpts.loaded){document.getElementById('complete'+aOpts.id).innerHTML='<form action="" method="GET"><input type="hidden" name="pid" value="'+aOpts.id+'"><input type="submit" class="btn btn-mini" value="Complete"></form>';}}else{}},aOpts.interval);});}
-$pbar_info});</script>
-ASD;
+    if($_GET['del'] == '1' && $gotGet == '1'){
 
-footer($pbar); 
+        $process->deleteProcess($getInfo['GET_VALUE'], false);
+        $session->addMsg('Process deleted.', 'notice');
 
+        $gotGet = '0';
+
+    }
+
+}
+
+if($session->issetMsg()){
+
+    $session->returnMsg();
+
+}    
+
+if($system->issetGet('page')){
+
+    $pageInfo = $system->switchGet('page', 'all', 'cpu', 'network', 'running');
+
+    if($pageInfo['ISSET_GET'] == 1){
+
+        switch($pageInfo['GET_VALUE']){
+
+            case 'all':
+                $page2load = 'all';
+                break;
+            case 'cpu':
+                $page2load = 'cpu';
+                break;
+            case 'network':
+                $page2load = 'net';
+                break;
+            case 'running':
+                $page2load = 'running';
+                break;
+
+        }
+
+    } else {
+        $system->handleError('INVALID_GET', 'processes.php');
+    }
+
+} elseif($system->issetGet('pid') && $gotGet == 1){
+
+    $process->getProcessInfo($getInfo['GET_VALUE']);
+
+    if($process->pAction == 1 || $process->pAction == 2){
+        $page2load = 'net';
+    } else {
+        $page2load = 'cpu';
+    }
+
+
+} else {
+
+    $procInfo = $process->runningProcessInfo();
+
+    if($procInfo['ISSET'] == 1){
+
+        if($procInfo['INCOMPLETE_NET_PROC'] > 0 && $procInfo['INCOMPLETE_CPU_PROC'] > 0){
+            $page2load = 'all';
+        } elseif($procInfo['INCOMPLETE_NET_PROC'] > 0){
+            $page2load = 'net';
+        } elseif($procInfo['INCOMPLETE_CPU_PROC'] > 0){
+            $page2load = 'cpu';
+        } elseif($procInfo['COMPLETE_CPU_PROC'] > 0 && $procInfo['COMPLETE_NET_PROC'] > 0){
+            $page2load = 'all';
+        } elseif($procInfo['COMPLETE_CPU_PROC'] > 0) {
+            $page2load = 'cpu';
+        } else {
+            $page2load = 'net';
+        }
+
+    } else {
+        $page2load = 'all';
+    }
+
+}
+
+?>
+
+            <div class="widget-box">
+
+                <div class="widget-title">
+                    <ul class="nav nav-tabs">                                  
+
+
+            <li class="link<?php if($page2load == 'all') { echo ' active'; } ?>"><a href="?page=all"><span class="icon-tab he16-taskmanager"></span><?php echo _("All tasks");?></a></li>
+            <li class="hide-phone link<?php if($page2load == 'cpu') { echo ' active'; } ?>"><a href="?page=cpu"><span class="icon-tab he16-tasks_cpu"></span><?php echo _("CPU tasks");?></a></li>
+            <li class="hide-phone link<?php if($page2load == 'net') { echo ' active'; } ?>"><a href="?page=network"><span class="icon-tab he16-tasks_download"></span><?php echo _("Download manager");?></a></li>
+            <li class="link<?php if($page2load == 'running') { echo ' active'; } ?>"><a href="?page=running"><span class="he16-running icon-tab"></span><span class="hide-phone"><?php echo _("Running softwares");?></span></a></li>
+            <a href="<?php echo $session->help('task'); ?>"><span class="label label-info"><?php echo _("Help"); ?></span></a>
+
+                            </ul>
+                    </div>
+                    <div class="widget-content padding noborder">    
+
+<?php
+
+if($gotGet == '1'){
+
+    if($system->issetGet('action')){
+
+        $actionInfo = $system->switchGet('action', 'pause', 'resume');
+
+        if($actionInfo['ISSET_GET'] == 1){
+
+            switch($actionInfo['GET_VALUE']){
+
+                case 'pause':
+
+                    if(!$process->isPaused($getInfo['GET_VALUE'])){
+
+                        $process->pauseProcess($getInfo['GET_VALUE']);
+
+                        $session->addMsg(_('Process paused.'), 'notice');
+                        
+                        header("Location:processes.php");
+                        exit();
+                        
+                    } else {
+                        $system->handleError('PROC_ALREADY_PAUSED', 'processes.php');
+                    }
+
+                    break;
+                case 'resume':
+
+                    if($process->isPaused($getInfo['GET_VALUE'])){
+
+                        $process->resumeProcess($getInfo['GET_VALUE']);
+
+                        $session->addMsg(_('Process resumed.'), 'notice');
+                        
+                        header("Location:processes.php");
+                        exit();
+
+                    } else {
+                        $system->handleError('PROC_NOT_PAUSED', 'processes.php');
+                    }
+
+                    break;
+
+            }
+
+        } else {
+            $system->handleError('INVALID_GET', 'processes.php');
+        }
+
+
+    } else {
+
+        if($process->pID != $getInfo['GET_VALUE']){
+
+            $process->getProcessInfo($getInfo['GET_VALUE']);
+
+        }
+
+        $process->showProcess();
+
+        $process->endShowProcess(2);
+
+    }
+
+} else {
+
+    switch($page2load){
+
+        case 'all':
+
+            $process->listProcesses($_SESSION['id'], 'all');
+
+            break;
+        case 'cpu':
+
+            $process->listProcesses($_SESSION['id'], 'cpu');
+
+            break;
+        case 'net':
+
+            $process->listProcesses($_SESSION['id'], 'net');
+
+            break;
+        case 'running':
+
+            $software = new SoftwareVPC();
+            $software->listRunningSoftwares();
+
+            break;
+
+    }
+
+}
+ob_end_flush();
+ob_start();
+require 'template/contentEnd.php';
+ob_end_flush();
 ?>

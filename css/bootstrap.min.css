@@ -1,4 +1,6 @@
 
+.span100{margin-left: 10px !important; margin-bottom: 10px !important;}
+.span200{margin-top: 15px !important;}
 article,aside,details,figcaption,figure,footer,header,hgroup,nav,section{display:block}
 audio,canvas,video{display:inline-block;*display:inline;*zoom:1}
 audio:not([controls]){display:none}

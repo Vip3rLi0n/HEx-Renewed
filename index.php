@@ -1,34 +1,67 @@
 <?php
-require_once('module/template.php');
-require_once('module/home/i-design.php');
-$_SESSION["current-site"] = basename(__FILE__, '.php');
-$name = "Control Panel"; 
-
-head($name);
-echo '<body class="index">';
-unk_header();
-user_navbar();
-sidebar(); 
-echo '<div id="content">';
-header_info($name);
-breadcrumb();
-
-echo'<div class="container-fluid">';
-
-echo'<div class="row-fluid">';
-echo'<div class="widget-box">';
-
-echo'</div>';
-
-echo'<div style="clear: both;" class="nav nav-tabs"></div>';
-
-echo'</div>';
-echo'</div>';
+require 'config.php';
+require 'classes/Session.class.php';
+require 'classes/System.class.php';
+session_start();
+//$session = new Session();
+$remembered = FALSE;
 
 
-echo '<div style="clear: both;" class="nav nav-tabs">&nbsp;</div>';
-echo "<script>var indexdata={ip:'27.63.173.42',pass:'7tzAHsgB',up:'5 hours',chg:'change'};</script>";
-echo '<span id="modal"></span>';
+if(isset($_COOKIE['PHPSESSID'])){
+    $session = new Session();
+}
 
-footer(); 
-?>
+if(!isset($_SESSION['id'])){
+    
+    if(isset($_GET['nologin'])){
+        $_SESSION = NULL;
+        session_destroy();
+        header("Location:index");
+        exit();
+    }
+    require 'classes/RememberMe.class.php';
+    $key = pack("H*", '70617373776F7264243132333135313534');
+    $remember = new RememberMe($key, PDO_DB::factory());
+    $remember->rememberlogin();
+    $remembered = TRUE;
+    
+}
+
+if (isset($_SESSION['id'])) {
+    
+    $session = new Session();
+    
+    if(!$remembered) require_once 'classes/Player.class.php';
+    $player = new Player($_SESSION['id']);
+
+    if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST)){
+
+        $player->handlePost();
+
+    }    
+    ob_start();
+    require 'template/contentStart.php';
+
+    if($session->issetMsg()){
+        $session->returnMsg();
+    }
+    
+    if($_SESSION['ROUND_STATUS'] == 1){
+
+        $player->showIndex();
+
+    } else {
+
+        $player->showGameOver();
+
+    }
+    ob_end_flush();
+    ob_start();
+    require 'template/contentEnd.php';
+    ob_end_flush();
+} else {
+    if(isset($_SESSION)) unset($_SESSION['GOING_ON']);
+    ob_start();
+    require 'template/default.php';
+    ob_end_flush();
+}

@@ -1,38 +1,112 @@
 <?php
-require_once('module/template.php');
-require_once('module/log/log-design.php');
+require 'config.php';
+require_once 'classes/System.class.php';
+require 'classes/Session.class.php';
+require 'classes/Player.class.php';
+require 'classes/PC.class.php';
+require 'classes/Process.class.php';
 
-$_SESSION["current-site"] = basename(__FILE__, '.php');
-$name = "Log File"; 
+$session = new Session();
+$system = new System();
+ob_start();
+require 'template/contentStart.php';
 
-head($name);
-echo '<body class="page-log">';
-unk_header();
-user_navbar();
-sidebar(); 
-echo '<div id="content">';
-header_info($name);
-breadcrumb();
+?>
+                    <div class="span12">
+<?php
+    if($session->issetMsg()){
+        $session->returnMsg();
+    }
+?>
 
-echo'<div class="container-fluid">';
-echo'<div class="row-fluid">';
-echo'<div class="span12">';
-echo'<div class="widget-box" style="width:100%">';
-widget_title();
-echo'
-<div class="widget-content padding noborder center">
-<div class="span2 center">
-<style type="text/css">@media (min-width:320px){.logleft{display:none}}@media (min-width:360px) and (max-width:480px){.adslot_log{width:300px;height:250px;display:none}.logleft{display:none}}@media (min-width:768px) and (max-width:1024px){.adslot_log{width:336px;height:280px;display:none}.logleft{display:block!important}}@media (min-width:1024px){.adslot_log{width:120px;height:240px;margin-top:50px}.logleft{display:block!important}}@media (min-width:1280px){.adslot_log{width:120px;height:240px;margin-top:50px}.logleft{display:block!important}}@media (min-width:1366px){.adslot_log{width:120px;height:240px;margin-top:50px}.logleft{display:block!important}}@media (min-width:1824px){.adslot_log{width:160px;height:600px;margin-top:8px}.logarea{height:500px}.logleft{display:block!important}}</style>
-</div>
-<div class="span8 center">';
-showLogArea(getLog(connect(), $_SESSION["uid"]),1);
-echo'<br/>
-</div>
-</div>';
-echo'<div class="nav nav-tabs" style="clear: both;"></div>';
-echo'</div>';
-echo'</div>';
-echo'</div>';
-echo'</div>';
-footer(); 
+                        <div class="widget-box" style="width:100%">
+                            <div class="widget-title">
+                                <ul class="nav nav-tabs">
+                                    <li class="link active"><a href="log.php"><span class="icon-tab he16-internet_log"></span><?php echo _('Log file'); ?></a></li>
+                                    <a href="<?php echo $session->help('log'); ?>"><span class="label label-info"><?php echo _("Help"); ?></span></a>
+                                </ul>
+                            </div>
+                            <div class="widget-content padding noborder center">
+                                
+<?php                                
+
+$player = new Player($_SESSION['id']);
+$log = new LogVPC();
+$process = new Process();
+
+$gotGet = '0';
+if($system->issetGet('action')){
+    $getAction = $system->switchGet('action', 'view', 'edit', 'del');
+    $gotGet += '1';
+}
+
+if($system->issetGet('id')){
+    $getIDInfo = $system->verifyNumericGet('id');
+    $gotGet += '1';
+}
+
+if($gotGet == '2'){ //existe get
+
+    if($getAction['ISSET_GET'] == '1' && $getAction['GET_NAME'] == 'action' && isset($getAction['GET_VALUE']) && $getIDInfo['IS_NUMERIC'] == '1' && isset($getIDInfo['GET_VALUE'])){ //verifico se existe get action E get id, e se são valores válidos
+
+        switch($getAction['GET_VALUE']){
+
+            case 'view':
+
+                $log->listLog($_SESSION['id'], '', '1');
+
+                $log->showLog($getIDInfo['GET_VALUE'], $_SESSION['id']);
+
+                break;
+            case 'edit':
+                die("edit");
+            case 'del':
+
+                if($log->issetLog($getIDInfo['GET_VALUE'])){
+
+                    if($process->newProcess($_SESSION['id'], 'D_LOG', '', 'local', '', $getIDInfo['GET_VALUE'], '', '0')){
+
+                        $pid = $session->processID('show');
+                        header("Location:processes?pid=$pid");
+
+                    } else {
+
+                        $process->getProcessInfo($process->getPID($_SESSION['id'], 'D_LOG', '', 'local', '', $getIDInfo['GET_VALUE'], '', '0'));
+
+                        require 'template/templateTop.php';
+                        $process->showProcess();
+                        require 'template/templateBot.php';
+
+                    }
+
+                }
+
+                break;
+            default:
+                die("Invalid get");
+
+        }
+
+    } else {
+
+        die("EEEErrrorrr");
+
+    }
+
+} else {
+
+
+    if($session->issetMsg()){
+
+        $session->returnMsg();
+
+    }
+
+    $log->listLog($_SESSION['id'], '', '1');
+
+}
+ob_end_flush();
+ob_start();
+require 'template/contentEnd.php';
+ob_end_flush();
 ?>

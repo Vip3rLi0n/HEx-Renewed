@@ -1,23 +1,28 @@
 <?php
 
-if($_POST){
-session_start();
-require_once('mysql/mysql.php');
-require_once('mysql/mysql-ext.php');
+require 'classes/Session.class.php';
+$session = new Session();
 
-$user = $_POST["username"];
-$pass = $_POST["password"];
-$ignore = $_POST["g-recaptcha-response"];
-$conn = connect();
-
-$res = Login($conn, $user, $pass);
-
-if(!empty($res)){
-		$_SESSION["logged"] = 1;
+if ($_SERVER['REQUEST_METHOD'] != 'POST' || $session->issetLogin()) {
+    header("Location:index.php");
+    exit();
 }
 
-header('Location: index.php');
+require 'classes/Database.class.php';
+
+$user = htmlentities($_POST['username']);
+$pass = htmlentities($_POST['password']);
+
+$db = new LRSys();
+
+if(isset($_POST['keepalive'])){
+    $db->set_keepalive(TRUE);
 }
 
+if(!$db->login($user, $pass)){
+    $_SESSION['TYP'] = 'LOG';
+}
+
+header("Location:login.php");
 
 ?>
