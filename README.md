@@ -4,7 +4,7 @@
 - Still need a lot of fixes.
 
 # Update
-- Game works now
+- Game works now (Sort of)
 - Mission still broke
 - NPC software dataset still need update.
 
