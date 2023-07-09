@@ -131,25 +131,28 @@ def get_lang(userID):
 		return lang[0]
 
 def install_gettext(lang):
+    if lang == 'en':
+        lang = 'en_US'
+    elif lang == 'br':
+        lang = 'pt_BR'
 
-	if lang == 'en':
-		lang = 'en_US'
-	elif lang == 'br':
-		lang = 'pt_BR'
+    locale.setlocale(locale.LC_ALL, lang)
+    loc = locale.getlocale()
 
-	locale.setlocale(locale.LC_ALL, lang)
-	loc = locale.getlocale()
+    filename = "../locale/%s/LC_MESSAGES/messages.mo" % locale.getlocale()[0]
 
-	filename = "../locale/%s/LC_MESSAGES/messages.mo" % locale.getlocale()[0]
-	 
-	global trans
+    global trans
 
-	try:
-		trans = gettext.GNUTranslations(open( filename, "rb") )
-	except IOError:
-		trans = gettext.NullTranslations()
+    try:
+        trans = gettext.GNUTranslations(open(filename, "rb"))
+    except IOError:
+        trans = gettext.NullTranslations()
 
-	trans.install(unicode=True)
+    if hasattr(trans, 'install'):
+        trans.install()
+    else:
+        trans._install()
+
 
 def badge_add():
 

@@ -26,7 +26,6 @@ if(isset($_SESSION['id'])){
     
     $session->newQuery();
     $sql = "SELECT lang FROM users_language WHERE userID = '".$_SESSION['id']."' LIMIT 1";
-    $lang = $pdo->query($sql)->fetch(PDO::FETCH_OBJ)->lang;    
     
 //    require 'classes/EmailVerification.class.php';
 //    $emailVerification = new EmailVerification();

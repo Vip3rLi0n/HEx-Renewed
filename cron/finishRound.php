@@ -77,8 +77,7 @@ function dotVersion($softVersion) {
             $strEdit = str_split($softVersion, 7);
             break;
         default:
-            die("erreeeeeor");
-            break;
+            die("Error at finishRound.php!");
     }
 
     $strReturn = $strEdit['0'] . '.' . $strEdit['1'];
@@ -104,7 +103,7 @@ $best = Array(
     'ddos' => Array()
 );
 
-//INICIO RANK USUARIOS
+//RANK USERS
 
 $sql = "SELECT 
             uid, exp, timePlaying, hackCount, ddosCount, ipResets, moneyEarned, moneyTransfered, moneyHardware, moneyResearch,
@@ -164,10 +163,7 @@ while ($pInfo = $data->fetch(PDO::FETCH_OBJ)) {
     }
 }
 
-
-//FIM RANK USUARIOS
-
-//INICIO RANK CLAN
+//RANK CLAN
 
 $sql = "SELECT clan.clanID, clan.name, clan.nick, clan.power, clan_stats.won, clan_stats.lost, clan_stats.pageClicks,
         (
@@ -207,9 +203,7 @@ while($cInfo = $data->fetch(PDO::FETCH_OBJ)){
     
 }
 
-//FIM RANK CLAN
-
-//INICIO RANK SOFTWARE
+//RANK SOFTWARE
 
 $sql = "SELECT softName, softType, softVersion, userID, users.login
         FROM software 
@@ -234,9 +228,7 @@ while($sInfo = $data->fetch(PDO::FETCH_OBJ)){
 
 }
 
-//FIM RANK SOFTWARE
-
-//INICIO RANK DDOS
+//RANK DDOS
 
 $sql = "SELECT ranking_ddos.rank, attID, vicID, power, servers, att.login AS attUser, vic.login AS vicUser
         FROM round_ddos
@@ -263,10 +255,7 @@ while($dInfo = $data->fetch(PDO::FETCH_OBJ)){
     }
     
 }
-
-//FIM RANK DDOS
-
-//INICIO HISTORY CLAN WAR
+//HISTORY CLAN WAR
 
 $sql = "SELECT idWinner, idLoser, scoreWinner, scoreLoser, startDate, endDate, bounty
         FROM clan_war_history
@@ -281,9 +270,7 @@ while($wInfo = $data->fetch(PDO::FETCH_OBJ)){
 
 }
 
-//FIM HISTORY CLAN WAR
-
-//INICIO HISTORY MAILS
+//HISTORY MAILS
 
 //$sql = "SELECT subject, mails.text, mails.from, mails.to, dateSent
 //        FROM mails
@@ -300,9 +287,7 @@ while($wInfo = $data->fetch(PDO::FETCH_OBJ)){
 //
 //}
 
-//FIM HISTORY MAILS
-
-//INICIO HISTORY MISSIONS
+//HISTORY MISSIONS
 
 $sql = "SELECT type, missionEnd, prize, userID, completed, npc.id AS hirerID
         FROM missions_history
@@ -319,9 +304,7 @@ while($mInfo = $data->fetch(PDO::FETCH_OBJ)){
 
 }
 
-//FIM HISTORY MISSIONS
-
-//INICIO HISTORY DOOM
+//HISTORY DOOM
 
 $sql = "SELECT creatorID, clanID, status
         FROM virus_doom";
@@ -339,8 +322,6 @@ while($dInfo = $data->fetch(PDO::FETCH_OBJ)){
     $stmt->execute(array($curRound, $dInfo->creatorid, $dInfo->clanid, $dInfo->status));
 
 }
-
-//FIM HISTORY DOOM
 
 //MYSQL_DUMP
 // Generate the output file name with the current date and time
@@ -385,7 +366,7 @@ if ($file) {
 }
 
 
-//DELETE's
+//STARTS REMOVING TABLES.
 
 $pdo->query('DELETE FROM bankAccounts');
 $pdo->query('DELETE FROM bankaccounts_expire');
