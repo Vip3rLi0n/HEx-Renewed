@@ -1,5 +1,6 @@
 <?php
 
+// 2023: Updated the script.
 // 2019: This script ends the round. It is also called from within the game.
 // 2019: Before removing the exit below, make sure to not allow anyone to externally (remotely) execute this script.
 
@@ -105,19 +106,7 @@ $best = Array(
 
 //RANK USERS
 
-$sql = "SELECT 
-            uid, exp, timePlaying, hackCount, ddosCount, ipResets, moneyEarned, moneyTransfered, moneyHardware, moneyResearch,
-            warezSent, spamSent, bitcoinSent, profileViews,
-            TIMESTAMPDIFF(DAY, dateJoined, NOW()) AS age, clan.name, users.login,
-            (SELECT COUNT(DISTINCT userID) AS total FROM software_research WHERE software_research.userID = users_stats.uid) AS researchCount
-        FROM users_stats 
-        INNER JOIN users
-        ON users.id = users_stats.uid
-        LEFT JOIN clan_users
-        ON clan_users.userID = users_stats.uid
-        LEFT JOIN clan
-        ON clan.clanID = clan_users.clanID
-        ORDER BY exp DESC";
+$sql = "SELECT 'uid', exp, timePlaying, hackCount, ddosCount, ipResets, moneyEarned, moneyTransfered, moneyHardware, moneyResearch, warezSent, spamSent, bitcoinSent, profileViews, TIMESTAMPDIFF(DAY, dateJoined, NOW()) AS age, 'clan.name', 'users.login', (SELECT COUNT(DISTINCT userID) AS total FROM software_research WHERE 'software_research.userID' = 'users_stats.uid') AS researchCount FROM users_stats INNER JOIN users ON 'users.id' = 'users_stats.uid' LEFT JOIN clan_users ON 'clan_users.userID' = 'users_stats.uid' LEFT JOIN clan ON 'clan.clanID' = 'clan_users.clanID' ORDER BY exp DESC";
 $data = $pdo->query($sql);
 
 $rank = 0;
@@ -165,16 +154,16 @@ while ($pInfo = $data->fetch(PDO::FETCH_OBJ)) {
 
 //RANK CLAN
 
-$sql = "SELECT clan.clanID, clan.name, clan.nick, clan.power, clan_stats.won, clan_stats.lost, clan_stats.pageClicks,
+$sql = "SELECT 'clan.clanID', 'clan.name', 'clan.nick', 'clan.power', 'clan_stats.won', 'clan_stats.lost', 'clan_stats.pageClicks',
         (
             SELECT COUNT(*)
             FROM clan_users
-            WHERE clan_users.clanID = clan.clanID
-            GROUP BY clan_users.clanID
+            WHERE 'clan_users.clanID' = 'clan.clanID'
+            GROUP BY 'clan_users.clanID'
         ) AS members
         FROM clan
-        INNER JOIN clan_stats ON clan_stats.cid = clan.clanID
-        ORDER BY clan.power DESC";
+        INNER JOIN clan_stats ON 'clan_stats.cid' = 'clan.clanID'
+        ORDER BY 'clan.power' DESC";
 $data = $pdo->query($sql);
 
 $rank = 0;
@@ -205,9 +194,9 @@ while($cInfo = $data->fetch(PDO::FETCH_OBJ)){
 
 //RANK SOFTWARE
 
-$sql = "SELECT softName, softType, softVersion, userID, users.login
+$sql = "SELECT softName, softType, softVersion, userID, 'users.login'
         FROM software 
-        JOIN users ON users.id = software.userID 
+        JOIN users ON 'users.id' = 'software.userID'
         WHERE isNPC = 0 AND softtype < 30 AND softType <> 19 
         ORDER BY softVersion DESC, softSize ASC";
 $data = $pdo->query($sql);
@@ -230,11 +219,11 @@ while($sInfo = $data->fetch(PDO::FETCH_OBJ)){
 
 //RANK DDOS
 
-$sql = "SELECT ranking_ddos.rank, attID, vicID, power, servers, att.login AS attUser, vic.login AS vicUser
+$sql = "SELECT 'ranking_ddos.rank', attID, vicID, power, servers, 'att.login' AS attUser, 'vic.login' AS vicUser
         FROM round_ddos
-        LEFT JOIN users att ON att.id = round_ddos.attID 
-        LEFT JOIN users vic ON vic.id = round_ddos.vicID 
-        INNER JOIN ranking_ddos ON round_ddos.id = ranking_ddos.ddosID
+        LEFT JOIN users att ON 'att.id' = 'round_ddos.attID'
+        LEFT JOIN users vic ON 'vic.id' = 'round_ddos.vicID'
+        INNER JOIN ranking_ddos ON 'round_ddos.id' = 'ranking_ddos.ddosID'
         WHERE vicNPC = 0
         ORDER BY power DESC, servers DESC";
 
@@ -289,9 +278,9 @@ while($wInfo = $data->fetch(PDO::FETCH_OBJ)){
 
 //HISTORY MISSIONS
 
-$sql = "SELECT type, missionEnd, prize, userID, completed, npc.id AS hirerID
+$sql = "SELECT type, missionEnd, prize, userID, completed, 'npc.id' AS hirerID
         FROM missions_history
-        INNER JOIN npc ON npc.npcIP = hirer
+        INNER JOIN npc ON 'npc.npcIP' = hirer
         ORDER BY missionEnd ASC";
 $data = $pdo->query($sql);
 
@@ -313,7 +302,7 @@ $data = $pdo->query($sql);
 while($dInfo = $data->fetch(PDO::FETCH_OBJ)){
         
     if($dInfo->status == 3){
-        $dommerID = $dInfo->creatorid;
+        $doomerID = $dInfo->creatorid;
     }
     
     $sql = "INSERT INTO hist_doom (round, doomCreatorID, doomClanID, status) 
@@ -431,8 +420,8 @@ exec('C:/xampp/htdocs/HEenv/Scripts/python ../python/fame_generator_alltime.py p
 //badges
 
 //doomer badges
-exec('C:/xampp/htdocs/HEenv/Scripts/python ../python/badge_add.py user '.$dommerID.' 14');
-exec('C:/xampp/htdocs/HEenv/Scripts/python ../python/badge_add.py user '.$dommerID.' 71');
+exec('C:/xampp/htdocs/HEenv/Scripts/python ../python/badge_add.py user '.$doomerID.' 14');
+exec('C:/xampp/htdocs/HEenv/Scripts/python ../python/badge_add.py user '.$doomerID.' 71');
 
 //bests
 exec('C:/xampp/htdocs/HEenv/Scripts/python ../python/badge_add.py user '.$best['user'][1].' 7');
