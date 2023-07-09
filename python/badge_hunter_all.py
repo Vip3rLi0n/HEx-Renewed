@@ -1,22 +1,22 @@
 import mysql.connector
 import time
+import badgeAddModule
 start_time = time.time()
 
 db = mysql.connector.connect(host="localhost", port="6666", user="he", passwd="REDACTED", database="game")
 cur = db.cursor()
 
 
-def adiciona_badge(badgeID, userID, clanBadge=False):
-	import badge_add
+def add_badge(badgeID, userID, clanBadge=False):
 	if not clanBadge:
 		userBadge = 'user'
 	else:
 		userBadge = 'clan'
 	userID = int(userID)
-	badge_add.userBadge = userBadge
-	badge_add.userID = userID
-	badge_add.badgeID = badgeID
-	badge_add.badge_add()
+	badgeAddModule.userBadge = userBadge
+	badgeAddModule.userID = userID
+	badgeAddModule.badgeID = badgeID
+	badgeAddModule.badge_add()
 
 
 if __name__ == "__main__":
@@ -38,7 +38,7 @@ if __name__ == "__main__":
 	for userID, totalClicks in cur.fetchall():
 		if totalClicks < 1000:
 			break
-		adiciona_badge(31, userID)
+		add_badge(31, userID)
 
 	# badge 'you are addicted' (complete a total of 500 missions)
 	cur.execute('''SELECT
@@ -61,7 +61,7 @@ if __name__ == "__main__":
 		if totalResets < 500:
 			break
 
-	adiciona_badge(37, userID)
+	add_badge(37, userID)
 
 	# badge 'Noob Certification' (reset ips over 100 times)
 	cur.execute('''SELECT
@@ -80,7 +80,7 @@ if __name__ == "__main__":
 	for userID, totalResets in cur.fetchall():
 		if totalResets < 100:
 			break
-			adiciona_badge(39, userID)
+			add_badge(39, userID)
 
 	# badge 'I need help' (timeplaying >= 14 dias)
 	cur.execute('''SELECT
@@ -99,7 +99,7 @@ if __name__ == "__main__":
 	for userID, totalPlaying in cur.fetchall():
 		if totalPlaying < 20160:
 			break
-		adiciona_badge(41, userID)
+		add_badge(41, userID)
 
 	# badges de 1, 2 e 5 anos de idade
 	cur.execute('''SELECT uid, TIMESTAMPDIFF(YEAR, dateJoined, NOW()) > 0 AS age
@@ -109,13 +109,13 @@ if __name__ == "__main__":
 
 	for userID, age in cur.fetchall():
 		if age == 1:
-			adiciona_badge(42, userID)
+			add_badge(42, userID)
 			continue
 		if age == 2:
-			adiciona_badge(43, userID)
+			add_badge(43, userID)
 			continue
 		if age == 5:
-			adiciona_badge(44, userID)
+			add_badge(44, userID)
 			continue
 
 	# badges 'I haz fame' e 'Powerful member' (reputation over 1kk or 10kk)
@@ -136,9 +136,9 @@ if __name__ == "__main__":
 		if totalRep < 1000000:
 			break
 		if totalRep < 10000000:
-			adiciona_badge(46, userID)
+			add_badge(46, userID)
 		else:
-			adiciona_badge(47, userID)
+			add_badge(47, userID)
 		
 	#badge 'DDoS Master' (ddoscount over 1000)
 	cur.execute('''	SELECT 
@@ -158,7 +158,7 @@ if __name__ == "__main__":
 		if totalDDoS < 1000:
 			break
 
-		adiciona_badge(57, userID)
+		add_badge(57, userID)
 
 	#badge 'Talker' (send over 100 emails)
 	cur.execute('''	SELECT 
@@ -181,7 +181,7 @@ if __name__ == "__main__":
 		if totalSent < 100:
 			break
 
-		adiciona_badge(63, userID)
+		add_badge(63, userID)
 
 	#badge 'Famous' (receive over 50 emails)
 	cur.execute('''	SELECT 
@@ -204,7 +204,7 @@ if __name__ == "__main__":
 		if totalReceived < 50:
 			break
 
-		adiciona_badge(64, userID)
+		add_badge(64, userID)
 
 	#badge 'software engineer' (researchcount over 500 )
 	cur.execute('''	SELECT 
@@ -227,7 +227,7 @@ if __name__ == "__main__":
 		if totalResearch < 500:
 			break
 
-		adiciona_badge(66, userID)
+		add_badge(66, userID)
 
 	#badge 'hacker master' (hackcount over 1000)
 	cur.execute('''	SELECT 
@@ -247,7 +247,7 @@ if __name__ == "__main__":
 		if totalHack < 1000:
 			break
 
-		adiciona_badge(68, userID)
+		add_badge(68, userID)
 
 
 print(time.strftime("%d/%m/%y %H:%M:%S"), ' - ', __file__, ' - ', round(time.time() - start_time, 4), "s")

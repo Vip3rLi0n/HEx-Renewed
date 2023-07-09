@@ -154,9 +154,10 @@ def Start():
             INSERT INTO hist_users (round, rank, id, userID, user, reputation, age, clanName, timePlaying, hackCount, ddosCount,
                                 bitcoinSent, ipResets, moneyEarned, moneyTransfered, moneyHardware, moneyResearch,
                                 bestSoft, bestSoftVersion, warezSent, spamSent, profileViews, researchCount)
-            VALUES ({cur_round}, {rank}, '', '{row[0]}', '{row[7]}', {row[1]}, {row[14]}, '{row[13]}', {row[2]}, {row[3]}, {row[4]},
-                    {row[11]}, {row[5]}, {row[6]}, {row[8]}, {row[9]}, {row[10]}, '{soft_name}', '{soft_version}', {row[10]}, {row[12]})
-        """)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+        """, (cur_round, rank, '', row[0], row[7], row[1], row[14], row[13], row[2], row[3], row[4], row[11], row[5],
+            row[6], row[8], row[9], row[10], soft_name, soft_version, row[10], row[12]))
+
 
         
         if rank <= 10:
@@ -275,11 +276,11 @@ def Start():
         FROM virus_doom
     """)
     
-    dommerID = None
+    doomerID = None
     
     for row in cursor.fetchall():
         if row[2] == 3:
-            dommerID = row[0]
+            doomerID = row[0]
         
         cursor.execute(f"""
             INSERT INTO hist_doom (round, doomCreatorID, doomClanID, status)

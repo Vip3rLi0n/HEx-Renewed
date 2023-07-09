@@ -1,5 +1,7 @@
 import mysql.connector
 import sys
+import time
+start_time = time.time()
 
 extensionDict = {
 	    '1' : '.crc',
@@ -316,3 +318,5 @@ createRankClans(curRound, preview)
 createRankSoft(curRound, preview)
 
 createRankDDoS(curRound, preview)
+
+print(time.strftime("%d/%m/%y %H:%M:%S"),' - ',__file__,' - ',round(time.time() - start_time, 4), "s\n")

@@ -1,229 +1,181 @@
-import sys
 import mysql.connector
-import json
-import os
-import gettext
-import locale
+import time
+import badgeAddModule
 
-def prepare():
+start_time = time.time()
 
-	global userBadge
-	global badge_table
-	global field
-	global db
-	global cur
-	global badgeInfo
-	global issetExtra
+db = mysql.connector.connect(host="localhost", port="6666", user="he", passwd="REDACTED", database="game")
+cur = db.cursor()
 
-	if userBadge == 'user':
-		userBadge = True
-		badge_table = 'users_badge'
-		field = 'userID'
+def add_badge(badgeID, userID, clanBadge = False):
+
+	if not clanBadge:
+		userBadge = 'user'
 	else:
-		userBadge = False
-		badge_table = 'clan_badge'
-		field = 'clanID'
+		userBadge = 'clan'
 
-	db = mysql.connector.connect(host="localhost", port="6666", user="he", passwd="REDACTED", database="game")
-	cur = db.cursor()
+	userID = int(userID)
 
-	json_data = open('../json/badges.json').read()
-	badgeList = json.loads(json_data)
-	badgeInfo = {'name':badgeList[str(badgeID)]["name"], 'desc':badgeList[str(badgeID)]["desc"], 'collectible':badgeList[str(badgeID)]["collectible"], 'per_round':badgeList[str(badgeID)]["per_round"]}
+	badgeAddModule.userBadge = userBadge
+	badgeAddModule.userID = userID
+	badgeAddModule.badgeID = badgeID
 
-	try:
-		badgeInfo['extra'] = badgeList[str(badgeID)]["extra"]
-		issetExtra = True
-	except KeyError:
-		issetExtra = False
+	badgeAddModule.badge_add()
 
-def badge_isset():
+if __name__ == "__main__":
 
+	#badge 'h4x0r' (+ de 100 ips na lista)
+	cur.execute(' SELECT COUNT(*) AS total, userID \
+		  FROM lists \
+		  GROUP BY userID \
+		  ORDER BY total DESC \
+		')
+
+	for totalList, userID in cur.fetchall():
+		if totalList < 100:
+			break
+
+	add_badge(22, userID)
+
+	#badge 'b4nk3r' (+ de 50 accs na lista)	
+	cur.execute(' SELECT COUNT(*) AS total, userID \
+		  FROM lists_bankAccounts \
+		  GROUP BY userID \
+		  ORDER BY total DESC \
+		')
+
+	for totalList, userID in cur.fetchall():
+		if totalList < 50:
+			break
+
+	add_badge(23, userID)
+
+	#badge 'who ate my ram' (20+ running softwares)
+	cur.execute(' SELECT COUNT(*) AS total, userID \
+		  FROM software_running \
+		  WHERE isNPC = 0 \
+		  GROUP BY userID \
+		  ORDER BY total DESC \
+		')
+
+	for totalRunning, userID in cur.fetchall():
+		if totalRunning < 20:
+			break
+
+	add_badge(51, userID)
+
+	#badge 'Employee' (50+ completed missions)
+	cur.execute(' SELECT COUNT(*) AS total, userID \
+		  FROM missions_history \
+		  WHERE completed = 1 \
+		  GROUP BY userID \
+		  ORDER BY total DESC \
+		')
+
+	for totalCompleted, userID in cur.fetchall():
+		if totalCompleted < 50:
+			break
+
+	add_badge(36, userID)
+
+	#badge 'I Cant Handle' (20+ ip resets)
+	cur.execute(' SELECT uid \
+		  FROM users_stats \
+		  WHERE ipResets >= 20 \
+		')
+
+	for userID in cur.fetchall():
+		add_badge(38, userID[0])
+
+	#badge 'Addicted player' (24h+ game play)
+	cur.execute(' SELECT uid \
+		  FROM users_stats \
+		  WHERE timePlaying >= 86400 \
+		')
+
+	for userID in cur.fetchall():
+		add_badge(40, userID[0])
+
+	#badge 'Rich' ($1,000,000+ on all bank accounts)
+	cur.execute(' SELECT SUM(cash) AS total, bankUser \
+		  FROM bankAccounts \
+		  GROUP BY bankUser \
+		  ORDER BY total DESC \
+		')
+
+	for totalMoney, userID in cur.fetchall():
+		if totalMoney < 1000000:
+			break
+
+	add_badge(55, userID)
+
+	#badge 'DDoSer' (100+ ddos attacks)
+	cur.execute(' SELECT uid \
+		  FROM users_stats \
+		  WHERE ddosCount >= 100 \
+		')
+
+	for userID in cur.fetchall():
+		add_badge(56, userID[0])
+
+	#badge 'Efficient' (depois de 10 missoes, ter uma rate de 95%)
 	cur.execute('	SELECT \
-						COUNT(*) AS total \
-					FROM %s \
-					WHERE %s = %s AND badgeID = %s \
-					LIMIT 1 \
-				' % (badge_table, field, userID, badgeID))
+					userID AS curUser, \
+					COUNT(*) AS total, \
+					ROUND((COUNT(*) / (SELECT COUNT(*) FROM missions_history WHERE userID = curUser))*100) AS rate \
+					FROM missions_history \
+					WHERE completed = 1 \
+					GROUP BY userID \
+					ORDER BY \
+						total DESC, \
+						rate DESC \
+				')
 
-	for totalBadges in cur.fetchall():
-		if totalBadges[0] > 0:
-			return True
-		return False
+	for userID, totalMissions, rate in cur.fetchall():
+		if totalMissions < 10:
+			break
 
-def badge_haveThisRound(curRound):
+		if rate < 95:
+			continue
 
-	cur.execute('	SELECT COUNT(*) AS total \
-					FROM %s \
-					WHERE badgeID = %s AND round = %s \
-					LIMIT 1 \
-				'	% (badge_table, badgeID, curRound))
+		add_badge(59, userID)		
 
-	for totalBadges in cur.fetchall():
-		if totalBadges[0] > 0:
-			return True
-		return False
+	#badge 'researcher' (+ de 50 researchs no round)
+	cur.execute('''	SELECT userID, COUNT(*) AS total
+					FROM software_research
+					GROUP BY userID
+					ORDER BY total DESC
+				''')
 
-def badge_count(search_type):
+	for userID, totalResearch in cur.fetchall():
+		if totalResearch < 50:
+			break
 
-	if search_type == 1:
-		search = badgeID
-		where = 'badgeID'
-		select = 'COUNT(distinct badgeID)'
-	elif search_type == 2:
-		search = userID
-		where = 'userID'
-		select = 'COUNT(distinct badgeID)'
-	else:
-		search = badgeID
-		where = 'badgeID'
-		select = 'COUNT(badgeID)'
+		add_badge(65, userID)
 
-	cur.execute('	SELECT %s \
-					FROM users_badge \
-					WHERE %s = %s \
-				'	% (select, where, search))
+	#badge 'Hacker' (100+ hack count)
+	cur.execute('	SELECT uid \
+					FROM users_stats \
+					WHERE hackCount >= 100 \
+				')
 
-	for totalBadges in cur.fetchall():
-		return totalBadges[0]
+	for userID in cur.fetchall():
+		add_badge(67, userID[0])
 
-def badge_validDelay(delay):
-
-	cur.execute('	SELECT COUNT(*) AS total \
-					FROM users_badge \
+	#badge 'What'ya Doin' (50+ running tasks at once)
+	cur.execute('	SELECT COUNT(*) AS total, pCreatorID \
+					FROM processes \
 					WHERE \
-						TIMESTAMPDIFF(DAY, dateAdd, NOW()) < %s AND \
-						badgeID = %s AND \
-						userID = %s \
-				', (delay, badgeID, userID))
-	for totalBadges in cur.fetchall():
-		if totalBadges[0] > 0:
-			return False
-		return True
+						TIMESTAMPDIFF(SECOND, NOW(), pTimeEnd) < 0 AND \
+						isPaused = 0 \
+					GROUP BY pCreatorID \
+					ORDER BY total DESC \
+				')
 
-def cur_round():
+	for totalRunning, userID in cur.fetchall():
+		if totalRunning < 50:
+			break
 
-	cur.execute("SELECT id FROM round ORDER BY id DESC LIMIT 1")
+		add_badge(69, userID)
 
-	for curRound in cur.fetchall():
-		return curRound[0]
-
-def user_name():
-
-	cur.execute("SELECT login FROM users WHERE id = "+str(userID))
-
-	for username in cur.fetchall():
-		return username[0]
-
-def mail(subject, message):
-
-	cur.execute('	INSERT INTO mails \
-						(mails.from, mails.to, mails.type, subject, mails.text, dateSent) \
-					VALUES \
-						(%s, %s, "", %s, %s, NOW()) \
-				', ('-7', str(userID), subject, message))
-
-def get_lang(userID):
-
-	cur.execute("SELECT lang FROM users_language WHERE userID = "+str(userID))
-
-	for lang in cur.fetchall():
-		return lang[0]
-
-def install_gettext(lang):
-    if lang == 'en':
-        lang = 'en_US'
-    elif lang == 'br':
-        lang = 'pt_BR'
-
-    locale.setlocale(locale.LC_ALL, lang)
-    loc = locale.getlocale()
-
-    filename = "../locale/%s/LC_MESSAGES/messages.mo" % locale.getlocale()[0]
-
-    global trans
-
-    try:
-        trans = gettext.GNUTranslations(open(filename, "rb"))
-    except IOError:
-        trans = gettext.NullTranslations()
-
-    if hasattr(trans, 'install'):
-        trans.install()
-    else:
-        trans._install()
-
-
-def badge_add():
-
-	prepare()
-	badgeIsset = badge_isset()
-
-	if not badgeIsset or badgeInfo['collectible']:
-
-		curRound = cur_round()
-		valid = True
-
-		if badgeIsset and badgeInfo['per_round']:
-			if badge_haveThisRound(curRound):
-				valid = False
-
-		if issetExtra:
-
-			try:
-				delay = badgeInfo['extra']['delay']
-				if not badge_validDelay(delay):
-					valid = False
-			except KeyError:
-				pass
-
-		if not valid:
-			return
-
-		cur.execute("	INSERT INTO "+badge_table+" \
-							("+field+", badgeID, round, dateAdd) \
-						VALUES \
-							("+str(userID)+", "+str(badgeID)+", "+str(curRound)+", NOW())\
-					")
-		if userBadge:
-
-			if not badgeIsset or badgeID != 13:
-				
-				awardedPlayers = badge_count(1)
-				myBadges = badge_count(2)
-
-				install_gettext(get_lang(userID))
-				
-				subject = ('You earned a new badge!')
-				text = ('Hello there, %s. You earned a new badge named <strong>%s</strong>, go check it in <a href="profile">your profile</a>.<br/>') % (user_name(), (badgeInfo['name']))
-
-				if awardedPlayers <= 0:
-					text += ('Feel special: you are the first player to receive this badge! ')
-				elif awardedPlayers == 1:
-					text += ('Only one other player received this badge. ')
-				else:
-					text += ('Other %s players received this badge. ') % str(awardedPlayers)
-
-				if myBadges == 1:
-					text += ('Enjoy your first badge :)')
-				else:
-					text += ('You now have a total of <strong>%s</strong> badges.') % str(myBadges)
-					if myBadges == 30:
-						os.system('python ../python/badge_add.py user '+str(userID)+' 50')
-
-				mail(subject.encode('utf-8').decode('cp1252'), text.encode('utf-8').decode('cp1252'))
-
-			os.system('python ../python/profile_generator.py '+str(userID)+' '+get_lang(userID))
-
-		db.commit()
-
-
-userBadge = userID = badgeID = None
-
-if __name__ == '__main__':
-
-	userBadge = sys.argv[1]
-	userID = int(sys.argv[2])
-	badgeID = int(sys.argv[3])
-
-	badge_add()
+print(time.strftime("%d/%m/%y %H:%M:%S"), ' - ', __file__, ' - ', round(time.time() - start_time, 4), "s")

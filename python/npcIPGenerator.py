@@ -125,7 +125,7 @@ generate_npcs(npc_data)
 cursor.close()
 db.close()
 
-os.system('python ../python/npc_generator_web.py')
 os.system('python ../python/software_generator.py')
 os.system('python ../python/software_generator_riddle.py')
+os.system('python ../python/npcDataGenerator.py')
 print(time.strftime("%d/%m/%y %H:%M:%S"),' - ',__file__,' - ',round(time.time() - start_time, 4), "s\n")

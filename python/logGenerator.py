@@ -13,6 +13,9 @@ cnx = mysql.connector.connect(
 # Function to insert rows from npc table into the log table
 def insert_npc_logs():
     # Get the list of npc IDs from the npc table
+    download_center = "SELECT id FROM npc WHERE npcType = 8"
+    cursor.execute(download_center)
+    dc_ids = cursor.fetchall()
     npc_ids_query = "SELECT id FROM npc"
     cursor.execute(npc_ids_query)
     npc_ids = cursor.fetchall()
@@ -24,7 +27,7 @@ def insert_npc_logs():
         cursor.execute(exists_query)
         result = cursor.fetchone()
 
-        if result[0] == 0:
+        if result[0] == 0 and npc_id not in dc_ids:
             # Insert a new row if the npc ID doesn't exist
             insert_query = f"INSERT INTO log (userID, isNPC) VALUES ({npc_id[0]}, 1)"
             cursor.execute(insert_query)
