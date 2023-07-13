@@ -5766,11 +5766,13 @@ if($npc == 1 && $local == 0){
         $roundStats = $ranking->serverStats_get();
         $researchRanking = $ranking->getResearchRank($_SESSION['id']);
         
-        $researchRank = '#<span id="research-side-rank">'.number_format($researchRanking['rank']).'</span> <span class="small">of '.number_format($researchRanking['total']).'</span>';
-        
-        if($researchRanking['rank'] == 0){
-            $researchRank = '<span class="small nomargin">'._('Not ranked').'</span>';
+        if ($researchRanking !== null && isset($researchRanking['rank']) && isset($researchRanking['total'])) {
+            $researchRank = '#<span id="research-side-rank">' . number_format($researchRanking['rank']) . '</span> <span class="small">of ' . number_format($researchRanking['total']) . '</span>';
         }
+        
+        if ($researchRanking == null || $researchRanking['rank'] === 0) {
+            $researchRank = '<span class="small nomargin">' . _('Not ranked') . '</span>';
+        }        
         
         if($researchRanking == '')
         

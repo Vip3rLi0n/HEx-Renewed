@@ -183,32 +183,30 @@ class Ranking extends Player {
         
     }
     
-    public function getResearchRank($uid, $alltime = FALSE){
-        
-        if($alltime){
+    public function getResearchRank($uid, $alltime = false)
+    {
+        if ($alltime) {
             die("Todo");
         }
-                   
+    
         $this->session->newQuery();
         $sql = "SELECT COUNT(DISTINCT userID) AS totalResearchs FROM software_research GROUP BY userID";
         $totalResearchs = sizeof($this->pdo->query($sql)->fetchAll());
-        
+    
         $this->session->newQuery();
         $sql = 'SELECT userID, COUNT(*) AS total, SUM(newVersion) AS soma 
                 FROM software_research 
                 GROUP BY userID 
                 ORDER BY soma DESC';
         $researchInfo = $this->pdo->query($sql)->fetchAll();
-        
-        for($i = 0; $i < sizeof($researchInfo); $i++){
-            
-            if($researchInfo[$i]['userid'] != $uid) continue;
-            
-            return Array('rank' => ($i + 1), 'total' => $totalResearchs); 
-            
+    
+        foreach ($researchInfo as $key => $info) {
+            if ($info['userID'] != $uid) continue;
+    
+            return ['rank' => ($key + 1), 'total' => $totalResearchs];
         }
-        
     }
+    
     
     public function getSoftwareRanking($softwareID, $category = FALSE){
         
@@ -702,21 +700,7 @@ class Ranking extends Player {
         $sql = 'SELECT 
                     COUNT(id) AS total
                 FROM round_stats';
-
-        $result = $this->pdo->query($sql);
-        if ($result === false) {
-            // Handle the query error here, such as logging or displaying an error message
-            $this->session->addMsg('Query error occured! - Ranking.class.php (serverStats_get)', 'error');
-        } else {
-            $row = $result->fetch(PDO::FETCH_OBJ);
-            if ($row !== false && isset($row->total)) {
-                $this->serverInfo->totalrounds = $row->total;
-            } else {
-                // Handle the case where the query result is empty or does not contain the expected data
-                $this->session->addMsg('Query result is empty. - Ranking.class.php (serverStats_get)', 'notice');
-            }
-        }
-
+        $this->serverInfo->totalrounds = $this->pdo->query($sql)->fetch(PDO::FETCH_OBJ)->total;
         
         
         $this->serverInfo->timeplaying /= 60;
