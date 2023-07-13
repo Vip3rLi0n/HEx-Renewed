@@ -567,7 +567,7 @@ if($this->puzzleInfo->credit){
         }
         
         $this->session->newQuery();
-        $sql = "SELECT puzzleID FROM puzzle_solved WHERE userID = '".$uid."' LIMIT 1";
+        $sql = "SELECT puzzleID FROM users_puzzle WHERE userID = '".$uid."' LIMIT 1";
         return $this->pdo->query($sql)->fetch(PDO::FETCH_OBJ)->puzzleid;
         
     }

@@ -1,22 +1,3 @@
-window.fbAsyncInit = function() {
-	FB.init({
-	appId      : fbid,
-	status     : true, // check login status
-	cookie     : true, // enable cookies to allow the server to access the session
-	xfbml      : true  // parse XFBML
-	});
-
-	// Load the SDK asynchronously
-	(function(d){
-	var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
-	if (d.getElementById(id)) {return;}
-	js = d.createElement('script'); js.id = id; js.async = true;
-	js.src = "//connect.facebook.net/en_US/all.js";
-	ref.parentNode.insertBefore(js, ref);
-	}(document));
-
-}
-
 $(document).ready(function(){
 
 	function ismob() {
@@ -373,32 +354,32 @@ $(document).ready(function(){
 	  	});
 
 	}
-
-	$('#fb-login').on('click', function(){
-		window.location.replace($('#fb-login').attr('value'));
-	});
-
-	$('#tt-login').on('click', function(){
-		window.location.replace($('#tt-login').attr('value'));
-	});
 	
+	// Tooltip Bootstrap
 	loadedTip = false;
-	if(!loadedTip){
-        loadedTip = true;
-        setTimeout(function(){
-			$('.ul-about').tooltip({
-				selector: "li[data-toggle=tooltip]"
-			})
-		}, 500);
+	if (!loadedTip) {
+	loadedTip = true;
+	setTimeout(function() {
+		$('[data-toggle="tooltip"]').tooltip({
+		items: '[data-toggle="tooltip"]',
+		content: function() {
+			return $(this).attr('title');
+		},
+		open: function(_event, ui) {
+			ui.tooltip.find('.ui-helper-hidden-accessible').remove();
+		}
+		});
+	}, 500);
 	}
 
-	$('.about').mouseover(function(){
-		if(!($(this).hasClass('about1'))){
-			$('.about1').tooltip('hide');
-		}
+	$('.about').on('mouseover', function() {
+	if (!$(this).hasClass('about1')) {
+		$('.about1').tooltip('option', 'hide');
+	}
 	});
-	$('.about-more').mouseover(function(){
-		$('.about1').tooltip('hide');
+
+	$('.about-more').on('mouseover', function() {
+	$('.about1').tooltip('option', 'hide');
 	});
 
 	//flags
@@ -526,9 +507,9 @@ $(document).ready(function(){
 
 	 	$('#terminal')
 	        .typist('wait', '300')
-	        .typist('print', '[ 0.000000] Linux version 3.2.0-4-amd64 (gcc version 4.6.3 (Debian 4.6.3-14) ) #1 SMP Debian 3.2.51-1')
+	        .typist('print', '[ 0.000000] Linux version 6.4.2-rc1-amd64 (gcc version 12.2.0-14 (Debian 12.2.1-14) ) #1 SMP Debian 12.2.1-14')
 	        .typist('wait', '100')
-	        .typist('print', '[ 0.000024] Command line: BOOT_IMAGE=/boot/vmlinuz-3.2.0-4-amd64 root=UUID=abb4b6af-3442-4574-8790-16e6ca0a10ef ro quiet')
+	        .typist('print', '[ 0.000024] Command line: BOOT_IMAGE=/boot/vmlinuz-6.4.2-rc1-amd64 root=UUID=abb4b6af-1337-4574-8790-16e6ca0a10ef ro quiet')
 	        .typist('wait', '100')
 	        .typist('print', '[ 0.000157] Booting paravirtualized kernel on bare hardware')
 	        .typist('wait', '100')
@@ -536,11 +517,13 @@ $(document).ready(function(){
 	        .typist('wait', '100')
 	        .typist('print', '[ 0.004348] Starting apache2 web server')
 	        .typist('wait', '100')
-	        .typist('print', '[ 0.005398] PPP: version 2.3.3 (demand dialling)')
+	        .typist('print', '[ 0.005398] PPP: version 7.7.7 (demand dialling)')
 	        .typist('wait', '50')
 	        .typist('print', '[ 0.005452] PPP line discipline registered.')
 	        .typist('wait', '100')
 	        .typist('print', '[ 0.005752] eth0: MACE at 00:0f:02:10:2a:6d, chip revision 9.64')
+	        .typist('wait', '100')
+	        .typist('print', 'Welcome back. System is ready.')
 	        .typist('wait', '100')
 	        .typist('prompt')
 	        .typist('wait', '1000')
@@ -568,7 +551,7 @@ $(document).ready(function(){
 	        .typist('print', 'Access denied!')
 	        .typist('prompt')
 	        .typist('wait', '1000')
-	        .typist('type', 'ssh fbi.gov')
+	        .typist('type', 'ssh nia.gov.in')
 	        .typist('print', 'Enter username:')
 	        .typist('promptecho')
 	        .typist('wait', '200')
@@ -582,7 +565,7 @@ $(document).ready(function(){
 	        .typist('print', 'Access denied!')
 	        .typist('prompt')
 	        .typist('wait', '1000')
-	        .typist('type', 'ssh fbi.gov')
+	        .typist('type', 'ssh mossad.gov.il')
 	        .typist('print', 'Enter username:')
 	        .typist('promptecho')
 	        .typist('wait', '200')
@@ -596,7 +579,7 @@ $(document).ready(function(){
 	        .typist('print', 'Access denied!')
 	        .typist('prompt')
 	        .typist('wait', '1000')
-	        .typist('type', 'ssh fbi.gov')
+	        .typist('type', 'ssh ispr.gov.pk')
 	        .typist('print', 'Enter username:')
 	        .typist('promptecho')
 	        .typist('wait', '200')
@@ -610,7 +593,7 @@ $(document).ready(function(){
 	        .typist('print', 'Access denied!')
 	        .typist('prompt')
 	        .typist('wait', '1000')
-	        .typist('type', 'ssh fbi.gov')
+	        .typist('type', 'ssh sis.gov.uk')
 	        .typist('print', 'Enter username:')
 	        .typist('promptecho')
 	        .typist('wait', '200')
@@ -624,7 +607,7 @@ $(document).ready(function(){
 	        .typist('print', 'Access denied!')
 	        .typist('prompt')
 	        .typist('wait', '1000')
-	        .typist('type', 'ssh fbi.gov')
+	        .typist('type', 'ssh svr.gov.ru')
 	        .typist('print', 'Enter username:')
 	        .typist('promptecho')
 	        .typist('wait', '200')
@@ -638,7 +621,7 @@ $(document).ready(function(){
 	        .typist('print', 'Access denied!')
 	        .typist('prompt')
 	        .typist('wait', '1000')
-	        .typist('type', 'ssh fbi.gov')
+	        .typist('type', 'sftp 12339.gov.cn')
 	        .typist('print', 'Enter username:')
 	        .typist('promptecho')
 	        .typist('wait', '200')
@@ -652,7 +635,7 @@ $(document).ready(function(){
 	        .typist('print', 'Access denied!')
 	        .typist('prompt')
 	        .typist('wait', '1000')
-	        .typist('type', 'ssh fbi.gov')
+	        .typist('type', 'ssh fss.gov.ru')
 	        .typist('print', 'Enter username:')
 	        .typist('promptecho')
 	        .typist('wait', '200')
@@ -666,7 +649,7 @@ $(document).ready(function(){
 	        .typist('print', 'Access denied!')
 	        .typist('prompt')
 	        .typist('wait', '1000')
-	        .typist('type', 'ssh fbi.gov')
+	        .typist('type', 'sftp bnd.bund.de')
 	        .typist('print', 'Enter username:')
 	        .typist('promptecho')
 	        .typist('wait', '200')
@@ -678,7 +661,55 @@ $(document).ready(function(){
 	        .typist('type', '********')
 	        .typist('wait', '400')
 	        .typist('print', 'Access denied!')
+	        .typist('prompt')
+	        .typist('wait', '1000')
+	        .typist('type', 'ssh dgse.gouv.fr')
+	        .typist('print', 'Enter username:')
+	        .typist('promptecho')
+	        .typist('wait', '200')
+	        .typist('type', 'root')
+	        .typist('wait', '150')
+	        .typist('print', 'Enter password:')
+	        .typist('promptecho')
+	        .typist('wait', '200')
+	        .typist('type', '********')
+	        .typist('wait', '400')
+	        .typist('print', 'Access denied!')
+	        .typist('prompt')
+	        .typist('wait', '1000')
+	        .typist('type', 'ssh pheonix.gov')
+	        .typist('print', 'Enter username:')
+	        .typist('promptecho')
+	        .typist('wait', '200')
+	        .typist('type', 'root')
+	        .typist('wait', '150')
+	        .typist('print', 'Enter password:')
+	        .typist('promptecho')
+	        .typist('wait', '200')
+	        .typist('type', '********')
+	        .typist('wait', '400')
+	        .typist('print', 'Access denied!')
+	        .typist('prompt')
+	        .typist('wait', '1000')
+	        .typist('type', 'ssh asis.gov.au')
+	        .typist('print', 'Enter username:')
+	        .typist('promptecho')
+	        .typist('wait', '200')
+	        .typist('type', 'root')
+	        .typist('wait', '150')
+	        .typist('print', 'Enter password:')
+	        .typist('promptecho')
+	        .typist('wait', '200')
+	        .typist('type', '********')
+	        .typist('wait', '400')
+	        .typist('print', 'Access denied!')
+	        .typist('prompt')
+	        .typist('wait', '1000')
+	        .typist('type', 'reboot')
+	        .typist('wait', '400')
+	        .typist('print', 'Rebooting system...')
 	  }
+	  typeconsole(typeboot());
 
 	  if(!ismob){
 	  	typeconsole(typeboot());

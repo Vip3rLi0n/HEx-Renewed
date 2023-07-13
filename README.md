@@ -5,8 +5,12 @@
 
 # Update
 - Game works now (Sort of)
-- Mission still broke
 - NPC software dataset still need update.
+- Fixed mission.
+- Research are sort of working now.
+- Created new script to start round
+- Fixed script to end round
+- Fixed npc, vpc and log generation script.
 
 # Changelog (Rough)
 - ajax.php (Messy af.)
@@ -24,7 +28,6 @@
 - Riddle are not working. :white_check_mark:﻿  Fixed.
 - Hacked target software list doesn't show hardware information. :white_check_mark:﻿  Fixed.
 - Software list are broken inside NPC. :white_check_mark:﻿  Fixed.
-- Mission page are broken.
 - Own ip, money and time broken once hacked into target IP. :white_check_mark:﻿  Fixed.
 - Hall of fame (Clan, Software, DDoS) are broken.
 - Ranking (Clan, Software, DDoS) are broken.

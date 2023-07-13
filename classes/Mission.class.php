@@ -193,24 +193,33 @@ class Mission {
     }
     
     public function generateMissionText($mission){
-        require_once 'Player.class.php';
         $player = new Player();
+ 
         $seedArr = self::seed_get($mission->id);
+        
         $pname = $player->getPlayerInfo($_SESSION['id'])->login;
+        
         $ceoname = 'William Bell';
+        
         $hirerName = $mission->hirername;
         $hirerIP = long2ip($mission->hirer);
+        
         $victimName = $mission->victimname;
         $victimIP = long2ip($mission->victim);
+        
         $reward = number_format($mission->prize);
+        
         $this->sidebar = new stdClass();
+
         $TOTAL = 6;
-        $textArray = array();
-    
+        $textArray = Array();        
         for($i=0; $i < $TOTAL; $i++){
+            
             $seed = $seedArr[$i];
+            
             switch($i){
                 case 0:
+
                     if($seed == 1){
                         $t = _('Hello there').', <strong>'.$pname.'</strong>.';
                     } elseif($seed == 2){
@@ -218,147 +227,350 @@ class Mission {
                     } else {
                         $t = _('Dear').' <strong>'.$pname.'</strong>,';
                     }
+                    
                     $textArray['GREETING'] = $t;
+                    
                     break;
-                case 1:
+                case 1:                    
+
                     if($seed == 1){
                         $t = _('I am here representing').' <a href="internet?ip='.$hirerIP.'">'.$hirerName.'</a>.';
                     } elseif($seed == 2){
-                        $t = _('As a representative spokesperson of').' <a href="internet?ip='.$hirerIP.'">'.$hirerName.'</a>.';
+                        $t = _('as a representative spokesperson of').' <a href="internet?ip='.$hirerIP.'">'.$hirerName.'</a>.';
                     } else {
-                        $t = sprintf(_('We from %s have a proposal for you.'), '<a href="internet?ip='.$hirerIP.'">'.$hirerName.'</a>');
+                        $t = sprintf(_('we from %s have a proposal for you.'), '<a href="internet?ip='.$hirerIP.'">'.$hirerName.'</a>');
                     }
-                    if(strpos($textArray['GREETING'], 'there') !== false || strpos($textArray['GREETING'], 'Olá') !== false){
+                    
+                    if(strpos($textArray['GREETING'], 'there') !== FALSE || strpos($textArray['GREETING'], 'Olá') !== FALSE){
                         $t[0] = strtoupper($t[0]);
                     }
+                    
                     $textArray['INTRO'] = $t;
+                    
                     break;
                 case 2:
+                    
                     if($seed == 1){
                         $t = sprintf(_('I want you to access %s\'s%s servers and'), '<a href="internet?ip='.$victimIP.'">'.$victimName, '</a>');
                     } elseif($seed == 2){
                         $t = sprintf(_('I need you to hack into %s%s and'), '<a href="internet?ip='.$victimIP.'">'.$victimName, '</a>');
                     } elseif($seed == 3){
-                        $t = sprintf(_('Your mission, should you choose to accept it, is to access %s\'s%s servers and'), '<a href="internet?ip='.$victimIP.'">'.$victimName, '</a>');
+                        $t = sprintf(_('Your mission, choose you to accept it, is to access %s\'s%s servers and'), '<a href="internet?ip='.$victimIP.'">'.$victimName, '</a>');
                     } else {
                         $t = sprintf(_('You have to discover for us what %s%s is up to. Hack them and'), '<a href="internet?ip='.$victimIP.'">'.$victimName, '</a>');
+                        
                     }
-                    if((strpos($textArray['INTRO'], 'representative') !== false && $seed >= 3) || strpos($textArray['INTRO'], 'porta-voz') !== false){
+
+                    if((strpos($textArray['INTRO'], 'representative') !== FALSE && $seed >= 3) || strpos($textArray['INTRO'], 'porta-voz') !== FALSE){
                         $t[0] = strtolower($t[0]);
                     }
+                    
                     $textArray['VICTIM_CALL'] = $t;
+                    
                     break;
                 case 3:
+                    
                     if($seed == 1){
-                        $t = _('grab the information').'.';
+                        $t = sprintf(_('I am willing to offer you %s for this service.'), '<span class="green">$'.$reward.'</span>');
                     } elseif($seed == 2){
-                        $t = _('retrieve the data').'.';
-                    } elseif($seed == 3){
-                        $t = _('steal the classified files').'.';
+                        $t = sprintf(_('You\'ll have %s when the job is done.'), '<span class="green">$'.$reward.'</span>');
                     } else {
-                        $t = _('bring us back the sensitive data').'.';
+                        $t = sprintf(_('Complete the job and you will receive %s from us as a \'thank you\'.'), '<span class="green">$'.$reward.'</span>');
                     }
-                    $textArray['ACTION'] = $t;
+                    
+                    $textArray['PAYMENT'] = $t;
+                    
                     break;
                 case 4:
+                    
                     if($seed == 1){
-                        $t = sprintf(_('You will be rewarded with %s dollars upon completion.'), $reward);
+                        $t = _('You can find them on').' <a href="internet?ip='.$victimIP.'" class="link-default">'.$victimIP.'</a>.';
                     } elseif($seed == 2){
-                        $t = sprintf(_('We will transfer %s dollars to your account once you\'ve completed it.'), $reward);
+                        $t = _('Their mainframe is located at').' <a href="internet?ip='.$victimIP.'" class="link-default">'.$victimIP.'</a>.';
                     } else {
-                        $t = sprintf(_('If you manage to accomplish this mission, we will pay you %s dollars.'), $reward);
+                        $t = _('Ping them at').' <a href="internet?ip='.$victimIP.'" class="link-default">'.$victimIP.'</a>.';
                     }
-                    $textArray['REWARD'] = $t;
+                    
+                    $textArray['VICTIM_LOCATION'] = $t;
+                    
                     break;
                 case 5:
+                    
                     if($seed == 1){
-                        $t = _('This mission should not be underestimated. You\'ll have to be careful and use your hacking skills wisely.');
+                        $t = 'Do it quietly, and remember: if you get caught, I dont know who you are.';
                     } elseif($seed == 2){
-                        $t = _('Be cautious, this is not an easy task. Your hacking abilities will be put to the test.');
+                        $t = 'We dont want hear our company name on the news, so do a good job.';
                     } else {
-                        $t = _('Beware, this mission is not for the faint-hearted. Only the most skilled hackers will succeed.');
+                        $t = 'We are watching your steps, dont try to screw on us.';
                     }
-                    $textArray['WARNING'] = $t;
-                    break;
-                // Additional cases
-                case 50:
-                    if($seed == 1){
-                        $t = _('You have been assigned a top-secret mission.');
-                    } elseif($seed == 2){
-                        $t = _('This mission is of utmost importance and confidentiality.');
-                    } else {
-                        $t = _('Your mission, should you choose to accept it, is highly classified.');
-                    }
-                    $textArray['MISSION_TYPE'] = $t;
-                    break;
-                case 51:
-                    if($seed == 1){
-                        $t = sprintf(_('The target is a high-profile individual: %s.'), $victimName);
-                    } elseif($seed == 2){
-                        $t = sprintf(_('Your target is a person of interest: %s.'), $victimName);
-                    } else {
-                        $t = sprintf(_('The person you are targeting is: %s.'), $victimName);
-                    }
-                    $textArray['TARGET'] = $t;
-                    break;
-                case 52:
-                    if($seed == 1){
-                        $t = _('The data you need to retrieve is highly sensitive.');
-                    } elseif($seed == 2){
-                        $t = _('You will find valuable information that needs to be extracted.');
-                    } else {
-                        $t = _('The files you are looking for contain critical data.');
-                    }
-                    $textArray['DATA'] = $t;
-                    break;
-                case 53:
-                    if($seed == 1){
-                        $t = sprintf(_('Time is of the essence. The mission needs to be completed within %s hours.'), $mission->time);
-                    } elseif($seed == 2){
-                        $t = sprintf(_('You have a limited time frame of %s hours to finish this task.'), $mission->time);
-                    } else {
-                        $t = sprintf(_('Complete the mission in %s hours to achieve success.'), $mission->time);
-                    }
-                    $textArray['TIME_LIMIT'] = $t;
-                    break;
-                case 54:
-                    if($seed == 1){
-                        $t = sprintf(_('Failure is not an option. The consequences of failure could be catastrophic.'));
-                    } elseif($seed == 2){
-                        $t = sprintf(_('The mission must succeed at all costs. Failure is not acceptable.'));
-                    } else {
-                        $t = sprintf(_('Your success is crucial. The mission cannot afford any mistakes.'));
-                    }
-                    $textArray['FAILURE_CONSEQUENCES'] = $t;
-                    break;
-                case 80:
-                    if($seed == 1){
-                        $t = _('Your mission details have been updated. Please review the changes.');
-                    } elseif($seed == 2){
-                        $t = _('Important mission update: there have been changes to the mission parameters.');
-                    } else {
-                        $t = _('An update has been made to your mission. Take note of the new instructions.');
-                    }
-                    $textArray['MISSION_UPDATE'] = $t;
-                    break;
-                case 83:
-                    if($seed == 1){
-                        $t = _('We have received reports of increased security measures. Stay alert during the mission.');
-                    } elseif($seed == 2){
-                        $t = _('Be aware, the target has heightened security. Prepare accordingly.');
-                    } else {
-                        $t = _('Caution is advised. The target may have improved their security defenses.');
-                    }
-                    $textArray['INCREASED_SECURITY'] = $t;
-                    break;
-                default:
+                    
+                    $textArray['WARNING'] = _($t);
+                    
                     break;
             }
-            $textArray['seed'.$i] = $seed;
+            
         }
+        
+        if ($mission->status == 1) {
+            
+            return $textArray['GREETING']._(' I have a job offer for you. I will hand you the details when you accept it. ').$textArray['PAYMENT'].'' ;
+            
+        }
+                
+        switch($mission->type){
+            case 1:
+            case 2:
+                
+                $software = new SoftwareVPC();
+                $fileInfo = $software->getSoftwareOriginalInfo($mission->info);
+                
+                $softwareName = $fileInfo->softname.$software->getExtension($fileInfo->softtype);
+                
+                $this->sidebar->filename = $softwareName;
+                $this->sidebar->fileversion = $software->dotVersion($fileInfo->softversion);
+                
+                break;
+            case 3:
+            case 4:
+                
+                $acc1 = $mission->info;
+                $ip1 = $mission->victim;
+                
+                $acc2 = $mission->info2;
+                $ip2 = $mission->newinfo2;
     
-        return $textArray;
-    }    
+                $this->sidebar->ip1 = $ip1;
+                $this->sidebar->ip2 = $ip2;
+                
+                break;
+            case 51: //doom
+            case 53: //doom
+                $software = new SoftwareVPC();
+                if($mission->newinfo != ''){
+                    $doomInfo = $software->getSoftware($mission->newinfo, $_SESSION['id'], 'VPC');
+                } else {
+                    $doomInfo = $software->getSoftware($mission->info);
+                }
+                
+                if($doomInfo !== FALSE){
+                    $this->sidebar->filename = $doomInfo->softname.$software->getExtension($doomInfo->softtype);
+                    $this->sidebar->fileversion = $software->dotVersion($doomInfo->softversion);
+                } else {
+                    $this->sidebar->filename = 'Doom.doom';
+                    $this->sidebar->fileversion = '1.0';
+                }
+                
+                break;
+        }
+        
+        $staticText = '';
+        $action = '';
+        switch($mission->type){
+            case 1:
+                
+                $seed = $seedArr[6];
+                
+                if($seed == 1){
+                    $action = _('delete the file').' <span class="red">';
+                } elseif($seed == 2) {
+                    $action = _('remove the file').' <span class="red">';
+                } else {
+                    $action = _('wipe out the file').' <span class="red">';
+                }
+                
+                $action .= $softwareName.'</span>.';
+                                
+                break;
+            case 2:
+                
+                $seed = $seedArr[6];
+                
+                if($seed == 1){
+                    $action = _('copy the file').' <span class="red">';
+                } elseif($seed == 2) {
+                    $action = _('transfer the file').' <span class="red">';
+                } else {
+                    $action = _('upload the file').' <span class="red">';
+                }
+                
+                $action .= $softwareName.'</span>. '._('to our servers.');                
+                                
+                
+                break;
+            case 3:
+                
+                $seed = $seedArr[2];
+
+                if($seed == 1){
+                    $t = _('I need you to hack into bank account').' <font color="red">#'.$acc1.'</font> '._('from').' <a href="internet?ip='.$victimIP.'">'.$victimName.'</a>';
+                    $t .= _(' and check it\'s total balance. This guy say they have no money, but I want to know for sure.');
+                } elseif($seed == 2){
+                    $t = _('Your mission, choose you to accept it, is to check the balance of account').' <font color="red">#'.$acc1.'</font> (<a href="internet?ip='.$victimIP.'">'.$victimName.'</a>)';
+                    $t .= _(' and report back to us. They claim they have no money, but we want to know for sure.');
+                }
+                
+                $textArray['VICTIM_CALL'] = $t;
+                
+                $seed = $seedArr[5];
+                
+                $t = _(' The account is located at bank').' <a href="internet?ip='.$victimIP.'" class="link-default">'.$victimIP.'</a>.';
+                
+                $textArray['VICTIM_LOCATION'] = $t;
+                
+                break;
+            case 4:
+                
+                $seed = $seedArr[2];
+
+                if($seed == 1){
+                    $t = _('I need you to hack into bank account').' <font color="red">#'.$acc1.'</font> '._('from').' <a href="internet?ip='.$victimIP.'">'.$victimName.'</a>';
+                    $t .= _(' and transfer the money to our account').', <font color="red">#'.$acc2.'</font>.';
+                } elseif($seed == 2){
+                    $t = _('Your mission, choose you to accept it, is to transfer all the money from bank account').' <font color="red">#'.$acc1.'</font> (<a href="internet?ip='.$victimIP.'">'.$victimName.'</a>)';
+                    $t .= _(' to').' <font color="red">#'.$acc2.'</font>';
+                    if($ip1 != $ip2){
+                        $t .= ' (<a href="internet?ip='.$victimIP.'">'.$victimName.'</a>)';
+                    }
+                    $t .= '.';
+                }
+                
+                $textArray['VICTIM_CALL'] = $t;
+                
+                $seed = $seedArr[5];
+                
+                if($ip1 == $ip2){
+                    if($seed == 1){
+                        $t = _(' And you got lucky: both accounts are at the same IP').' <a href="internet?ip='.$victimIP.'" class="link-default">'.$victimIP.'</a>.';
+                    } elseif($seed == 2){
+                        $t = _(' You can find the bank for both accounts here:').' <a href="internet?ip='.$victimIP.'" class="link-default">'.$victimIP.'</a>.';
+                    }
+                } else {
+                    $t = _(' The first account is located at bank').' <a href="internet?ip='.$victimIP.'" class="link-default">'.$victimIP.'</a>';
+                    $t .= _(' and the second at').' <a href="internet?ip='.long2ip($ip2).'" class="link-default">'.long2ip($ip2).'</a>.';
+                }
+                
+                $textArray['VICTIM_LOCATION'] = $t;
+                
+                break;
+            case 5:
+                
+                $seed = $seedArr[2];
+                
+                if($seed == 1){
+                    $t = sprintf(_(' We are worried with the quick growing of %s. We believe a little down time on their servers will be enough to slow them down.'), '<a href="internet?ip='.$victimIP.'">'.$victimName.'</a>');
+                    $t .= _(' Your mission is to DDoS\'em and seize their hardware big time.');
+                } elseif($seed == 2){
+                    $t = '';
+                    $t = sprintf(_(' The guys at %s are annoying us, so we need you to throw several DDoS attacks against them.'), '<a href="internet?ip='.$victimIP.'">'.$victimName.'</a>');
+                    $t .= _(' We are paying you big money, so your mission is to seize their hardware.');
+                }
+                
+                $textArray['VICTIM_CALL'] = $t;
+                
+                break;
+            case 50: //researched crc x
+                $staticText =  $pname.', I\'ve been checking your performance on the last weeks and you seems to be a very experienced hacker. I would love to work with you.';
+                $staticText .= ' You might have heard of me or my company. Don\'t listen to what news jerks says. We are not evil.';
+                $staticText .= '<br/>&emsp;';
+                $staticText .= 'You recently researched a very powerful software. Kudos! Did you know that this software is powerful enough to hack into NSA? ';
+                $staticText .= 'Well, you certainly heard that NSA is in possession of the most powerful software of the world. The <strong>doom virus</strong> is not a myth!';
+                $staticText .= '<br/>&emsp;';
+                $staticText .= 'You got too involved, kid. Now there is no turning back. Your mission is to hack into the NSA and retrieve the doom virus. ';
+                $staticText .= 'Dont worry, I\'ll give you further instructions once you download the virus.';
+
+                break;
+            case 51: //downloaded doom
+
+                require 'Clan.class.php';
+                $clan = new Clan();
+                if($clan->playerHaveClan()){
+                    $haveClan = TRUE;
+                } else {
+                    $haveClan = FALSE;
+                }
+
+                $staticText =  'Good. Now that you are in possession of the doom virus, I need you to finally execute it. In order to be able to run it, you need to ';
+                $staticText .= 'buy it\'s license. It will be costy, but we sent you a seed money. After buying the license, you can either research it or decide to launch.';
+                $staticText .= '<br/>&emsp;';
+                if($haveClan){
+                    $staticText .= ' You can launch the doom attack on your own computer or on your clan server. It makes no difference! ';
+                    $staticText .= 'Releasing on your clan server might hand you the help of your mates :). ';
+                } else {
+                    $staticText .= ' You can launch the doom attack on your own computer. If you were a part of a clan, you could release the attack at the clan server. ';
+                    $staticText .= 'There is no difference, but you could count with the help of your clan mates. ';
+                }
+                $staticText .= '<br/>&emsp;';
+                $staticText .= 'Create your strategy and whenever you feel ready, launch it! But remember: you\'ll be haunted by those FBI suckers. And everybody ';
+                $staticText .= 'will attempt to hack you. Good luck.';
+                break;
+            case 52: //downloaded crc x
+
+                $staticText  = 'Hello '.$pname.'. You might have heard of me or my company. We were checking here and looks like you downloaded a quite powerful cracker. ';
+                $staticText .= 'Did you know this software is powerful enough to hack into the NSA? Well, yeah. And you certainly heard about them, right?';
+                $staticText .= '<br/>&emsp;';
+                $staticText .= 'The rumors are true: NSA does have that so called doom virus. And it is now your mission to hack into the NSA and retrieve the doom. ';
+                $staticText .= 'Dont worry, I\'ll give you further instructions once you download the virus.';
+
+                break;
+            case 53: //someone uploaded doom
+
+                require 'Clan.class.php';
+                $clan = new Clan();
+                if($clan->playerHaveClan()){
+                    $haveClan = TRUE;
+                } else {
+                    $haveClan = FALSE;
+                }
+
+                $staticText =  'You are lucky, someone uploaded you the most valuable software in the world! Now that you are in possession of the doom virus, I need you to execute it. In order to be able to run it, you need to ';
+                $staticText .= 'buy it\'s license. It will be costy, but we sent you a seed money. After buying the license, you can either research it or decide to launch.';
+                $staticText .= '<br/>&emsp;';
+                if($haveClan){
+                    $staticText .= ' You can launch the doom attack on your own computer or on your clan server. It makes no difference! ';
+                    $staticText .= 'Releasing on your clan server might hand you the help of your mates :). ';
+                } else {
+                    $staticText .= ' You can launch the doom attack on your own computer. If you were a part of a clan, you could release the attack at the clan server. ';
+                    $staticText .= 'There is no difference, but you could count with the help of your clan mates. ';
+                }
+                $staticText .= '<br/>&emsp;';
+                $staticText .= 'Create your strategy and whenever you feel ready, launch it! But remember: you\'ll be haunted by those FBI suckers. And everybody ';
+                $staticText .= 'will attempt to hack you. Good luck.';
+                break;
+            case 54: //someone uploaded crc x
+
+                $staticText  = 'Hello '.$pname.'. You might have heard of me or my company. You are lucky, someone uploaded you a quite powerful cracker.';
+                $staticText .= 'Did you know this software is powerful enough to hack into the NSA? Well, yeah. And you certainly heard about them, right?';
+                $staticText .= '<br/>&emsp;';
+                $staticText .= 'The rumors are true: NSA does have that so called doom virus. And it is now your mission to hack into the NSA and retrieve the doom. ';
+                $staticText .= 'Dont worry, I\'ll give you further instructions once you download the virus.';
+
+                break;
+
+            case 80:
+                $action = _(' retrieve the file <span class="red">Users.dat</span> for us.');
+                break;
+            case 81:
+                $staticText = _('Thats weird! Why is the file Users.dat not there? Please, check the log page.');
+                break;
+            case 82:
+                self::tutorial_update(83);
+                $staticText = _('Looks like someone knew we were going there and deleted the file before we could take a look at it. Too bad for him that you caught his IP address.');
+                $staticText .= sprintf(_(' I sent you a virus. Go to %s and install <font color="red">heartbleed.vspam</font> on his computer.'), '<a href="internet?ip='.$victimIP.'">'.$victimIP.'</a>');
+            case 83:
+                $staticText = _('Looks like someone knew we were going there and deleted the file before we could take a look at it. Too bad for him that you caught his IP address.');
+                $staticText .= sprintf(_(' I sent you a virus. Go to %s and install <font color="red">heartbleed.vspam</font> on his computer.'), '<a href="internet?ip='.$victimIP.'">'.$victimIP.'</a>');
+                break;
+        }
+        
+        if($staticText == ''){
+        
+            return $textArray['GREETING'].' '.$textArray['INTRO'].' '.$textArray['VICTIM_CALL'].' '.$action.' '.$textArray['PAYMENT'].' '.$textArray['VICTIM_LOCATION'].' '.$textArray['WARNING'];
+        
+        } else {
+            return $staticText;
+        }
+        
+    }
     
     public function seed_isset($mid){
         
@@ -404,7 +616,7 @@ class Mission {
         }
     
         $this->session->newQuery();
-        $sql = "INSERT INTO missions_seed (mission_id, greeting, intro, victim_call, payment, victim_location, warning, action) 
+        $sql = "INSERT INTO missions_seed (missionID, greeting, intro, victim_call, payment, victim_location, warning, `action`) 
                 VALUES (:missionID, :greeting, :intro, :victimCall, :payment, :victimLocation, :warning, :action)";
     
         $stmt = $this->pdo->prepare($sql);
@@ -424,7 +636,7 @@ class Mission {
     public function seed_get($missionID){
         
         $this->session->newQuery();
-        $sql = 'SELECT greeting AS s0, intro AS s1, victim_call AS s2, payment AS s3, victim_location AS s4, warning AS s5, action AS s6 
+        $sql = 'SELECT greeting AS s0, intro AS s1, victim_call AS s2, payment AS s3, victim_location AS s4, warning AS s5, `action` AS s6 
                 FROM missions_seed WHERE missionID = \''.$missionID.'\' LIMIT 1';
         $seed = $this->pdo->query($sql)->fetch(PDO::FETCH_OBJ);
         

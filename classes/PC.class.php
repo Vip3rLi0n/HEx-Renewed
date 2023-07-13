@@ -110,6 +110,7 @@ class HardwareVPC extends Player {
         $net = $this->net;
         $hdd = $this->hdd;
         $ram = (float)$this->ram;
+        $hddStr = '';
 
         if($cpu <= 1000){
             $cpuStr = 'MHz';
@@ -143,7 +144,6 @@ class HardwareVPC extends Player {
             $cpu = round($cpu, 1);
         }
 
-        
         if (is_float($hdd)) {
             $hdd = round($hdd, 1);
         

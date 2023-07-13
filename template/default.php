@@ -73,7 +73,9 @@ if(isset($_SESSION['TYP'])){
         <link href="font-awesome/css/font-awesome.css" rel="stylesheet">
         <link href="css/he_index.css" rel="stylesheet">
         <link rel="stylesheet" type="text/css" href="css/tipTip.css">
+        <script src="https://cdn.jsdelivr.net/npm/smooth-scroll/dist/smooth-scroll.min.js"></script>
     </head>
+    <script>document.addEventListener('DOMContentLoaded',function(){var scroll=new SmoothScroll('a.goto-about[href="#About"]',{speed:800,offset:function(anchor,toggle){var offset=50;return offset;},updateURL:!1})});</script>
     <body>
         <div id="terminal"></div>
         <div class="intro-header">
@@ -121,7 +123,7 @@ if($msgIndex){
                             <ul class="list-inline intro-social-buttons">
                                 <li><a class="btn btn-default btn-lg btn-front goto-login"><i class="fa fa-power-off fa-fw"></i> <span class="network-name"><?php echo _('Login'); ?></span></a></li>
                                 <li><a class="btn btn-default btn-lg btn-front goto-signup"><i class="fa fa-plus fa-fw"></i> <span class="network-name"><?php echo _('Register'); ?></span></a></li>
-                                <li><a class="btn btn-default btn-lg btn-front goto-about"><i class="fa fa-info-circle fa-fw"></i> <span class="network-name"><?php echo _('About'); ?></span></a></li>
+                                <li><a class="btn btn-default btn-lg btn-front goto-about" href="#About"><i class="fa fa-info-circle fa-fw"></i> <span class="network-name"><?php echo _('About'); ?></span></a></li>
                             </ul>
                         </div>
                     </div>
@@ -393,7 +395,7 @@ if($msgRegister){
         </section>
         <!--<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>-->
         <script src="js/jquery.min.js"></script>
-        <script src="js/tooltip.js"></script>
+        <!--<script src="js/tooltip.js"></script>-->
         <script src="js/typed.js"></script>
         <script src="js/jquery.validate.js"></script>
         <script src="js/jquery-ui.js"></script>
