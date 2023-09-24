@@ -161,4 +161,4 @@ if (!empty($error)) {
 header("Location:list?action=ddos");
 exit();
 
-
+?>
