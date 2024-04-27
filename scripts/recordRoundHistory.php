@@ -1,5 +1,5 @@
 <?php
-die("ACHO QUE NAO USO ISSO!");
+die("I dont think this is used! - Renato");
 function getExtension($softType) {
 
     static $extensions = Array(

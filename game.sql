@@ -1,13 +1,13 @@
--- MySQL dump 10.13  Distrib 5.7.4-m14, for Linux (x86_64)
+-- MySQL dump 10.19  Distrib 10.3.39-MariaDB, for debian-linux-gnu (x86_64)
 --
--- Host: db.hackerexperience.com    Database: game
+-- Host: localhost    Database: hexc
 -- ------------------------------------------------------
--- Server version	5.7.4-m14
+-- Server version	10.3.39-MariaDB-0ubuntu0.20.04.2
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
+/*!40101 SET NAMES utf8mb4 */;
 /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
 /*!40103 SET TIME_ZONE='+00:00' */;
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
@@ -29,7 +29,7 @@ CREATE TABLE `admin` (
   `password` varchar(36) NOT NULL,
   `lastLogin` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -54,10 +54,10 @@ CREATE TABLE `admin_reports` (
   `userID` int(5) NOT NULL,
   `report` text NOT NULL,
   `critical` tinyint(1) NOT NULL,
-  `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `time` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `read` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -80,7 +80,7 @@ CREATE TABLE `badges_clans` (
   `badgeID` tinyint(3) NOT NULL,
   `priority` int(5) NOT NULL,
   PRIMARY KEY (`badgeID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -103,7 +103,7 @@ CREATE TABLE `badges_users` (
   `badgeID` tinyint(3) NOT NULL,
   `priority` smallint(3) NOT NULL,
   PRIMARY KEY (`badgeID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -129,12 +129,12 @@ CREATE TABLE `bankAccounts` (
   `bankID` int(5) NOT NULL,
   `bankUser` int(5) NOT NULL,
   `cash` bigint(15) NOT NULL,
-  `dateCreated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `dateCreated` timestamp NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id`),
   KEY `id` (`bankUser`),
   KEY `bankUser` (`bankUser`,`bankAcc`,`bankID`),
   KEY `bankAcc` (`bankAcc`)
-) ENGINE=InnoDB AUTO_INCREMENT=12716004 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=12716004 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -155,10 +155,10 @@ DROP TABLE IF EXISTS `bankaccounts_expire`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `bankaccounts_expire` (
   `accID` int(30) unsigned NOT NULL,
-  `expireDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `expireDate` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   KEY `expireDate` (`expireDate`),
   KEY `accID` (`accID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -183,10 +183,10 @@ CREATE TABLE `bitcoin_wallets` (
   `npcID` int(5) unsigned NOT NULL,
   `key` varchar(64) NOT NULL,
   `amount` decimal(12,7) unsigned NOT NULL,
-  `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `createdAt` timestamp NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`address`),
   KEY `userID` (`userID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -207,15 +207,15 @@ DROP TABLE IF EXISTS `bugreports`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `bugreports` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `dateCreated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `dateCreated` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `bugText` text NOT NULL,
   `reportedBy` int(5) unsigned NOT NULL,
   `sessionContent` text NOT NULL,
   `serverContent` text NOT NULL,
-  `follow` tinyint(1) NOT NULL DEFAULT '0',
-  `solved` tinyint(1) NOT NULL DEFAULT '0',
+  `follow` tinyint(1) NOT NULL DEFAULT 0,
+  `solved` tinyint(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4289 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4289 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -236,9 +236,9 @@ DROP TABLE IF EXISTS `cache`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `cache` (
   `userID` int(5) unsigned NOT NULL,
-  `reputation` int(6) unsigned NOT NULL DEFAULT '0',
+  `reputation` int(6) unsigned NOT NULL DEFAULT 0,
   PRIMARY KEY (`userID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -259,9 +259,9 @@ DROP TABLE IF EXISTS `cache_profile`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `cache_profile` (
   `userID` int(5) unsigned NOT NULL,
-  `expireDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `expireDate` timestamp NOT NULL DEFAULT current_timestamp(),
   UNIQUE KEY `userID` (`userID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -282,9 +282,9 @@ DROP TABLE IF EXISTS `certifications`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `certifications` (
   `userID` int(5) NOT NULL,
-  `certLevel` tinyint(1) NOT NULL,
+  `certLevel` tinyint(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`userID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -307,10 +307,10 @@ CREATE TABLE `changelog` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `description` varchar(100) NOT NULL,
   `text` text NOT NULL,
-  `dateCreated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `dateCreated` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `author` varchar(50) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -345,7 +345,7 @@ CREATE TABLE `clan` (
   `power` int(10) NOT NULL,
   `corp` tinyint(1) NOT NULL,
   PRIMARY KEY (`clanID`)
-) ENGINE=InnoDB AUTO_INCREMENT=23259 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=23259 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -367,10 +367,10 @@ DROP TABLE IF EXISTS `clan_badge`;
 CREATE TABLE `clan_badge` (
   `clanID` int(5) NOT NULL,
   `badgeID` smallint(3) NOT NULL,
-  `round` tinyint(3) NOT NULL DEFAULT '0',
-  `dateAdd` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `round` tinyint(3) NOT NULL DEFAULT 0,
+  `dateAdd` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   KEY `userID` (`clanID`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -393,10 +393,10 @@ CREATE TABLE `clan_ddos` (
   `attackerClan` int(5) NOT NULL,
   `victimClan` int(5) NOT NULL,
   `ddosID` int(5) NOT NULL,
-  `displayAttacker` tinyint(1) NOT NULL DEFAULT '1',
-  `displayVictim` tinyint(1) NOT NULL DEFAULT '1',
+  `displayAttacker` tinyint(1) NOT NULL DEFAULT 1,
+  `displayVictim` tinyint(1) NOT NULL DEFAULT 1,
   KEY `attackerClan` (`attackerClan`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -421,7 +421,7 @@ CREATE TABLE `clan_ddos_history` (
   `ddosID` int(5) NOT NULL,
   `warID` int(5) NOT NULL,
   KEY `attackerClan` (`attackerClan`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -449,7 +449,7 @@ CREATE TABLE `clan_defcon` (
   `attackDate` datetime NOT NULL,
   `clanServer` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=29249 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=29249 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -478,7 +478,7 @@ CREATE TABLE `clan_requests` (
   `msg` text NOT NULL,
   PRIMARY KEY (`id`),
   KEY `clanID` (`clanID`)
-) ENGINE=InnoDB AUTO_INCREMENT=63154 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=63154 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -510,7 +510,7 @@ CREATE TABLE `clan_stats` (
   `won` int(4) NOT NULL,
   `lost` int(4) NOT NULL,
   PRIMARY KEY (`cid`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -539,7 +539,7 @@ CREATE TABLE `clan_users` (
   PRIMARY KEY (`id`),
   KEY `clanID` (`clanID`),
   KEY `userID` (`userID`)
-) ENGINE=InnoDB AUTO_INCREMENT=48282 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=48282 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -569,7 +569,7 @@ CREATE TABLE `clan_war` (
   `bounty` int(10) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `clanID1` (`clanID1`,`clanID2`)
-) ENGINE=InnoDB AUTO_INCREMENT=4764 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4764 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -594,11 +594,11 @@ CREATE TABLE `clan_war_history` (
   `idLoser` int(5) unsigned NOT NULL,
   `scoreWinner` int(10) unsigned NOT NULL,
   `scoreLoser` int(10) unsigned NOT NULL,
-  `startDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `startDate` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `endDate` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `bounty` int(10) unsigned NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4494 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4494 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -620,9 +620,9 @@ DROP TABLE IF EXISTS `doom_abort`;
 CREATE TABLE `doom_abort` (
   `doomID` int(5) unsigned NOT NULL,
   `abortedBy` int(5) unsigned NOT NULL,
-  `abortDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `abortDate` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   PRIMARY KEY (`doomID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -644,7 +644,7 @@ DROP TABLE IF EXISTS `email_delete`;
 CREATE TABLE `email_delete` (
   `userID` int(5) NOT NULL,
   `code` varchar(13) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -666,9 +666,9 @@ DROP TABLE IF EXISTS `email_reset`;
 CREATE TABLE `email_reset` (
   `userID` int(5) NOT NULL,
   `code` varchar(32) NOT NULL,
-  `requestDate` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `requestDate` timestamp NULL DEFAULT current_timestamp(),
   KEY `userID` (`userID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -691,9 +691,9 @@ CREATE TABLE `email_verification` (
   `userID` int(5) unsigned NOT NULL,
   `email` varchar(60) NOT NULL,
   `code` varchar(25) NOT NULL,
-  `creationDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `creationDate` timestamp NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`userID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -719,7 +719,7 @@ CREATE TABLE `fbi` (
   `dateAdd` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `dateEnd` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   KEY `ip` (`ip`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -743,7 +743,7 @@ CREATE TABLE `friend_requests` (
   `userID` int(5) NOT NULL,
   `requestedBy` int(5) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=95891 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=95891 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -766,14 +766,14 @@ CREATE TABLE `hardware` (
   `serverID` int(5) NOT NULL AUTO_INCREMENT,
   `userID` int(5) NOT NULL,
   `name` varchar(15) NOT NULL,
-  `cpu` float NOT NULL DEFAULT '500',
-  `hdd` float NOT NULL DEFAULT '100',
-  `ram` float NOT NULL DEFAULT '256',
-  `net` float NOT NULL DEFAULT '1',
-  `isNPC` tinyint(1) NOT NULL DEFAULT '0',
+  `cpu` float NOT NULL DEFAULT 500,
+  `hdd` float NOT NULL DEFAULT 100,
+  `ram` float NOT NULL DEFAULT 256,
+  `net` float NOT NULL DEFAULT 1,
+  `isNPC` tinyint(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`serverID`),
   KEY `IndiceComNPC` (`userID`,`isNPC`)
-) ENGINE=InnoDB AUTO_INCREMENT=6593993 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=6596365 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -796,10 +796,10 @@ CREATE TABLE `hardware_external` (
   `serverID` int(5) NOT NULL AUTO_INCREMENT,
   `userID` int(5) NOT NULL,
   `name` varchar(15) NOT NULL,
-  `size` int(4) NOT NULL DEFAULT '100',
+  `size` int(4) NOT NULL DEFAULT 100,
   UNIQUE KEY `serverID` (`serverID`),
   KEY `userID` (`userID`)
-) ENGINE=InnoDB AUTO_INCREMENT=329611 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=329611 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -834,7 +834,7 @@ CREATE TABLE `hist_clans` (
   PRIMARY KEY (`id`),
   KEY `cid` (`cid`),
   KEY `reputation` (`reputation`)
-) ENGINE=InnoDB AUTO_INCREMENT=67957 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=67957 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -868,7 +868,7 @@ CREATE TABLE `hist_clans_current` (
   PRIMARY KEY (`id`),
   KEY `cid` (`cid`),
   KEY `reputation` (`reputation`)
-) ENGINE=InnoDB AUTO_INCREMENT=23259 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=23259 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -893,12 +893,12 @@ CREATE TABLE `hist_clans_war` (
   `idLoser` int(5) unsigned NOT NULL,
   `scoreWinner` int(10) unsigned NOT NULL,
   `scoreLoser` int(10) unsigned NOT NULL,
-  `startDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `startDate` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `endDate` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `bounty` int(10) unsigned NOT NULL,
   `round` tinyint(2) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1958 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=1958 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -928,7 +928,7 @@ CREATE TABLE `hist_ddos` (
   `power` int(10) NOT NULL,
   `servers` int(3) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=159502 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=159502 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -953,7 +953,7 @@ CREATE TABLE `hist_doom` (
   `doomClanID` int(5) unsigned NOT NULL,
   `status` tinyint(1) NOT NULL,
   KEY `round` (`round`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -978,10 +978,10 @@ CREATE TABLE `hist_mails` (
   `to` int(5) unsigned NOT NULL,
   `subject` varchar(50) NOT NULL,
   `text` varchar(1000) NOT NULL,
-  `dateSent` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `dateSent` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `round` smallint(3) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1011,7 +1011,7 @@ CREATE TABLE `hist_missions` (
   `round` tinyint(3) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `userID` (`userID`)
-) ENGINE=InnoDB AUTO_INCREMENT=486196 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=486196 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1040,7 +1040,7 @@ CREATE TABLE `hist_software` (
   `ownerID` int(5) NOT NULL,
   `round` tinyint(3) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=543259 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=543259 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1087,7 +1087,7 @@ CREATE TABLE `hist_users` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `userID_2` (`userID`,`round`),
   KEY `userID` (`userID`)
-) ENGINE=InnoDB AUTO_INCREMENT=446252 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=446252 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1110,27 +1110,27 @@ CREATE TABLE `hist_users_current` (
   `id` int(5) NOT NULL AUTO_INCREMENT,
   `userID` int(5) NOT NULL,
   `user` varchar(50) NOT NULL,
-  `reputation` bigint(15) NOT NULL,
-  `age` int(4) NOT NULL,
-  `clanID` int(5) NOT NULL,
-  `clanName` varchar(50) NOT NULL,
-  `timePlaying` double NOT NULL,
-  `missionCount` int(5) NOT NULL,
-  `hackCount` int(5) NOT NULL,
-  `ddosCount` int(5) NOT NULL,
-  `ipResets` int(4) NOT NULL,
-  `moneyEarned` bigint(15) NOT NULL,
-  `moneyTransfered` bigint(15) NOT NULL,
-  `moneyHardware` bigint(15) NOT NULL,
-  `moneyResearch` bigint(15) NOT NULL,
-  `warezSent` int(20) unsigned NOT NULL,
-  `spamSent` int(20) unsigned NOT NULL,
-  `bitcoinSent` double unsigned NOT NULL,
-  `profileViews` int(10) unsigned NOT NULL,
+  `reputation` bigint(15) NOT NULL DEFAULT 0,
+  `age` int(4) NOT NULL DEFAULT 0,
+  `clanID` int(5) DEFAULT NULL,
+  `clanName` varchar(50) DEFAULT NULL,
+  `timePlaying` double DEFAULT NULL,
+  `missionCount` int(5) NOT NULL DEFAULT 0,
+  `hackCount` int(5) NOT NULL DEFAULT 0,
+  `ddosCount` int(5) NOT NULL DEFAULT 0,
+  `ipResets` int(4) NOT NULL DEFAULT 0,
+  `moneyEarned` bigint(15) NOT NULL DEFAULT 0,
+  `moneyTransfered` bigint(15) NOT NULL DEFAULT 0,
+  `moneyHardware` bigint(15) NOT NULL DEFAULT 0,
+  `moneyResearch` bigint(15) NOT NULL DEFAULT 0,
+  `warezSent` int(20) unsigned NOT NULL DEFAULT 0,
+  `spamSent` int(20) unsigned NOT NULL DEFAULT 0,
+  `bitcoinSent` double unsigned NOT NULL DEFAULT 0,
+  `profileViews` int(10) unsigned NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`),
   KEY `userID` (`userID`),
   KEY `reputation` (`reputation`)
-) ENGINE=InnoDB AUTO_INCREMENT=750474 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=750492 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1152,9 +1152,9 @@ DROP TABLE IF EXISTS `internet_connections`;
 CREATE TABLE `internet_connections` (
   `userID` int(5) NOT NULL,
   `ip` bigint(14) NOT NULL,
-  `expires` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `expires` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   PRIMARY KEY (`userID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1177,7 +1177,7 @@ CREATE TABLE `internet_home` (
   `userID` int(5) unsigned NOT NULL,
   `homeIP` bigint(11) unsigned NOT NULL,
   PRIMARY KEY (`userID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1202,7 +1202,7 @@ CREATE TABLE `internet_important` (
   `ip` bigint(11) unsigned NOT NULL,
   `name` varchar(15) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=970151 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=970151 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1226,7 +1226,7 @@ CREATE TABLE `internet_webserver` (
   `webDesc` text NOT NULL,
   `active` tinyint(1) NOT NULL,
   UNIQUE KEY `id` (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1257,7 +1257,7 @@ CREATE TABLE `lists` (
   KEY `userID` (`userID`),
   KEY `ip` (`ip`),
   KEY `virusID` (`virusID`)
-) ENGINE=InnoDB AUTO_INCREMENT=4620175 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4620175 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1287,7 +1287,7 @@ CREATE TABLE `lists_bankAccounts` (
   `lastMoney` int(10) NOT NULL,
   `lastMoneyDate` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1511488 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=1511488 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1309,9 +1309,9 @@ DROP TABLE IF EXISTS `lists_collect`;
 CREATE TABLE `lists_collect` (
   `userID` int(5) unsigned NOT NULL,
   `collectText` text NOT NULL,
-  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `date` timestamp NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`userID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1336,7 +1336,7 @@ CREATE TABLE `lists_notifications` (
   `notificationType` tinyint(1) NOT NULL,
   `virusName` varchar(30) NOT NULL,
   KEY `userID` (`userID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1357,10 +1357,10 @@ DROP TABLE IF EXISTS `lists_specs`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `lists_specs` (
   `listID` int(5) unsigned NOT NULL,
-  `spec_net` int(5) NOT NULL DEFAULT '1',
-  `spec_hdd` int(5) NOT NULL DEFAULT '1000',
+  `spec_net` int(5) NOT NULL DEFAULT 1,
+  `spec_hdd` int(5) NOT NULL DEFAULT 1000,
   PRIMARY KEY (`listID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1386,7 +1386,7 @@ CREATE TABLE `lists_specs_analyzed` (
   `minRAM` int(5) unsigned NOT NULL,
   `maxRAM` int(5) unsigned NOT NULL,
   PRIMARY KEY (`listID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1407,10 +1407,10 @@ DROP TABLE IF EXISTS `log`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `log` (
   `userID` int(5) NOT NULL AUTO_INCREMENT,
-  `text` text NOT NULL,
-  `isNPC` tinyint(1) NOT NULL,
+  `text` text NOT NULL DEFAULT '',
+  `isNPC` tinyint(1) NOT NULL DEFAULT 0,
   KEY `userID` (`userID`)
-) ENGINE=InnoDB AUTO_INCREMENT=897198 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=899773 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1438,7 +1438,7 @@ CREATE TABLE `log_edit` (
   PRIMARY KEY (`id`),
   KEY `vicID` (`vicID`,`isNPC`),
   KEY `editorID` (`editorID`)
-) ENGINE=InnoDB AUTO_INCREMENT=13490282 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=13490282 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1471,7 +1471,7 @@ CREATE TABLE `mails` (
   KEY `from` (`from`),
   KEY `to` (`to`),
   KEY `type` (`type`)
-) ENGINE=InnoDB AUTO_INCREMENT=4016487 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=4016487 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1492,10 +1492,10 @@ DROP TABLE IF EXISTS `mails_history`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `mails_history` (
   `mid` int(15) unsigned NOT NULL,
-  `infoDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `infoDate` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `info1` varchar(15) NOT NULL,
   PRIMARY KEY (`mid`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1529,11 +1529,11 @@ CREATE TABLE `missions` (
   `prize` int(6) NOT NULL,
   `userID` int(5) NOT NULL,
   `level` tinyint(4) NOT NULL,
-  `dateGenerated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `dateGenerated` timestamp NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id`),
   KEY `userID` (`userID`),
   KEY `status` (`status`)
-) ENGINE=InnoDB AUTO_INCREMENT=13887278 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=13887278 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1565,7 +1565,7 @@ CREATE TABLE `missions_history` (
   KEY `completed` (`completed`),
   KEY `missionEnd` (`missionEnd`),
   KEY `hirer` (`hirer`)
-) ENGINE=InnoDB AUTO_INCREMENT=13887173 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=13887173 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1592,9 +1592,9 @@ CREATE TABLE `missions_seed` (
   `payment` tinyint(1) NOT NULL,
   `victim_location` tinyint(1) NOT NULL,
   `warning` tinyint(1) NOT NULL,
-  `action` tinyint(1) NOT NULL DEFAULT '0',
+  `action` tinyint(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`missionID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1615,15 +1615,15 @@ DROP TABLE IF EXISTS `news`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `news` (
   `id` int(5) NOT NULL AUTO_INCREMENT,
-  `author` varchar(30) NOT NULL,
-  `title` varchar(100) NOT NULL,
-  `content` text NOT NULL,
-  `date` datetime NOT NULL,
-  `type` tinyint(2) NOT NULL,
-  `info1` varchar(15) NOT NULL,
-  `info2` varchar(15) NOT NULL,
+  `author` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `title` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `content` text CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `date` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `type` tinyint(2) NOT NULL DEFAULT 0,
+  `info1` varchar(15) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `info2` varchar(15) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=35359 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=35361 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1646,9 +1646,9 @@ CREATE TABLE `news_history` (
   `newsID` int(5) unsigned NOT NULL AUTO_INCREMENT,
   `info1` varchar(15) NOT NULL,
   `info2` varchar(15) NOT NULL,
-  `infoDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `infoDate` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   PRIMARY KEY (`newsID`)
-) ENGINE=InnoDB AUTO_INCREMENT=35359 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=35359 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1672,10 +1672,10 @@ CREATE TABLE `npc` (
   `npcType` tinyint(2) NOT NULL,
   `npcIP` bigint(11) NOT NULL,
   `npcPass` varchar(8) NOT NULL,
-  `downUntil` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `downUntil` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   PRIMARY KEY (`id`),
   KEY `npcIP` (`npcIP`)
-) ENGINE=InnoDB AUTO_INCREMENT=897198 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=899773 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1696,11 +1696,11 @@ DROP TABLE IF EXISTS `npc_down`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `npc_down` (
   `npcID` int(5) unsigned NOT NULL,
-  `downDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `downDate` timestamp NOT NULL DEFAULT current_timestamp(),
   `downUntil` datetime NOT NULL,
   PRIMARY KEY (`npcID`),
   KEY `downUntil` (`downUntil`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1721,10 +1721,10 @@ DROP TABLE IF EXISTS `npc_expire`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `npc_expire` (
   `npcID` int(5) unsigned NOT NULL,
-  `expireDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `expireDate` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   PRIMARY KEY (`npcID`),
   KEY `expireDate` (`expireDate`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1748,7 +1748,7 @@ CREATE TABLE `npc_info_en` (
   `name` varchar(50) NOT NULL,
   `web` text NOT NULL,
   PRIMARY KEY (`npcID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1772,7 +1772,7 @@ CREATE TABLE `npc_info_pt` (
   `name` varchar(50) NOT NULL,
   `web` text NOT NULL,
   PRIMARY KEY (`npcID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1796,7 +1796,7 @@ CREATE TABLE `npc_key` (
   `key` varchar(15) NOT NULL,
   PRIMARY KEY (`npcID`),
   KEY `key` (`key`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1817,10 +1817,10 @@ DROP TABLE IF EXISTS `npc_reset`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `npc_reset` (
   `npcID` int(5) NOT NULL,
-  `nextScan` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `nextScan` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   PRIMARY KEY (`npcID`),
   KEY `nextScan` (`nextScan`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1848,7 +1848,7 @@ CREATE TABLE `payments` (
   `plan` varchar(15) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `userID` (`userID`)
-) ENGINE=MyISAM AUTO_INCREMENT=137918 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=137918 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1870,13 +1870,13 @@ DROP TABLE IF EXISTS `payments_history`;
 CREATE TABLE `payments_history` (
   `id` int(5) NOT NULL AUTO_INCREMENT,
   `userID` int(5) NOT NULL,
-  `valid` tinyint(1) NOT NULL DEFAULT '1',
+  `valid` tinyint(1) NOT NULL DEFAULT 1,
   `info` text NOT NULL,
   `paid` double NOT NULL,
   `plan` varchar(15) NOT NULL,
   `confirmation` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=359 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=359 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1903,7 +1903,7 @@ CREATE TABLE `premium_history` (
   `paid` double NOT NULL,
   PRIMARY KEY (`id`),
   KEY `userID` (`userID`)
-) ENGINE=InnoDB AUTO_INCREMENT=891 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=891 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1945,7 +1945,7 @@ CREATE TABLE `processes` (
   KEY `pNPC` (`pNPC`),
   KEY `pVictimID` (`pVictimID`),
   KEY `pTimeEnd` (`pTimeEnd`)
-) ENGINE=InnoDB AUTO_INCREMENT=48831552 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=48831552 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1967,10 +1967,10 @@ DROP TABLE IF EXISTS `processes_paused`;
 CREATE TABLE `processes_paused` (
   `pid` int(30) NOT NULL,
   `timeLeft` int(6) NOT NULL,
-  `timePaused` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `timePaused` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `userID` int(5) NOT NULL,
   PRIMARY KEY (`pid`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1992,7 +1992,7 @@ DROP TABLE IF EXISTS `profile`;
 CREATE TABLE `profile` (
   `id` int(5) NOT NULL,
   `premium` tinyint(1) NOT NULL,
-  `active` tinyint(1) NOT NULL DEFAULT '0',
+  `active` tinyint(1) NOT NULL DEFAULT 0,
   `reputation` bigint(15) NOT NULL,
   `rank` int(5) NOT NULL,
   `age` date NOT NULL,
@@ -2010,7 +2010,7 @@ CREATE TABLE `profile` (
   `moneyResearch` bigint(11) NOT NULL,
   `profileViews` int(5) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2032,10 +2032,10 @@ DROP TABLE IF EXISTS `puzzle_solved`;
 CREATE TABLE `puzzle_solved` (
   `puzzleID` int(5) unsigned NOT NULL,
   `userID` int(5) unsigned NOT NULL,
-  `solvedDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `solvedDate` timestamp NOT NULL DEFAULT current_timestamp(),
   KEY `userID` (`userID`),
   KEY `puzzleID` (`puzzleID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2059,7 +2059,7 @@ CREATE TABLE `ranking_clan` (
   `rank` int(5) NOT NULL,
   UNIQUE KEY `clanID` (`clanID`),
   KEY `rank` (`rank`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2080,10 +2080,10 @@ DROP TABLE IF EXISTS `ranking_ddos`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `ranking_ddos` (
   `ddosID` int(5) NOT NULL,
-  `rank` int(5) NOT NULL DEFAULT '-1',
+  `rank` int(5) NOT NULL DEFAULT -1,
   KEY `rank` (`rank`),
   KEY `ddosID` (`ddosID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2104,10 +2104,10 @@ DROP TABLE IF EXISTS `ranking_software`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `ranking_software` (
   `softID` int(5) NOT NULL,
-  `rank` int(5) NOT NULL DEFAULT '-1',
+  `rank` int(5) NOT NULL DEFAULT -1,
   KEY `rank` (`rank`),
   KEY `softID` (`softID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2131,7 +2131,7 @@ CREATE TABLE `ranking_user` (
   `rank` int(5) NOT NULL,
   KEY `rank` (`rank`),
   KEY `userID` (`userID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2153,11 +2153,11 @@ DROP TABLE IF EXISTS `round`;
 CREATE TABLE `round` (
   `id` smallint(3) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) NOT NULL,
-  `startDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `startDate` timestamp NOT NULL DEFAULT current_timestamp(),
   `endDate` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `status` tinyint(1) NOT NULL,
+  `status` tinyint(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2183,14 +2183,14 @@ CREATE TABLE `round_ddos` (
   `vicID` int(5) NOT NULL,
   `power` int(10) NOT NULL,
   `servers` int(3) NOT NULL,
-  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `vicNPC` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `attID` (`attID`),
   KEY `attUser` (`attUser`),
   KEY `vicID` (`vicID`),
   KEY `power` (`power`)
-) ENGINE=InnoDB AUTO_INCREMENT=290530 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=290530 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2211,36 +2211,36 @@ DROP TABLE IF EXISTS `round_stats`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `round_stats` (
   `id` tinyint(1) NOT NULL,
-  `totalUsers` int(6) NOT NULL,
-  `activeUsers` int(5) NOT NULL,
-  `warezSent` double NOT NULL,
-  `spamSent` bigint(15) NOT NULL,
-  `bitcoinSent` double unsigned NOT NULL,
-  `mailSent` int(6) NOT NULL,
-  `ddosCount` int(6) NOT NULL,
-  `hackCount` int(5) NOT NULL,
-  `clans` int(4) NOT NULL,
-  `timePlaying` bigint(15) NOT NULL,
-  `totalListed` int(6) NOT NULL,
-  `totalVirus` int(5) NOT NULL,
-  `totalMoney` bigint(20) NOT NULL,
-  `researchCount` int(5) NOT NULL,
-  `moneyResearch` int(20) unsigned NOT NULL,
-  `moneyHardware` int(20) unsigned NOT NULL,
-  `moneyEarned` int(20) unsigned NOT NULL,
-  `moneyTransfered` int(20) unsigned NOT NULL,
-  `usersClicks` int(10) unsigned NOT NULL,
-  `missionCount` int(10) unsigned NOT NULL,
-  `totalConnections` int(10) unsigned NOT NULL,
-  `totalTasks` int(10) unsigned NOT NULL,
-  `totalSoftware` int(10) unsigned NOT NULL,
-  `totalRunning` int(10) unsigned NOT NULL,
-  `totalServers` int(10) unsigned NOT NULL,
-  `clansWar` int(10) unsigned NOT NULL,
-  `clansMembers` int(5) unsigned NOT NULL,
-  `clansClicks` int(10) unsigned NOT NULL,
-  `onlineUsers` int(5) unsigned NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `totalUsers` int(6) DEFAULT NULL,
+  `activeUsers` int(5) DEFAULT NULL,
+  `warezSent` double DEFAULT NULL,
+  `spamSent` bigint(15) DEFAULT NULL,
+  `bitcoinSent` double unsigned DEFAULT NULL,
+  `mailSent` int(6) DEFAULT NULL,
+  `ddosCount` int(6) DEFAULT NULL,
+  `hackCount` int(5) DEFAULT NULL,
+  `clans` int(4) DEFAULT NULL,
+  `timePlaying` bigint(15) DEFAULT NULL,
+  `totalListed` int(6) DEFAULT NULL,
+  `totalVirus` int(5) DEFAULT NULL,
+  `totalMoney` bigint(20) DEFAULT NULL,
+  `researchCount` int(5) DEFAULT NULL,
+  `moneyResearch` int(20) unsigned DEFAULT NULL,
+  `moneyHardware` int(20) unsigned DEFAULT NULL,
+  `moneyEarned` int(20) unsigned DEFAULT NULL,
+  `moneyTransfered` int(20) unsigned DEFAULT NULL,
+  `usersClicks` int(10) unsigned DEFAULT NULL,
+  `missionCount` int(10) unsigned DEFAULT NULL,
+  `totalConnections` int(10) unsigned DEFAULT NULL,
+  `totalTasks` int(10) unsigned DEFAULT NULL,
+  `totalSoftware` int(10) unsigned DEFAULT NULL,
+  `totalRunning` int(10) unsigned DEFAULT NULL,
+  `totalServers` int(10) unsigned DEFAULT NULL,
+  `clansWar` int(10) unsigned DEFAULT NULL,
+  `clansMembers` int(5) unsigned DEFAULT NULL,
+  `clansClicks` int(10) unsigned DEFAULT NULL,
+  `onlineUsers` int(5) unsigned DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2264,10 +2264,10 @@ CREATE TABLE `safeNet` (
   `reason` tinyint(1) NOT NULL,
   `startTime` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `endTime` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `count` tinyint(3) NOT NULL DEFAULT '1',
+  `count` tinyint(3) NOT NULL DEFAULT 1,
   `onFBI` tinyint(1) NOT NULL,
   KEY `IP` (`IP`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2303,7 +2303,7 @@ CREATE TABLE `server_stats` (
   `researchCount` int(5) NOT NULL,
   `researchMoney` bigint(11) unsigned NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2325,21 +2325,21 @@ DROP TABLE IF EXISTS `software`;
 CREATE TABLE `software` (
   `id` int(32) NOT NULL AUTO_INCREMENT,
   `userID` int(5) NOT NULL,
-  `softName` varchar(25) NOT NULL,
+  `softName` varchar(60) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `softVersion` int(5) NOT NULL,
   `softSize` int(8) NOT NULL,
   `softRam` int(9) NOT NULL,
   `softType` smallint(2) NOT NULL,
-  `softLastEdit` datetime NOT NULL,
-  `softHidden` tinyint(1) NOT NULL,
-  `softHiddenWith` bigint(20) NOT NULL,
+  `softLastEdit` datetime NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE current_timestamp(),
+  `softHidden` tinyint(1) NOT NULL DEFAULT 0,
+  `softHiddenWith` bigint(20) DEFAULT NULL,
   `isNPC` tinyint(1) NOT NULL,
-  `originalFrom` bigint(20) NOT NULL,
-  `licensedTo` int(5) NOT NULL,
-  `isFolder` tinyint(1) NOT NULL DEFAULT '0',
+  `originalFrom` bigint(20) DEFAULT NULL,
+  `licensedTo` int(5) DEFAULT NULL,
+  `isFolder` tinyint(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`),
   KEY `userID` (`userID`,`isNPC`)
-) ENGINE=InnoDB AUTO_INCREMENT=13662031 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=13667738 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2367,10 +2367,10 @@ CREATE TABLE `software_external` (
   `softRam` int(5) NOT NULL,
   `softType` tinyint(3) NOT NULL,
   `uploadDate` datetime NOT NULL,
-  `licensedTo` int(5) NOT NULL,
+  `licensedTo` int(5) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `userID` (`userID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2394,7 +2394,7 @@ CREATE TABLE `software_folders` (
   `softID` bigint(20) NOT NULL,
   KEY `folderID` (`folderID`),
   KEY `softID` (`softID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2422,9 +2422,9 @@ CREATE TABLE `software_original` (
   `softRam` int(9) NOT NULL,
   `softType` smallint(2) NOT NULL,
   `running` tinyint(1) NOT NULL,
-  `licensedTo` tinyint(1) NOT NULL,
+  `licensedTo` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9886 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=16497 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2444,7 +2444,7 @@ DROP TABLE IF EXISTS `software_research`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `software_research` (
-  `researched_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `researched_date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `id` int(30) unsigned NOT NULL AUTO_INCREMENT,
   `userID` int(5) unsigned NOT NULL,
   `softID` int(10) unsigned NOT NULL,
@@ -2454,7 +2454,7 @@ CREATE TABLE `software_research` (
   PRIMARY KEY (`id`),
   KEY `userID` (`userID`),
   KEY `softID` (`softID`)
-) ENGINE=InnoDB AUTO_INCREMENT=767171 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=767171 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2478,11 +2478,11 @@ CREATE TABLE `software_running` (
   `softID` int(30) NOT NULL,
   `userID` int(5) NOT NULL,
   `ramUsage` int(5) NOT NULL,
-  `isNPC` tinyint(1) NOT NULL,
+  `isNPC` tinyint(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`),
   KEY `userID_isNPC` (`userID`,`isNPC`),
   KEY `softID` (`softID`)
-) ENGINE=InnoDB AUTO_INCREMENT=4803691 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4804871 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2505,13 +2505,13 @@ CREATE TABLE `software_texts` (
   `creator` bigint(20) DEFAULT NULL,
   `id` bigint(20) NOT NULL,
   `userID` int(5) NOT NULL,
-  `isNPC` tinyint(1) NOT NULL,
+  `isNPC` tinyint(1) NOT NULL DEFAULT 0,
   `text` text NOT NULL,
-  `lastEdit` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `ddos` tinyint(1) NOT NULL DEFAULT '0',
+  `lastEdit` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `ddos` tinyint(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`),
   KEY `userID_isNPC` (`userID`,`isNPC`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2533,10 +2533,10 @@ DROP TABLE IF EXISTS `stats_login`;
 CREATE TABLE `stats_login` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `userID` int(5) unsigned NOT NULL,
-  `loginTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `loginTime` timestamp NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id`),
   KEY `userID` (`userID`)
-) ENGINE=InnoDB AUTO_INCREMENT=4585265 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4585269 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2557,11 +2557,11 @@ DROP TABLE IF EXISTS `stats_register`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `stats_register` (
   `userID` int(5) unsigned NOT NULL,
-  `registrationDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `registrationDate` timestamp NOT NULL DEFAULT current_timestamp(),
   `ip` varchar(15) NOT NULL,
   PRIMARY KEY (`userID`),
   KEY `ip` (`ip`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2589,13 +2589,13 @@ CREATE TABLE `users` (
   `gameIP` bigint(11) NOT NULL,
   `realIP` bigint(11) NOT NULL,
   `homeIP` bigint(11) NOT NULL,
-  `learning` tinyint(1) NOT NULL DEFAULT '0',
-  `premium` tinyint(1) NOT NULL,
-  `lastLogin` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `learning` tinyint(1) NOT NULL DEFAULT 0,
+  `premium` tinyint(1) NOT NULL DEFAULT 0,
+  `lastLogin` timestamp NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id`),
   KEY `gameIP` (`gameIP`),
   KEY `lastLogin` (`lastLogin`)
-) ENGINE=InnoDB AUTO_INCREMENT=750703 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=750729 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2617,7 +2617,7 @@ DROP TABLE IF EXISTS `users_admin`;
 CREATE TABLE `users_admin` (
   `userID` int(5) unsigned NOT NULL,
   PRIMARY KEY (`userID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2639,11 +2639,11 @@ DROP TABLE IF EXISTS `users_badge`;
 CREATE TABLE `users_badge` (
   `userID` int(5) NOT NULL,
   `badgeID` smallint(3) NOT NULL,
-  `round` tinyint(3) NOT NULL DEFAULT '0',
-  `dateAdd` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `round` tinyint(3) NOT NULL DEFAULT 0,
+  `dateAdd` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `priority` tinyint(5) NOT NULL,
   KEY `userID` (`userID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2665,7 +2665,7 @@ DROP TABLE IF EXISTS `users_banned`;
 CREATE TABLE `users_banned` (
   `user_id` bigint(11) NOT NULL,
   PRIMARY KEY (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2686,9 +2686,9 @@ DROP TABLE IF EXISTS `users_expire`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `users_expire` (
   `userID` int(5) unsigned NOT NULL,
-  `expireDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `expireDate` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   PRIMARY KEY (`userID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2711,7 +2711,7 @@ CREATE TABLE `users_facebook` (
   `gameID` int(5) NOT NULL,
   `userID` bigint(20) NOT NULL,
   PRIMARY KEY (`userID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2733,9 +2733,9 @@ DROP TABLE IF EXISTS `users_friends`;
 CREATE TABLE `users_friends` (
   `userID` int(5) NOT NULL,
   `friendID` int(5) NOT NULL,
-  `dateAdd` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `dateAdd` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   PRIMARY KEY (`userID`,`friendID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2758,7 +2758,7 @@ CREATE TABLE `users_language` (
   `userID` int(5) unsigned NOT NULL,
   `lang` varchar(2) NOT NULL DEFAULT 'en',
   PRIMARY KEY (`userID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2779,9 +2779,9 @@ DROP TABLE IF EXISTS `users_learning`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `users_learning` (
   `userID` int(5) unsigned NOT NULL,
-  `learning` tinyint(1) NOT NULL DEFAULT '1',
+  `learning` tinyint(1) NOT NULL DEFAULT 1,
   PRIMARY KEY (`userID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2802,10 +2802,10 @@ DROP TABLE IF EXISTS `users_online`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `users_online` (
   `id` int(5) NOT NULL,
-  `loginTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `loginTime` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `token` varchar(200) NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2826,11 +2826,11 @@ DROP TABLE IF EXISTS `users_premium`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `users_premium` (
   `id` int(5) unsigned NOT NULL,
-  `boughtDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `boughtDate` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `premiumUntil` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `totalPaid` double NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2851,10 +2851,10 @@ DROP TABLE IF EXISTS `users_puzzle`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `users_puzzle` (
   `userID` int(5) unsigned NOT NULL,
-  `puzzleID` int(5) unsigned NOT NULL DEFAULT '0',
+  `puzzleID` int(5) unsigned NOT NULL DEFAULT 0,
   PRIMARY KEY (`userID`),
   KEY `puzzleID` (`puzzleID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2876,27 +2876,27 @@ DROP TABLE IF EXISTS `users_stats`;
 CREATE TABLE `users_stats` (
   `uid` int(5) NOT NULL,
   `dateJoined` datetime NOT NULL,
-  `exp` int(10) NOT NULL,
-  `certifications` varchar(30) NOT NULL,
-  `awards` varchar(50) NOT NULL,
-  `timePlaying` float NOT NULL,
-  `missionCount` int(5) NOT NULL,
-  `hackCount` int(5) NOT NULL,
-  `ddosCount` int(5) NOT NULL,
-  `warezSent` double NOT NULL,
-  `spamSent` bigint(15) NOT NULL,
-  `bitcoinSent` double unsigned NOT NULL,
-  `ipResets` int(5) NOT NULL,
-  `lastIpReset` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `pwdResets` mediumint(4) NOT NULL,
+  `exp` int(10) NOT NULL DEFAULT 0,
+  `certifications` varchar(30) DEFAULT NULL,
+  `awards` varchar(50) DEFAULT NULL,
+  `timePlaying` float NOT NULL DEFAULT 0,
+  `missionCount` int(5) NOT NULL DEFAULT 0,
+  `hackCount` int(5) NOT NULL DEFAULT 0,
+  `ddosCount` int(5) NOT NULL DEFAULT 0,
+  `warezSent` double NOT NULL DEFAULT 0,
+  `spamSent` bigint(15) NOT NULL DEFAULT 0,
+  `bitcoinSent` double unsigned NOT NULL DEFAULT 0,
+  `ipResets` int(5) NOT NULL DEFAULT 0,
+  `lastIpReset` timestamp NOT NULL DEFAULT current_timestamp(),
+  `pwdResets` mediumint(4) NOT NULL DEFAULT 0,
   `lastPwdReset` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `moneyEarned` bigint(15) NOT NULL,
-  `moneyTransfered` bigint(15) NOT NULL,
-  `moneyHardware` bigint(15) NOT NULL,
-  `moneyResearch` bigint(15) NOT NULL,
-  `profileViews` int(10) NOT NULL,
+  `moneyEarned` bigint(15) NOT NULL DEFAULT 0,
+  `moneyTransfered` bigint(15) NOT NULL DEFAULT 0,
+  `moneyHardware` bigint(15) NOT NULL DEFAULT 0,
+  `moneyResearch` bigint(15) NOT NULL DEFAULT 0,
+  `profileViews` int(10) NOT NULL DEFAULT 0,
   PRIMARY KEY (`uid`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2919,7 +2919,7 @@ CREATE TABLE `users_twitter` (
   `gameID` int(5) NOT NULL,
   `userID` int(20) unsigned NOT NULL,
   PRIMARY KEY (`userID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2946,11 +2946,11 @@ CREATE TABLE `virus` (
   `originalID` bigint(20) NOT NULL,
   `virusType` tinyint(2) NOT NULL,
   `lastCollect` varchar(19) NOT NULL,
-  `active` tinyint(1) NOT NULL DEFAULT '1',
+  `active` tinyint(1) NOT NULL DEFAULT 1,
   PRIMARY KEY (`virusID`),
   KEY `por_instalacao` (`installedIp`,`installedBy`),
   KEY `installedIp` (`installedIp`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2976,11 +2976,11 @@ CREATE TABLE `virus_ddos` (
   `ddosName` varchar(30) NOT NULL,
   `ddosVersion` smallint(4) NOT NULL,
   `cpu` int(5) NOT NULL,
-  `active` tinyint(1) NOT NULL DEFAULT '1',
+  `active` tinyint(1) NOT NULL DEFAULT 1,
   PRIMARY KEY (`userID`,`ip`),
   KEY `ip` (`ip`),
   KEY `ddosID` (`ddosID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -3004,11 +3004,11 @@ CREATE TABLE `virus_doom` (
   `doomIP` bigint(12) NOT NULL,
   `creatorID` int(5) NOT NULL,
   `clanID` int(5) NOT NULL,
-  `releaseDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `releaseDate` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `doomDate` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `status` tinyint(1) NOT NULL,
   KEY `doomID` (`doomID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -3029,4 +3029,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-05-15  8:30:50
+-- Dump completed on 2024-04-28  1:07:17

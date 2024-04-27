@@ -12,10 +12,10 @@ else:
     # Connect to MySQL
     cnx = mysql.connector.connect(
         host='localhost',
-        port=6666,
-        user='he',
-        password='REDACTED',
-        database='game'
+        port=3306,
+        user='root',
+        password='root',
+        database='hexc'
     )
 
     # Create a cursor object
@@ -38,7 +38,7 @@ else:
       DECLARE cur CURSOR FOR
         SELECT table_name
         FROM information_schema.tables
-        WHERE table_schema = 'game'
+        WHERE table_schema = 'hexc'
           AND table_name != 'changelog';
 
       -- Error handler for cursor

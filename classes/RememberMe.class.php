@@ -1,4 +1,6 @@
 <?php
+// Updated to work with php8 - Nizzy
+
 
 /*
  * 2019: Taken from <link>
@@ -134,23 +136,17 @@ class RememberMe {
     }
 
     private function getRand($length) {
-        switch (true) {
-            case function_exists("mcrypt_create_iv") :
-                $r = mcrypt_create_iv($length, MCRYPT_DEV_URANDOM);
-                break;
-            case function_exists("openssl_random_pseudo_bytes") :
-                $r = openssl_random_pseudo_bytes($length);
-                break;
-            case is_readable('/dev/urandom') : // deceze
-                $r = file_get_contents('/dev/urandom', false, null, 0, $length);
-                break;
-            default :
-                $i = 0;
-                $r = "";
-                while($i ++ < $length) {
-                    $r .= chr(mt_rand(0, 255));
-                }
-                break;
+        $r = '';
+        if (function_exists('random_bytes')) {
+            $r = random_bytes($length);
+        } elseif (function_exists('openssl_random_pseudo_bytes')) {
+            $r = openssl_random_pseudo_bytes($length);
+        } elseif (is_readable('/dev/urandom')) {
+            $r = file_get_contents('/dev/urandom', false, null, 0, $length);
+        } else {
+            for ($i = 0; $i < $length; $i++) {
+                $r .= chr(mt_rand(0, 255));
+            }
         }
         return substr(bin2hex($r), 0, $length);
     }

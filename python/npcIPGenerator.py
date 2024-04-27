@@ -19,6 +19,7 @@ def add_npc(npc_type, npc_info, key):
                VALUES (%s, INET_ATON(%s), %s)""",
             (npc_type, npc_ip, rand_string(8))
         )
+        print("Inserted into table npc!")
         npc_id = str(cursor.lastrowid)
 
         # Insert into npc_info_lang tables
@@ -32,6 +33,7 @@ def add_npc(npc_type, npc_info, key):
                     VALUES (%s, %s, %s)""",
                 (npc_id, npc_name, npc_web)
             )
+            print("Inserted into table npc_info_en and npc_info_pt!")
 
         # Insert into npc_key table
         cursor.execute(
@@ -39,6 +41,7 @@ def add_npc(npc_type, npc_info, key):
                VALUES (%s, %s)""",
             (npc_id, key)
         )
+        print("Inserted into table npc_key!")
 
         # Insert into hardware table
         hardware = npc_info['hardware']
@@ -52,13 +55,15 @@ def add_npc(npc_type, npc_info, key):
                VALUES (%s, '', %s, %s, %s, %s, '1')""",
             (npc_id, cpu, hdd, ram, net)
         )
+        print("Inserted into table hardware!")
 
         # Insert into log table
         cursor.execute(
-            """INSERT INTO log (userID, isNPC)
-               VALUES (%s, 1)""",
+            """INSERT INTO log (userID, text, isNPC)
+               VALUES (%s, ' ', 1)""",
             (npc_id,)
         )
+        print("Inserted into table log!")
 
         next_scan = random.randint(1, 50)
         cursor.execute(
@@ -66,6 +71,7 @@ def add_npc(npc_type, npc_info, key):
                VALUES (%s, DATE_ADD(NOW(), INTERVAL %s HOUR))""",
             (npc_id, next_scan)
         )
+        print("Inserted into table npc_reset!")
 
         db.commit()
         print('Successfully added NPC.')
@@ -109,7 +115,7 @@ with open('../json/npc.json') as file:
     npc_data = json.load(file)
 
 # Connect to the MySQL database
-db = mysql.connector.connect(host="localhost", port="6666", user="he", passwd="REDACTED", database="game")
+db = mysql.connector.connect(host="localhost", port="3306", user="root", passwd="root", database="hexc")
 
 # Create a cursor object
 cursor = db.cursor()

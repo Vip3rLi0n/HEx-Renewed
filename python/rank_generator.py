@@ -320,7 +320,7 @@ def createRankDDoS():
 	if preview == 0:
 		save(html, 'ddos', '', True)
 
-db = mysql.connector.connect(host="localhost", port="6666", user="he", passwd="REDACTED", database="game")
+db = mysql.connector.connect(host="localhost", port="3306", user="root", passwd="root", database="hexc")
 cur = db.cursor()
 
 createRankUsers()

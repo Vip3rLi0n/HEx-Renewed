@@ -48,7 +48,7 @@ if (isset($_SESSION['EXEC_TIME'])) {
             <span class="pull-left hide-phone" style="margin-left: 10px;"><a href="legal" ><font color=""><?php echo _("Terms of Use"); ?></font></a></span>
             <span class="pull-left hide-phone"><a href="stats" ><?php echo _("Stats"); ?></a></span>
             
-            <span class="center">2023 &copy; <b>Vip3r_Li0n</b><a href="https://uptime.nizzy.xyz/"><?php echo $queries; ?> <?php echo _("queries in"); ?> <?php echo $time; ?> ms</a></span>
+            <span class="center">2024 &copy; <b>Meow</b><a href="https://hexc.meowing.cfd"><?php echo $queries; ?> <?php echo _("queries in"); ?> <?php echo $time; ?> ms</a></span>
             
             <span id="credits" class="pull-right hide-phone link"><a><?php echo _("Credits"); ?></a></span>
             <span id="report-bug" class="pull-right hide-phone link"><a><?php echo _("Report Bug"); ?></a></span>

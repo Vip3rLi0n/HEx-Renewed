@@ -6,10 +6,10 @@ import time
 
 start_time = time.time()
 # Ensure NPC are generated first.
-os.system("python ../python/npcIPGenerator.py")
 os.system("python ../python/logGenerator.py")
+os.system("python ../python/npcIPGenerator.py")
 os.system("python ../python/checkRound.py")
-db = mysql.connector.connect(host="localhost", port="6666", user="he", passwd="REDACTED", database="game")
+db = mysql.connector.connect(host="localhost", port="3306", user="root", passwd="root", database="hexc")
 cur = db.cursor()
 
 # Execute the first query
@@ -22,7 +22,7 @@ def news(title, content):
                  (author, title, content, news.date, news.type) \
                  VALUES \
                  (%s, %s, %s, NOW(), %s) \
-                 ', ('-8', title, content, ''))
+                 ', ('-8', title, content, 0))
 
 def ip_generator():
     return ".".join([str(random.randrange(1, 255)), str(random.randrange(0, 255)), str(random.randrange(0, 255)), str(random.randrange(0, 255))])

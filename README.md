@@ -3,7 +3,36 @@
 - Working on it on free time currently.
 - Still need a lot of fixes.
 
+# Requirements
+- PHP 8
+- Python 3.11
+- python-is-python3 (If you need to use python3 instead of python, then this is needed!)
+- python3-pip
+- PHP-FPM 8
+- Apache2
+- Python venv (Included in codebase)
+- bcrypt (Python module)
+- numpy (Python module)
+- mysql-connector-python (Python module)
+
+# Tutorial on how to start the round
+- Move this folder to /root and rename as hexc
+- Create database called hexc, and root user with root password.
+- Import game.sql to the new database with (mysql -p hexc < /root/hexc/game.sql)
+- Copy the apache-hexc.conf or symlink to /etc/apache2/sites-enabled or /etc/httpd/conf.d
+- Change ServerName inside the config to point to your domain or 127.0.0.1
+- Activate the python venv with (source /root/hexc/venv/bin/activate)
+- Install python modules with (pip install bcrypt numpy mysql-connector-python)
+- Start the round with (python /root/hexc/cron2/startNewRound.py)
+- Done! Enjoy the hell of bugs and unfixed stuff :D
+
 # Update
+[28 April 2024]
+- Fixed registration again
+- Removed files and code to reduce codebase overall size.
+- Included proper crontab and apache2 config.
+
+[2022-2023]
 - Game works now (Sort of)
 - NPC software dataset still need update.
 - Fixed mission.

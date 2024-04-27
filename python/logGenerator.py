@@ -2,13 +2,7 @@ import mysql.connector
 import time
 
 # Connect to the MySQL database
-cnx = mysql.connector.connect(
-    host='localhost',
-    user='he',
-    password='REDACTED',
-    database='game',
-    port='6666'
-)
+cnx = mysql.connector.connect(host="localhost", port="3306", user="root", passwd="root", database="hexc")
 
 # Function to insert rows from npc table into the log table
 def insert_npc_logs():

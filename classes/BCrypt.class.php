@@ -1,7 +1,6 @@
 <?php
 
 // 2019: Developed by someone else
-//Feito por alguma boa alma que não eu. =)
 
 class BCrypt {
   private $rounds;

@@ -1,7 +1,7 @@
 import mysql.connector
 import json
 
-db = mysql.connector.connect(host="localhost", port="6666", user="he", passwd="REDACTED", database="game")
+db = mysql.connector.connect(host="localhost", port="3306", user="root", passwd="root", database="hexc")
 cur = db.cursor()
 
 with open('../json/npc.json') as json_file:

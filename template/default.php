@@ -15,7 +15,7 @@ textdomain($domain);
 //} else {
 //    $url = 'http://127.0.0.1/';
 //}
-$url = 'https://hacker.nizzy.xyz';
+$url = 'https://hexc.meowing.cfd';
 
 
 $script = $msgRegister = $msgLogin = $msgIndex = FALSE;
@@ -97,8 +97,8 @@ if($l == 'pt_BR'){
                     <dt><a href="#"><span><img class="flag" src="images/<?php echo $current; ?>.png" alt="" /></span></a></dt>
                     <dd>
                         <ul>
-                            <li><a href="https://hacker.nizzy.xyz/"><img class="flag" src="images/en.png" alt="" /> English</a></li>
-                            <li><a href="https://hacker.nizzy.xyz/"><img class="flag" src="images/pt.png" alt="" /> Português</a></li>
+                            <li><a href="https://hexc.meowing.cfd"><img class="flag" src="images/en.png" alt="" /> English</a></li>
+                            <li><a href="https://hexc.meowing.cfd"><img class="flag" src="images/pt.png" alt="" /> Português</a></li>
                         </ul>
                     </dd>
                 </dl>
@@ -154,7 +154,7 @@ if($msgLogin){
 }
 ?>
                         <div id="container">
-                            <form id="login-form" action="login" method="POST">
+                            <form id="login-form" action="login.php" method="POST">
                                 <label for="username"><?php echo _('Username'); ?>:</label>
                                 <input class="login-input" type="text" id="login-username" name="username">
                                 <label for="password"><?php echo _('Password'); ?>:</label>
@@ -192,28 +192,16 @@ if($msgLogin){
                         
                     </div>
                     <div class="col-lg-5 col-lg-offset-2 col-sm-6">
-<?php
-$abouthack = 'Hack players, companies, banks and even the NSA! Use the best exploits, port scanners and brute-force crackers you find!';
-$aboutvirus = 'Spam bots, warez, bitcoin miners or DDoS slaves. Create your own virus army.';
-$aboutmoney = 'Collect money from your virus, or complete missions for it! Hacking bank accounts is also an option.';
-$aboutbtc = 'Hack the system! Your bitcoin miners will do the hard hashing work for you. Buy or sell bitcoins at real price market. If you manage to get someone\'s key, you can trasfer all his BTC to you :)';
-$aboutupgrade = 'Get yourself a better processor, memory, HD or increase your internet connection speed. Buy a shiny external HD to safely backup your files.';
-$aboutresearch = 'You don\'t want to rely on a basic 1.0 firewall, right? Research better software. Awesome hackers have awesome tools!';
-$aboutclan = 'Create or join a clan and develop your own team strategies. Engage in exciting clans wars and head to the bounty.';
-$aboutddos = 'Show your power and DDoS your enemies! Severely damage their hardware and overload their network. But be careful, you don\'t want to get into the FBI Most Wanted list.';
-$aboutmore = 'Really, much more. There is no space here, why don\'t you join to find out? ;)';
-?>
                         <ul class="nav ul-about">
-                            <li class="about1 about btn btn-success" data-toggle="tooltip" title="<?php echo _($abouthack); ?>"><i class="fa fa-terminal fa-fw"></i> <span><?php echo _('Hack players'); ?></span></li>
-                            <li class="about btn btn-success" data-toggle="tooltip" title="<?php echo _($aboutvirus); ?>"><i class="fa fa-bug fa-fw"></i> <span><?php echo _('Install viruses'); ?></span></li>
-                            <li class="about btn btn-success" data-toggle="tooltip" title="<?php echo _($aboutmoney); ?>"><i class="fa fa-dollar fa-fw"></i> <span><?php echo _('Earn money'); ?></span></li>
-                            <li class="about btn btn-success" data-toggle="tooltip" title="<?php echo _($aboutbtc); ?>"><i class="fa fa-btc fa-fw"></i> <span><?php echo _('Mine bitcoins'); ?></span></li>
-                            <li class="about btn btn-success" data-toggle="tooltip" title="<?php echo _($aboutupgrade); ?>"><i class="fa fa-desktop fa-fw"></i> <span><?php echo _('Upgrade hardware'); ?></span></li>
-                            <li class="about btn btn-success" data-toggle="tooltip" title="<?php echo _($aboutresearch); ?>"><i class="fa fa-flask fa-fw"></i> <span><?php echo _('Research software'); ?></span></li>
-                            <li class="about btn btn-success" data-toggle="tooltip" title="<?php echo _($aboutclan); ?>"><i class="fa fa-users fa-fw"></i> <span><?php echo _('Join a clan'); ?></span></li>
-                            <li class="about btn btn-success" data-toggle="tooltip" title="<?php echo _($aboutddos); ?>"><i class="fa fa-globe fa-fw"></i> <span><?php echo _('DDoS the world!'); ?></span></li><br/>
-                            <li class="about-more center" data-toggle="tooltip" data-placement="bottom" title="<?php echo _($aboutmore); ?>"><span><?php echo _('... and <strong>much</strong> more!'); ?></span></li><br/>
-
+                            <li class="about1 about btn btn-success" data-toggle="tooltip" title="Hack players, companies, banks and even the NSA! Use the best exploits, port scanners and brute-force crackers you find!"><i class="fa fa-terminal fa-fw"></i> <span>Hack players</span></li>
+                            <li class="about btn btn-success" data-toggle="tooltip" title="Spam bots, warez, bitcoin miners or DDoS slaves. Create your own virus army."><i class="fa fa-bug fa-fw"></i> <span>Install viruses</span></li>
+                            <li class="about btn btn-success" data-toggle="tooltip" title="Collect money from your virus, or complete missions for it! Hacking bank accounts is also an option."><i class="fa fa-dollar fa-fw"></i> <span>Earn money</span></li>
+                            <li class="about btn btn-success" data-toggle="tooltip" title="Hack the system! Your bitcoin miners will do the hard hashing work for you. Buy or sell bitcoins at real price market. If you manage to get someone's key, you can transfer all his BTC to you :)"><i class="fa fa-btc fa-fw"></i> <span>Mine bitcoins</span></li>
+                            <li class="about btn btn-success" data-toggle="tooltip" title="Get yourself a better processor, memory, HD or increase your internet connection speed. Buy a shiny external HD to safely backup your files."><i class="fa fa-desktop fa-fw"></i> <span>Upgrade hardware</span></li>
+                            <li class="about btn btn-success" data-toggle="tooltip" title="You don't want to rely on a basic 1.0 firewall, right? Research better software. Awesome hackers have awesome tools!"><i class="fa fa-flask fa-fw"></i> <span>Research software</span></li>
+                            <li class="about btn btn-success" data-toggle="tooltip" title="Create or join a clan and develop your own team strategies. Engage in exciting clans wars and head to the bounty."><i class="fa fa-users fa-fw"></i> <span>Join a clan</span></li>
+                            <li class="about btn btn-success" data-toggle="tooltip" title="Show your power and DDoS your enemies! Severely damage their hardware and overload their network. But be careful, you don't want to get into the FBI Most Wanted list."><i class="fa fa-globe fa-fw"></i> <span>DDoS the world!</span></li><br/>
+                            <li class="about-more center" data-toggle="tooltip" data-placement="bottom" title="Really, much more. There is no space here, why don't you join to find out? ;)"><span>... and <strong>much</strong> more!</span></li><br/>
                         </ul>
                     </div>
                 </div>
@@ -248,23 +236,23 @@ if($msgRegister){
 <?php
 }
 ?>
-                        <form class="form-horizontal" id="signup-form" action="register" method="POST">
-                            <fieldset class="signup">
+                        <form class="form-horizontal" id="signup-form" action="register.php" method="POST">
+                        <fieldset class="signup">
                                 <br/>
                                 <div class="form-group">
-                                    <label class="col-md-2 control-label" for="username"><?php echo _('Username'); ?></label>  
+                                    <label class="col-md-2 control-label" for="username">Username</label>  
                                     <div class="col-md-8">
-                                        <input id="signup-username" name="username" placeholder="<?php echo _('Your in-game name.'); ?>" class="form-control input-md" type="text">
+                                        <input id="signup-username" name="username" placeholder="Your in-game name." class="form-control input-md" type="text">
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-md-2 control-label" for="password"><?php echo _('Password'); ?></label>
+                                    <label class="col-md-2 control-label" for="password">Password</label>
                                     <div class="col-md-8">
                                         <input id="password" name="password" placeholder="123456" class="form-control input-md" type="password">
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-md-2 control-label" for="confirm-password"><?php echo _('Confirm'); ?></label>
+                                    <label class="col-md-2 control-label" for="confirm-password">Confirm</label>
                                     <div class="col-md-8">
                                         <input id="confirm-password" name="confirm-password" placeholder="Re-enter Password" class="form-control input-md" type="password">
                                     </div>
@@ -272,7 +260,7 @@ if($msgRegister){
                                 <div class="form-group">
                                     <label class="col-md-2 control-label" for="email">E-mail</label>  
                                     <div class="col-md-8">
-                                        <input id="email" name="email" placeholder="<?php echo _('We don\'t spam.'); ?>" class="form-control input-md" type="text">
+                                        <input id="email" name="email" placeholder="We don't spam." class="form-control input-md" type="text">
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -281,7 +269,7 @@ if($msgRegister){
                                         <div class="checkbox">
                                             <label for="terms">
                                                 <input name="terms" id="terms" value="1" type="checkbox">
-                                                <?php echo sprintf(_('I accept the %sterms of service%s'), '<a target="__blank" href="TOS">', '</a>'); ?>.
+                                                I accept the <a target="__blank" href="TOS">terms of service</a>.
                                             </label>
                                         </div>
                                     </div>
@@ -289,7 +277,7 @@ if($msgRegister){
                                 <div class="form-group">
                                     <label class="col-md-2 control-label" for="signup"></label>
                                     <div class="col-md-8">
-                                        <button id="signup-submit" class="btn btn-success"><?php echo _('Sign up'); ?></button>
+                                        <button id="signup-submit" class="btn btn-success">Sign up</button>
                                     </div>
                                 </div>
                             </fieldset>
@@ -301,48 +289,49 @@ if($msgRegister){
         <div class="content-section-b" id="FAQ">
             <div class="container">
                 <div class="row">
-                    <h2 id="freq" class="text-center" style="margin-top: -10px;"><?php echo _('Frequent questions'); ?></h2>
+                    <h2 id="freq" class="text-center" style="margin-top: -10px;">Frequent Asked Questions</h2>
                     <br/>
                     <div id="accordion">
-                        <h3><?php echo _('Will anything happen to my computer?'); ?></h3>
+                        <h3>Will anything happen to my computer?</h3>
                         <div>
-                            <p><?php echo _('There is no need to worry! This is a simulation game that takes place at a virtual world.'); ?></p>
-                            <p><?php echo _('By the way, no download is needed. You will play the whole time using your browser.'); ?></p>
+                            <p>There is no need to worry! This is a simulation game that takes place in a virtual world.</p>
+                            <p>By the way, no download is needed. You will play the whole time using your browser.</p>
                         </div>
-                        <h3><?php echo _('Is this real-life hacking?'); ?></h3>
+                        <h3>Is this real-life hacking?</h3>
                         <div>
-                            <p><?php echo _('No! The whole game is virtual, you will be hacking "made up" servers from others players. You also won\'t learn how to hack in real life. No technical knowledge is needed in order to play the game.'); ?></p>
-                            <p><?php echo _('You don\'t actually kill anyone when playing Valorant, right? ;)'); ?></p>
+                            <p>No! The whole game is virtual, and you will be hacking "made up" servers from other players. You also won't learn how to hack in real life. No technical knowledge is needed to play the game.</p>
+                            <p>You don't actually kill anyone when playing Valorant, right? ;)</p>
                         </div>
-                        <h3><?php echo _('Where do I download the game?'); ?></h3>
+                        <h3>Where do I download the game?</h3>
                         <div>
-                            <p><?php echo _('You don\'t! The whole game can be played through your browser, whether you are using a PC with Linux, Windows, Mac, tablet or mobile phone.'); ?></p>
+                            <p>You don't! The whole game can be played through your browser, whether you are using a PC with Linux, Windows, Mac, tablet, or mobile phone.</p>
                         </div>
-                        <h3><?php echo _('Is it really free?'); ?></h3>
+                        <h3>Is it really free?</h3>
                         <div>
-                            <p><?php echo _('Oh yeah. You can play the whole game, <strong>with all features</strong>, for free.'); ?></p>
-                            <p><?php echo _('The user can opt for a premium account to help us directly. This is not a "pay to win" game, though. Premium users have no tactical advantages over basic accounts.'); ?></p>
+                            <p>Oh yeah. You can play the whole game, <strong>with all features</strong>, for free.</p>
+                            <p>The user can opt for a premium account to help us directly. This is not a "pay to win" game, though. Premium users have no tactical advantages over basic accounts.</p>
                         </div>
-                        <h3><?php echo _('Shouldn\'t it be "cracker"?'); ?></h3>
+                        <h3>Shouldn't it be "cracker"?</h3>
                         <div>
-                            <p><?php echo _('Here comes a <a href="http://www.paulgraham.com/gba.html">looong discussion</a>. Many believe the word <em>hacker</em> should designate the so-called white hat (talented programmer, or an ethical hacker). Others, assume it to mean criminals behind the screen.'); ?></p>
-                            <p><?php echo _('<a href="http://duartes.org/gustavo/blog/post/first-recorded-usage-of-hacker/">History has shown us</a> that maybe it really was meant to define the bad guys, however we do believe that hacker means <a href="https://stallman.org/articles/on-hacking.html">way more</a> than that.'); ?></p>
-                            <p><?php echo _('Regardless of definition, we want our users to enjoy the game, whether they call it Hacker or Cracker Experience. That\'s it, name whatever you want.'); ?></p>
-                            <p><?php echo _('Meanwhile, we have a special <a href="https://forum.hackerexperience.com/">board designated to teach computer science and programming</a> for people. Instead of engaging into useless flame wars, feel free to join and share your knowledge to others. I\'d call <em>that</em> hacker :)'); ?></p>
-                        </div>  
-                        <h3><?php echo _('Isn\'t this Hacker Experience / Hacker Wars?'); ?></h3>
+                            <p>Here comes a <a href="http://www.paulgraham.com/gba.html">looong discussion</a>. Many believe the word <em>hacker</em> should designate the so-called white hat (talented programmer, or an ethical hacker). Others assume it means criminals behind the screen.</p>
+                            <p><a href="http://duartes.org/gustavo/blog/post/first-recorded-usage-of-hacker/">History has shown us</a> that maybe it was meant to define the bad guys, however, we do believe that "hacker" means <a href="https://stallman.org/articles/on-hacking.html">way more</a> than that.</p>
+                            <p>Regardless of the definition, we want our users to enjoy the game, whether they call it Hacker or Cracker Experience. That's it, name it whatever you want.</p>
+                            <p>Meanwhile, we have a special <a href="https://forum.hackerexperience.com/">board designated to teach computer science and programming</a> for people. Instead of engaging in useless flame wars, feel free to join and share your knowledge with others. I'd call <em>that</em> hacker :)</p>
+                        </div>
+                        <h3>Isn't this Hacker Experience / Hacker Wars?</h3>
                         <div>
-                            <p><?php echo _('Nope, this is an actively maintained fork of the original Hacker Experience game (Legacy aka Hacker Experience 1 aka HE1 aka HEx).'); ?></p>
-                            <p><?php echo _('The source was provided to me by the original developer and owner (Renato Massaro), under the MIT license.'); ?></p>
-                            <p><?php echo _('This source code also still messy, with some improvement, bug fixes and shit to make it atleast work unlike the original source code itself.'); ?></p>
-                            <p><?php echo _('It is now updated to work with PHP 8.x and Python 3.11 so far. I also removed <strong>Email Registration</strong> function from the code as it never works.'); ?></p>
-                        </div>                        
+                            <p>Nope, this is an actively maintained fork of the original Hacker Experience game (Legacy aka Hacker Experience 1 aka HE1 aka HEx).</p>
+                            <p>The source was provided to me by the original developer and owner (Renato Massaro), under the MIT license.</p>
+                            <p>This source code is still messy, with some improvements, bug fixes, and other changes to make it at least work, unlike the original source code itself.</p>
+                            <p>It is now updated to work with PHP 8.x and Python 3.12 so far. I also removed the <strong>Email Registration</strong> function temporarily from the code as it never works as it was quite messy.</p>
+                            <p>Captcha also not available for <strong>now</strong> but will be implemented in the future.</p>
+                        </div>
                     </div>
                     <div class="faq-buttons-intro">
-                        <h3 class="text-center" style="margin-bottom: 20px;"><?php echo _('So, what are you waiting?'); ?></h2>
+                        <h3 class="text-center" style="margin-bottom: 20px;">So, what are you waiting?</h2>
                         <ul class="list-inline intro-social-buttons">
-                            <li><a class="btn btn-default btn-lg btn-front goto-login btn-faq"><i class="fa fa-power-off fa-fw"></i> <span class="network-name"><?php echo _('Login'); ?></span></a></li>
-                            <li><a class="btn btn-default btn-lg btn-front goto-signup btn-faq"><i class="fa fa-plus fa-fw"></i> <span class="network-name"><?php echo _('Register'); ?></span></a></li>
+                            <li><a class="btn btn-default btn-lg btn-front goto-login btn-faq"><i class="fa fa-power-off fa-fw"></i> <span class="network-name">Login</span></a></li>
+                            <li><a class="btn btn-default btn-lg btn-front goto-signup btn-faq"><i class="fa fa-plus fa-fw"></i> <span class="network-name">Register</span></a></li>
                         </ul>
                     </div>
                 </div>
@@ -352,31 +341,29 @@ if($msgRegister){
             <div class="row">
                 <div class="one column"></div>
                 <div id="navigate" class="three columns">
-                    <h5 class="footer-title"><?php echo _('NAVIGATE'); ?></h5>
+                    <h5 class="footer-title">NAVIGATE</h5>
                     <ul>
-                        <li><a target="__blank" href="https://nizzy.xyz/tos" class="scroll"><?php echo _('TOS'); ?></a></li>
-                        <li><a target="__blank" href="https://nizzy.xyz/privacy-policy" class="scroll"><?php echo _('PRIVACY'); ?></a></li>
-                        <li><a href="https://uptime.nizzy.xyz/" class="scroll">STATUS</a></li>
-                        <li><a href="https://hexforum.nizzy.xyz/" class="scroll"><?php echo _('FORUM'); ?></a></li>
+                        <li><a target="__blank" href="https://hexc.meowing.cfd/tos" class="scroll">TOS</a></li>
+                        <li><a target="__blank" href="https://hexc.meowing.cfd/privacy-policy" class="scroll">PRIVACY</a></li>
+                        <li><a href="https://hexc.meowing.cfd" class="scroll">STATUS</a></li>
                     </ul>
                 </div>
                 <div id="legal-disclaimer" class="three columns">
-                    <h5 class="footer-title"><?php echo _('LEGAL DISCLAIMER'); ?></h5>
+                    <h5 class="footer-title">LEGAL DISCLAIMER</h5>
                     <p style="margin-top: -10px;">
-                        <?php echo _('Hacker Experience is <strong>NOT</strong> related to any real hacking activity.'); ?>
-                        <?php echo _('All in-game content is purely fictional and do not represent real user identification. IP addresses are randomly generated.'); ?>
+                        HEx Recode is <strong>NOT</strong> related to any real hacking activity.
+                        All in-game content is purely fictional and does not represent real user identification. IP addresses are randomly generated.
                     </p>
                 </div>
                 <div id="contact" class="four columns text-right">
-                    <h5 class="footer-title"><?php echo _('CONTACT US'); ?></h5>
+                    <h5 class="footer-title">CONTACT US</h5>
                     <div class="mail-link">
-                        <a href="https://nizzy.xyz"><i class="fa fa-home"></i>nizzy.xyz</a><br/>
-                        <a href="mailto:<?php echo _('contact@nizzy.xyz'); ?>"><i class="fa fa-envelope-o"></i><?php echo _('contact@nizzy.xyz'); ?></a><br/>
+                        <a href="https://hexc.meowing.cfd"><i class="fa fa-home"></i>hexc.meowing.cfd</a><br/>
+                        <a href="mailto:admin@hexc.meowing.cfd"><i class="fa fa-envelope-o"></i>admin@hexc.meowing.cfd</a><br/>
                     </div>
                     <div class="footer-social">
                         <a href="https://facebook.com/HackerExperience"><i class="fa fa-facebook-square"></i></a>
                         <a href="https://twitter.com/HackerExp"><i class="fa fa-twitter"></i></a>
-                        <a href="https://plus.google.com/105485198485447624885" rel="publisher"><i class="fa fa-google-plus"></i></a>
                     </div>
                 </div>
             </div>
@@ -386,15 +373,15 @@ if($msgRegister){
                     <h3 class="footer-title left footer-social"><i class="fa fa-linux" style="color: #fff; font-size: 40px; opacity: 1; cursor: default;" title="Powered by Linux!"></i></h3>
                 </div>
                 <div class="three columns">
-                    <span id="hand" class="footer-social left small" style="margin-left: 35%;"><?php echo _('Updated by Vip3rLi0n'); ?></span>
+                    <span id="hand" class="footer-social left small" style="margin-left: 35%;">Updated by Meow & Bobokev</span>
                 </div>
-                <h3 id="neoart" class="footer-title right">2023 &copy; <a href="#" style="color: #fff; margin-right: 10px;">Vip3r_Li0n</a></h3>
-                
+                <h3 id="neoart" class="footer-title right">2024 &copy; <a href="" style="color: #fff; margin-right: 10px;">Meow - Bobokev</a></h3>
             </div>
 
         </section>
         <!--<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>-->
         <script src="js/jquery.min.js"></script>
+        <script src="js/jquery.migrate.js"></script>
         <!--<script src="js/tooltip.js"></script>-->
         <script src="js/typed.js"></script>
         <script src="js/jquery.validate.js"></script>

@@ -7,6 +7,7 @@ class Mail {
     private $pdo;
     private $player;
     private $session;
+    private $mid;
 
     private $storyline;
     private $mailInfo;
@@ -994,12 +995,10 @@ for($i = 0; $i < sizeof($displayArr); $i++){
         $from = 1;
         $type = 1;
         $subject = _('Welcome to Hacker Experience!');
-        $text = sprintf(_('Greetings, %s!<br/><br/>Thanks for trying out Hacker Experience, we are very excited to have you on board. Congratulations on completing the tutorial. It wasn\'t that hard, right? <br/><br/>There are <strong>a lot</strong> more things to do in the game, if you get stuck don\'t hesitate in talking to us.<br/><br/>The fastest way of getting help is posting at our <a href="http://forum.hackerexperience.com/">community board</a>. We will happly guide you through the game. You can also find a great resource information on our <a href="http://wiki.hackerexperience.com/">Wiki page</a>.<br/>Replying to this mail is another option. I\'d be thrilled to talk to you :)<br/><br/>(By the way, I just sent you 1.337 BTC. You can see it on the Finances page. Enjoy!)<br/><br/>Pardon the pun, but we hope you have a great <i>experience</i> here!!<br/><br/>Happy hacking!<br/>Renato.'), $this->player->getPlayerInfo($_SESSION['id'])->login);
+        $text = sprintf(_('Greetings, %s!<br/><br/>Thanks for trying out Hacker Experience, we are very excited to have you on board. Congratulations on completing the tutorial. It wasn\'t that hard, right? <br/><br/>There are <strong>a lot</strong> more things to do in the game, if you get stuck don\'t hesitate in talking to us.<br/><br/>(By the way, I just sent you 1.337 BTC. You can see it on the Finances page. Enjoy!)<br/><br/>Pardon the pun, but we hope you have a great <i>experience</i> here!!<br/><br/>Happy hacking!<br/><b>System Admin</b>.'), $this->player->getPlayerInfo($_SESSION['id'])->login);
         
         self::newMail($to, $subject, $text, $type, $from);
         
-    }
-    
+    }   
 }
-
 ?>

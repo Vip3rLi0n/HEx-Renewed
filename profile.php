@@ -369,8 +369,6 @@ if($profileInfo['VALID_ID'] == 1){
                                 exit();
                             }
 
-                            $social->profile_friends($_SESSION['PROFILE_ID']);
-
                         } elseif($system->issetGet('del')){
                             echo 'del';
                         } else {

@@ -236,7 +236,7 @@ var uid = <?php echo $this->profileID; ?>;
         require_once 'Python.class.php';
         $python = new Python();
 
-        $python->add_badge($user, $badgeID, $clan);
+        $python->addBadge($user, $badgeID, $clan);
 
     }
     

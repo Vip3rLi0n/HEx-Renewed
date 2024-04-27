@@ -1685,75 +1685,75 @@ if($xpDisable){
                     exit();
 
                 }
-            case 'clan':
+                case 'clan':
                 
-                $hardware = new HardwareVPC();
-                                                
-                if($this->system->issetGet('action')){
-                    
-                    $actionInfo = $this->system->switchGet('action',  'buy', 'upgrade', 'internet');
-                    
-                    if($actionInfo['ISSET_GET'] == 1){
+                    $hardware = new HardwareVPC();
+                                                    
+                    if($this->system->issetGet('action')){
                         
-                        switch($actionInfo['GET_VALUE']){
+                        $actionInfo = $this->system->switchGet('action',  'buy', 'upgrade', 'internet');
+                        
+                        if($actionInfo['ISSET_GET'] == 1){
                             
-                            case 'internet':
+                            switch($actionInfo['GET_VALUE']){
                                 
-                                $hardware->store_showPage('', 'NET', 1);
-                                
-                                break;
-                            
-                            case 'buy':
-                                
-                                $hardware->store_showPage('', 'BUY_PC', 1); 
-                                
-                                break;
-                                
-                            case 'upgrade':
-
-                                if($this->system->issetGet('server')){
-
-                                    $serverInfo = $this->system->verifyNumericGet('server');
-
-                                    if($serverInfo['IS_NUMERIC'] == 1){
-                                        
-                                        $pcInfo = $hardware->getPCSpec($serverInfo['GET_VALUE'], 'NPC', $hackedInfo['0']['id']);
-                                        
-                                        if($pcInfo['ISSET'] == 1){
-
-                                            $_SESSION['CUR_PC'] = $serverInfo['GET_VALUE']; 
-
-                                            $hardware->store_showPage($pcInfo, 'CPU', 1);
-
-                                        } else {
-                                            $this->system->handleError('INEXISTENT_SERVER', 'internet?view=clan');
-                                        }                                        
-                                        
-                                    } else {
-                                        $this->system->handleError('INVALID_ID', 'internet?view=clan&action=upgrade');
-                                    }                                    
-
-                                } else {
-
-                                    $this->session->addMsg('Choose server to upgrade.', 'error');
-                                    header("Location:internet?view=clan");
+                                case 'internet':
                                     
-                                }
+                                    $hardware->store_showPage('', 'NET', 1);
+                                    
+                                    break;
                                 
-                                break;
+                                case 'buy':
+                                    
+                                    $hardware->store_showPage('', 'BUY_PC', 1); 
+                                    
+                                    break;
+                                    
+                                case 'upgrade':
+    
+                                    if($this->system->issetGet('server')){
+    
+                                        $serverInfo = $this->system->verifyNumericGet('server');
+    
+                                        if($serverInfo['IS_NUMERIC'] == 1){
+                                            
+                                            $pcInfo = $hardware->getPCSpec($serverInfo['GET_VALUE'], 'NPC', $hackedInfo['0']['id']);
+                                            
+                                            if($pcInfo['ISSET'] == 1){
+    
+                                                $_SESSION['CUR_PC'] = $serverInfo['GET_VALUE']; 
+    
+                                                $hardware->store_showPage($pcInfo, 'CPU', 1);
+    
+                                            } else {
+                                                $this->system->handleError('INEXISTENT_SERVER', 'internet?view=clan');
+                                            }                                        
+                                            
+                                        } else {
+                                            $this->system->handleError('INVALID_ID', 'internet?view=clan&action=upgrade');
+                                        }                                    
+    
+                                    } else {
+    
+                                        $this->session->addMsg('Choose server to upgrade.', 'error');
+                                        header("Location:internet?view=clan");
+                                        
+                                    }
+                                    
+                                    break;
+                                
+                            }
                             
+                        } else {
+                            $this->system->handleError('INVALID_GET', 'internet?view=clan');
                         }
                         
                     } else {
-                        $this->system->handleError('INVALID_GET', 'internet?view=clan');
+                        
+                        $hardware->getHardwareInfo($hackedInfo['0']['id'], 'NPC');
+                        $hardware->showPCTotal($hackedInfo['0']['id'], 1);
+    
                     }
-                    
-                } else {
-                    
-                    $hardware->getHardwareInfo($hackedInfo['0']['id'], 'NPC');
-                    $hardware->showPCTotal($hackedInfo['0']['id'], 1);
-
-                }
                 
                 break;
             case 'bank':

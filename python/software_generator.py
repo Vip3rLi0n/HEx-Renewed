@@ -7,7 +7,7 @@ import json
 import time
 start_time = time.time()
 
-db = mysql.connector.connect(host="localhost", port="6666", user="he", passwd="REDACTED", database="game")
+db = mysql.connector.connect(host="localhost", port="3306", user="root", passwd="root", database="hexc")
 cur = db.cursor()
 
 json_data = open('../json/npcsoftware.json').read()
@@ -123,19 +123,23 @@ def add(npcID, softInfo):
                             (npcID, softName, softVersion, softSize, softRam, softType, running)
                         VALUES (%s, %s, %s, %s, %s, %s, %s)
                     """, (npcID, softInfo['name'], softInfo['version'], softInfo['size'], softInfo['ram'], softInfo['type'], strRunning))
+        print("Inserted table software_original!")
 
         cur.execute(""" INSERT INTO software
                             (userID, isNPC, softName, softVersion, softSize, softRam, softType)
                         VALUES (%s, '1', %s, %s, %s, %s, %s)
                     """, (npcID, softInfo['name'], softInfo['version'], softInfo['size'], softInfo['ram'], softInfo['type']))
+        print("Inserted table software!")
 
         if softInfo['running']:
             cur.execute(""" INSERT INTO software_running
                                 (softID, userID, ramUsage, isNPC)
                             VALUES (%s, %s, %s, '1')
                         """, (str(cur.lastrowid), npcID, softInfo['ram']))
-    except:
-        print('ROLLBACK')
+        print("Inserted table software_running!")
+    except Exception as e:
+        print("Rollback occurred in software_generator.py due to the following error:")
+        print(e)
         db.rollback()
 
     db.commit()

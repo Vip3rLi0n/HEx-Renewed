@@ -2,6 +2,10 @@
 class LRSys {
 
     public $name;
+    /**
+     * Summary of user
+     * @var 
+     */
     public $user;
     private $pass;
     public $email;
@@ -38,47 +42,6 @@ class LRSys {
 
     public function set_keepalive($keep){
         $this->keepalive = $keep;
-    }
-
-    public function register($username, $password, $email)
-    {
-        $this->user = $username;
-        $this->pass = $password;
-        $this->email = $email;
-    
-        require 'BCrypt.class.php';
-        $bcrypt = new BCrypt();
-        $hash = $bcrypt->hash(htmlentities($this->pass));
-        $gameIP1 = rand(0, 255);
-        $gameIP2 = rand(0, 255);
-        $gameIP3 = rand(0, 255);
-        $gameIP4 = rand(0, 255);
-        $gameIP = $gameIP1 . '.' . $gameIP2 . '.' . $gameIP3 . '.' . $gameIP4;
-        require 'Python.class.php';
-        $python = new Python();
-        $python->createUser($this->user, $hash, $this->email, $gameIP);
-    
-        $sql = 'SELECT COUNT(*) AS total, id FROM users WHERE login = :user LIMIT 1';
-        $stmt = $this->pdo->prepare($sql);
-        $stmt->execute(array(':user' => $this->user));
-        $regInfo = $stmt->fetch(PDO::FETCH_OBJ);
-    
-        if ($regInfo->total == 0) {
-            $this->session->addMsg('Error while completing registration. Please, try again later.', 'error');
-            return false;
-        }
-    
-        require 'Finances.class.php';
-        $finances = new Finances();
-        $finances->createAccount($regInfo->id);
-    
-        $sql = "INSERT INTO stats_register (userID, ip) VALUES (:userID, :ip)";
-        $stmt = $this->pdo->prepare($sql);
-        $stmt->execute(array(':userID' => $regInfo->id, ':ip' => $_SERVER['REMOTE_ADDR']));
-    
-        $this->session->addMsg('Registration complete. You can login now.', 'notice');
-    
-        return $regInfo->id;
     }
 
     private function verifyRegister() {

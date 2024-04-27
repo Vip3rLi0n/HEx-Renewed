@@ -5,9 +5,9 @@
 // 2019: Before removing the exit below, make sure to not allow anyone to externally (remotely) execute this script.
 
 // CHANGE TO ABOLUTE PATH WHEN NECESSARY
-exec('C:/xampp/htdocs/HEenv/Scripts/python ../cron2/updateCurStats.py');
-exec('C:/xampp/htdocs/HEenv/Scripts/python ../cron2/updateRanking.py');
-exec('C:/xampp/htdocs/HEenv/Scripts/python ../python/rank_generator.py');
+exec('python ../cron2/updateCurStats.py');
+exec('python ../cron2/updateRanking.py');
+exec('python ../python/rank_generator.py');
 function getExtension($softType) {
 
     static $extensions = Array(
@@ -412,47 +412,47 @@ $pdo->query('DELETE FROM virus');
 $pdo->query('DELETE FROM virus_ddos');
 $pdo->query('DELETE FROM virus_doom');
 
-exec('C:/xampp/htdocs/HEenv/Scripts/python ../python/fame_generator.py '.$curRound.' preview');
-exec('C:/xampp/htdocs/HEenv/Scripts/python ../python/fame_generator.py '.$curRound);
-exec('C:/xampp/htdocs/HEenv/Scripts/python ../python/fame_generator_alltime.py');
-exec('C:/xampp/htdocs/HEenv/Scripts/python ../python/fame_generator_alltime.py preview');
+exec('python ../python/fame_generator.py '.$curRound.' preview');
+exec('python ../python/fame_generator.py '.$curRound);
+exec('python ../python/fame_generator_alltime.py');
+exec('python ../python/fame_generator_alltime.py preview');
 
 //badges
 
 //doomer badges
-exec('C:/xampp/htdocs/HEenv/Scripts/python ../python/badge_add.py user '.$doomerID.' 14');
-exec('C:/xampp/htdocs/HEenv/Scripts/python ../python/badge_add.py user '.$doomerID.' 71');
+exec('python ../python/badge_add.py user '.$doomerID.' 14');
+exec('python ../python/badge_add.py user '.$doomerID.' 71');
 
 //bests
-exec('C:/xampp/htdocs/HEenv/Scripts/python ../python/badge_add.py user '.$best['user'][1].' 7');
-exec('C:/xampp/htdocs/HEenv/Scripts/python ../python/badge_add.py user '.$best['user'][2].' 8');
-exec('C:/xampp/htdocs/HEenv/Scripts/python ../python/badge_add.py user '.$best['user'][3].' 9');
+exec('python ../python/badge_add.py user '.$best['user'][1].' 7');
+exec('python ../python/badge_add.py user '.$best['user'][2].' 8');
+exec('python ../python/badge_add.py user '.$best['user'][3].' 9');
 
-exec('C:/xampp/htdocs/HEenv/Scripts/python ../python/badge_add.py user '.$best['soft'][1].' 72');
-exec('C:/xampp/htdocs/HEenv/Scripts/python ../python/badge_add.py user '.$best['soft'][2].' 73');
-exec('C:/xampp/htdocs/HEenv/Scripts/python ../python/badge_add.py user '.$best['soft'][3].' 74');
+exec('python ../python/badge_add.py user '.$best['soft'][1].' 72');
+exec('python ../python/badge_add.py user '.$best['soft'][2].' 73');
+exec('python ../python/badge_add.py user '.$best['soft'][3].' 74');
 
-exec('C:/xampp/htdocs/HEenv/Scripts/python ../python/badge_add.py user '.$best['ddos'][1].' 76');
-exec('C:/xampp/htdocs/HEenv/Scripts/python ../python/badge_add.py user '.$best['ddos'][2].' 77');
-exec('C:/xampp/htdocs/HEenv/Scripts/python ../python/badge_add.py user '.$best['ddos'][3].' 78');
+exec('python ../python/badge_add.py user '.$best['ddos'][1].' 76');
+exec('python ../python/badge_add.py user '.$best['ddos'][2].' 77');
+exec('python ../python/badge_add.py user '.$best['ddos'][3].' 78');
 
-exec('C:/xampp/htdocs/HEenv/Scripts/python ../python/badge_add.py clan '.$best['clan'][1].' 81');
-exec('C:/xampp/htdocs/HEenv/Scripts/python ../python/badge_add.py clan '.$best['clan'][2].' 82');
-exec('C:/xampp/htdocs/HEenv/Scripts/python ../python/badge_add.py clan '.$best['clan'][3].' 83');
+exec('python ../python/badge_add.py clan '.$best['clan'][1].' 81');
+exec('python ../python/badge_add.py clan '.$best['clan'][2].' 82');
+exec('python ../python/badge_add.py clan '.$best['clan'][3].' 83');
 
 //almost there
 for($i = 4; $i <= 10; $i++){
     if(array_key_exists($i, $best['user'])){
-        exec('C:/xampp/htdocs/HEenv/Scripts/python ../python/badge_add.py user '.$best['user'][$i].' 10');
+        exec('python ../python/badge_add.py user '.$best['user'][$i].' 10');
     }
     if(array_key_exists($i, $best['soft'])){
-        exec('C:/xampp/htdocs/HEenv/Scripts/python ../python/badge_add.py user '.$best['soft'][$i].' 75');
+        exec('python ../python/badge_add.py user '.$best['soft'][$i].' 75');
     }
     if(array_key_exists($i, $best['ddos'])){
-        exec('C:/xampp/htdocs/HEenv/Scripts/python ../python/badge_add.py user '.$best['ddos'][$i].' 79');
+        exec('python ../python/badge_add.py user '.$best['ddos'][$i].' 79');
     }
     if(array_key_exists($i, $best['clan'])){
-        exec('C:/xampp/htdocs/HEenv/Scripts/python ../python/badge_add.py clan '.$best['clan'][$i].' 84');
+        exec('python ../python/badge_add.py clan '.$best['clan'][$i].' 84');
     }
 }
 

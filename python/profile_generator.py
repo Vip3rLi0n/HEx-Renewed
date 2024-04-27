@@ -2,21 +2,19 @@ import sys
 import hashlib
 import json
 import os
-import locale
 import gettext
 import mysql.connector
 
 def __(string):
 	return (string).encode("UTF-8").decode("UTF-8")
 
+
 def install_gettext(lang):
+	lang = 'en'
 	if lang == 'en':
 		lang = 'en_US'
 
-	locale.setlocale(locale.LC_ALL, lang)
-	loc = locale.getlocale()
-
-	filename = "../locale/%s/LC_MESSAGES/messages.mo" % locale.getlocale()[0]
+	filename = "../locale/en_US/LC_MESSAGES/messages.mo"
 
 	global trans
 	try:
@@ -84,7 +82,7 @@ def PlayTime(seconds):
     return str(ret)
 
 
-db = mysql.connector.connect(host="localhost", port="6666",user="he",passwd="REDACTED",db="game")
+db = mysql.connector.connect(host="localhost", port="3306", user="root", passwd="root", database="hexc")
 cur = db.cursor()
 
 userID = str(sys.argv[1])

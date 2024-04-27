@@ -6,11 +6,11 @@ start_time = time.time()
 
 # MySQL connection configuration
 config = {
-    'user': 'he',
-    'password': 'REDACTED',
+    'user': 'root',
+    'password': 'root',
     'host': 'localhost',
-    "port": 6666,
-    'database': 'game',
+    "port": 3306,
+    'database': 'hexc',
 }
 
 # Function to get the file extension based on softType
@@ -70,7 +70,7 @@ def dot_version(soft_version):
     elif length == 8:
         str_edit = [soft_version[i:i+7] for i in range(length)]
     else:
-        raise ValueError("Error at finishRound.py!")
+        raise ValueError("Error at endRound.py!")
     
     str_return = f"{str_edit[0]}.{str_edit[1]}"
     return str_return
@@ -83,7 +83,12 @@ def Start():
 
     # Get the current round
     cursor.execute("SELECT id FROM round ORDER BY id DESC LIMIT 1")
-    cur_round = cursor.fetchone()[0]
+    latest_round_row = cursor.fetchone()
+
+    if latest_round_row is not None:
+        cur_round = latest_round_row[0]
+    else:
+        cur_round = 0
 
     # Update round status and insert into round_stats
     cursor.execute(f"UPDATE round SET status = 2, endDate = NOW() WHERE id = {cur_round}")

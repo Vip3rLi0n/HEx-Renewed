@@ -1,9 +1,9 @@
 <?php
 
 
-$dsn = 'mysql:host=localhost;port=6666;dbname=game';
-$dbUser = 'he';
-$dbPass = 'REDACTED';
+$dsn = 'mysql:host=localhost;port=3306;dbname=hexc';
+$dbUser = 'root';
+$dbPass = 'root';
 $dbOptions = array(
     PDO::ATTR_PERSISTENT => true,
     PDO::ATTR_CASE => PDO::CASE_LOWER
