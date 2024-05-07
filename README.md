@@ -14,6 +14,7 @@
 - bcrypt (Python module)
 - numpy (Python module)
 - mysql-connector-python (Python module)
+- ipaddress (Python module)
 
 # Tutorial on how to start the round
 - Move this folder to /root and rename as hexc
