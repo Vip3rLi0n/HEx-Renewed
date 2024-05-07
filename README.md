@@ -9,6 +9,7 @@
 - python-is-python3 (If you need to use python3 instead of python, then this is needed!)
 - python3-pip
 - PHP-FPM 8
+- php8.1-mysql (Install with your OS installer)
 - Apache2
 - Python venv
 - bcrypt (Python module)
