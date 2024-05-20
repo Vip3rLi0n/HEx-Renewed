@@ -9,11 +9,13 @@
 - python-is-python3 (If you need to use python3 instead of python, then this is needed!)
 - python3-pip
 - PHP-FPM 8
+- php8.1-mysql (Install with your OS installer)
 - Apache2
-- Python venv (Included in codebase)
+- Python venv
 - bcrypt (Python module)
 - numpy (Python module)
 - mysql-connector-python (Python module)
+- ipaddress (Python module)
 
 # Tutorial on how to start the round
 - Move this folder to /root and rename as hexc
@@ -21,6 +23,7 @@
 - Import game.sql to the new database with (mysql -p hexc < /root/hexc/game.sql)
 - Copy the apache-hexc.conf or symlink to /etc/apache2/sites-enabled or /etc/httpd/conf.d
 - Change ServerName inside the config to point to your domain or 127.0.0.1
+- Create Python venv with (cd /root/hexc && python -m venv venv)
 - Activate the python venv with (source /root/hexc/venv/bin/activate)
 - Install python modules with (pip install bcrypt numpy mysql-connector-python)
 - Start the round with (python /root/hexc/cron2/startNewRound.py)
