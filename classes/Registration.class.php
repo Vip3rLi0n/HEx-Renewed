@@ -3,7 +3,7 @@
 class Register {
     public function createUser($username, $password, $email, $realIP, $homeIP, $social_network) {
         // Construct command to execute Python script
-        $command = "python /root/hexc/python/create_user.py $username $password $email $realIP $homeIP $social_network";
+        $command = "python /opt/hexc/python/create_user.py $username $password $email $realIP $homeIP $social_network";
 
         // Execute the command
         exec($command, $output, $returnCode);

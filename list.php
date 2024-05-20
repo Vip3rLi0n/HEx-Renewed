@@ -12,6 +12,7 @@ require_once 'classes/Ranking.class.php';
 $session = new Session();
 $system = new System();
 ob_start();
+$sub = 'Hacked Database';
 require 'template/contentStart.php';
 
 $software = new SoftwareVPC();

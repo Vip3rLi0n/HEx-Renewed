@@ -8,14 +8,7 @@ bindtextdomain($domain, "locale");
 bind_textdomain_codeset($domain, 'UTF-8');
 
 textdomain($domain);
-
-
-//if($_SERVER['HTTP_HOST'] == 'www.hackerexperience.com' || $_SERVER['HTTP_HOST'] == 'hackerexperience.com'){
-//    $url = 'http://hackerexperience.com/';
-//} else {
-//    $url = 'http://127.0.0.1/';
-//}
-$url = 'https://hexc.meowing.cfd';
+$url = 'https://ha.meowing.cfd';
 
 
 $script = $msgRegister = $msgLogin = $msgIndex = FALSE;
@@ -48,61 +41,35 @@ if(isset($_SESSION['TYP'])){
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>Hacker Experience</title>
+        <title>Hacker Apocalypse</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="description" content="Hacker Experience - The Internet Under Attack is an online hacking simulation game. Play as a hacker seeking for fame and money. Join now for free.">
-        <meta name="keywords" content="Hacker, hacker game, hacking simulation, online hacker game, browser game, pbbg, hacker experience, computer science game, programming game" />
+        <meta name="description" content="Hacker Apocalypse - The End Of Internet is an online hacking simulation game. Play as a hacker seeking for fame and money. Join now for free.">
+        <meta name="keywords" content="Hacker, hacker game, hacking simulation, online hacker game, browser game, pbbg, hacker Apocalypse, computer science game, programming game" />
         <meta name="google-site-verification" content="mHONAFYPI5E0WSX_C4oX4SX5dPGss2EPzm5kXChRrC8" />
 <?php if(!isset($_GET['fb_locale']) || ($_GET['fb_locale'] != 'pt_BR')){ ?>
         <meta property="og:locale" content="en_US">
-        <meta property="og:locale:alternate" content="pt_BR">
-        <meta property="og:title" content="Hacker Experience"/>
-        <meta property="og:image" content="https://hackerexperience.com/images/og.png"/>
-        <meta property="og:url" content="https://hackerexperience.com/"/>
-        <meta property="og:description" content="Hacker Experience is a browser-based hacking simulation game, where you play the role of a hacker seeking for money and power. Join now!"/>
-<?php } elseif ($_GET['fb_locale'] == 'pt_BR'){ ?>
-        <meta property="og:locale" content="pt_BR">
-        <meta property="og:locale:alternate" content="en_US">
-        <meta property="og:title" content="Hacker Experience"/>
-        <meta property="og:image" content="https://hackerexperience.com/images/ogbr.png"/>
-        <meta property="og:url" content="https://hackerexperience.com/"/>
-        <meta property="og:description" content="Hacker Experience é um browser-game de simulação de hacking, onde você assume o papel de um hacker buscando dinheiro e poder. Cadastre-se agora!"/>
+        <meta property="og:title" content="Hacker Apocalypse"/>
+        <meta property="og:image" content="./images/og.png"/>
+        <meta property="og:url" content="https://ha.meowing.cfd/"/>
+        <meta property="og:description" content="Hacker Apocalypse is a browser-based hacking simulation game, where you play the role of a hacker seeking for money and power. Join now!"/>
 <?php } ?>
         <link href="css/bootstrap.css" rel="stylesheet">
         <link href="font-awesome/css/font-awesome.css" rel="stylesheet">
         <link href="css/he_index.css" rel="stylesheet">
         <link rel="stylesheet" type="text/css" href="css/tipTip.css">
         <script src="https://cdn.jsdelivr.net/npm/smooth-scroll/dist/smooth-scroll.min.js"></script>
+        <script src="js/rotate.js"></script>
     </head>
     <script>document.addEventListener('DOMContentLoaded',function(){var scroll=new SmoothScroll('a.goto-about[href="#About"]',{speed:800,offset:function(anchor,toggle){var offset=50;return offset;},updateURL:!1})});</script>
     <body>
         <div id="terminal"></div>
         <div class="intro-header">
-            
-            <div id="lang_selector">
-                <dl id="sample" class="dropdown">
-                    
-                    
 <?php
 
 $current = 'en';
 
-if($l == 'pt_BR'){
-    $current = 'pt';
-}
-
 ?>
-                    
-                    <dt><a href="#"><span><img class="flag" src="images/<?php echo $current; ?>.png" alt="" /></span></a></dt>
-                    <dd>
-                        <ul>
-                            <li><a href="https://hexc.meowing.cfd"><img class="flag" src="images/en.png" alt="" /> English</a></li>
-                            <li><a href="https://hexc.meowing.cfd"><img class="flag" src="images/pt.png" alt="" /> Português</a></li>
-                        </ul>
-                    </dd>
-                </dl>
-            </div>
 
             <div class="container">
                 <div class="row">
@@ -117,8 +84,8 @@ if($msgIndex){
 }
 ?>
                         <div class="intro-message">
-                            <h1>Hacker Experience</h1>
-                            <h3 class="digital"><?php echo _('The Internet under attack'); ?><span class="a_bebida_que_pisca">_</span></h3>
+                            <h1><span style="color: grey;">Hacker </span><span style="color: #ff4747;">Apocalypse</span></h1>
+                            <h3 class="txt-rotate" data-rotate='["The Internet Is Under Attack", "The Beginning Of The End", "Doom is coming closer", "Why are you still here?"]'></h3>
                             <hr class="intro-divider">
                             <ul class="list-inline intro-social-buttons">
                                 <li><a class="btn btn-default btn-lg btn-front goto-login"><i class="fa fa-power-off fa-fw"></i> <span class="network-name"><?php echo _('Login'); ?></span></a></li>
@@ -176,9 +143,9 @@ if($msgLogin){
                     <div id="mAbout" class="col-lg-5 col-sm-6">
                         <hr class="section-heading-spacer">
                         <div class="clearfix"></div>
-                        <h2 class="section-heading"><?php echo _('About Hacker Experience'); ?></h2>
+                        <h2 class="section-heading"><?php echo _('About Hacker Apocalypse'); ?></h2>
                         <p class="lead">
-                            <?php echo _('Hacker Experience is a browser-based hacking simulation game, where you play the role of a hacker seeking for money and power.'); ?>
+                            <?php echo _('Hacker Apocalypse is a browser-based hacking simulation game, where you play the role of a hacker seeking for money and power.'); ?>
                         </p>
                         <p class="lead">
                             <?php echo _('Play online against other users from all the globe on an exciting battle to see who can conquer the Internet.'); ?>
@@ -315,12 +282,12 @@ if($msgRegister){
                         <div>
                             <p>Here comes a <a href="http://www.paulgraham.com/gba.html">looong discussion</a>. Many believe the word <em>hacker</em> should designate the so-called white hat (talented programmer, or an ethical hacker). Others assume it means criminals behind the screen.</p>
                             <p><a href="http://duartes.org/gustavo/blog/post/first-recorded-usage-of-hacker/">History has shown us</a> that maybe it was meant to define the bad guys, however, we do believe that "hacker" means <a href="https://stallman.org/articles/on-hacking.html">way more</a> than that.</p>
-                            <p>Regardless of the definition, we want our users to enjoy the game, whether they call it Hacker or Cracker Experience. That's it, name it whatever you want.</p>
-                            <p>Meanwhile, we have a special <a href="https://forum.hackerexperience.com/">board designated to teach computer science and programming</a> for people. Instead of engaging in useless flame wars, feel free to join and share your knowledge with others. I'd call <em>that</em> hacker :)</p>
+                            <p>Regardless of the definition, we want our users to enjoy the game, whether they call it Hacker or Cracker Apocalypse. That's it, name it whatever you want.</p>
+                            <p>Meanwhile, we have a special <a href="https://forum.hackerApocalypse.com/">board designated to teach computer science and programming</a> for people. Instead of engaging in useless flame wars, feel free to join and share your knowledge with others. I'd call <em>that</em> hacker :)</p>
                         </div>
-                        <h3>Isn't this Hacker Experience / Hacker Wars?</h3>
+                        <h3>Isn't this Hacker Apocalypse / Hacker Wars?</h3>
                         <div>
-                            <p>Nope, this is an actively maintained fork of the original Hacker Experience game (Legacy aka Hacker Experience 1 aka HE1 aka HEx).</p>
+                            <p>Nope, this is an actively maintained fork of the original Hacker Apocalypse game (Legacy aka Hacker Apocalypse 1 aka HE1 aka HEx).</p>
                             <p>The source was provided to me by the original developer and owner (Renato Massaro), under the MIT license.</p>
                             <p>This source code is still messy, with some improvements, bug fixes, and other changes to make it at least work, unlike the original source code itself.</p>
                             <p>It is now updated to work with PHP 8.x and Python 3.12 so far. I also removed the <strong>Email Registration</strong> function temporarily from the code as it never works as it was quite messy.</p>
@@ -343,27 +310,26 @@ if($msgRegister){
                 <div id="navigate" class="three columns">
                     <h5 class="footer-title">NAVIGATE</h5>
                     <ul>
-                        <li><a target="__blank" href="https://hexc.meowing.cfd/tos" class="scroll">TOS</a></li>
-                        <li><a target="__blank" href="https://hexc.meowing.cfd/privacy-policy" class="scroll">PRIVACY</a></li>
-                        <li><a href="https://hexc.meowing.cfd" class="scroll">STATUS</a></li>
+                        <li><a target="__blank" href="https://ha.meowing.cfd/tos" class="scroll">TOS</a></li>
+                        <li><a target="__blank" href="https://ha.meowing.cfd/privacy-policy" class="scroll">PRIVACY</a></li>
+                        <li><a href="https://ha.meowing.cfd" class="scroll">STATUS</a></li>
                     </ul>
                 </div>
                 <div id="legal-disclaimer" class="three columns">
                     <h5 class="footer-title">LEGAL DISCLAIMER</h5>
                     <p style="margin-top: -10px;">
-                        HEx Recode is <strong>NOT</strong> related to any real hacking activity.
+                        Hacker Apocalypse is <strong>NOT</strong> related to any real hacking activity.
                         All in-game content is purely fictional and does not represent real user identification. IP addresses are randomly generated.
                     </p>
                 </div>
                 <div id="contact" class="four columns text-right">
                     <h5 class="footer-title">CONTACT US</h5>
                     <div class="mail-link">
-                        <a href="https://hexc.meowing.cfd"><i class="fa fa-home"></i>hexc.meowing.cfd</a><br/>
-                        <a href="mailto:admin@hexc.meowing.cfd"><i class="fa fa-envelope-o"></i>admin@hexc.meowing.cfd</a><br/>
+                        <a href="https://ha.meowing.cfd"><i class="fa fa-home"></i>ha.meowing.cfd</a><br/>
+                        <a href="mailto:support@ha.meowing.cfd"><i class="fa fa-envelope-o"></i>support@ha.meowing.cfd</a><br/>
                     </div>
                     <div class="footer-social">
-                        <a href="https://facebook.com/HackerExperience"><i class="fa fa-facebook-square"></i></a>
-                        <a href="https://twitter.com/HackerExp"><i class="fa fa-twitter"></i></a>
+                        <a href="https://facebook.com/HackerApocalypse"><i class="fa fa-facebook-square"></i></a>
                     </div>
                 </div>
             </div>
@@ -381,8 +347,7 @@ if($msgRegister){
         </section>
         <!--<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>-->
         <script src="js/jquery.min.js"></script>
-        <script src="js/jquery.migrate.js"></script>
-        <!--<script src="js/tooltip.js"></script>-->
+        <script src="js/tooltip.js"></script>
         <script src="js/typed.js"></script>
         <script src="js/jquery.validate.js"></script>
         <script src="js/jquery-ui.js"></script>

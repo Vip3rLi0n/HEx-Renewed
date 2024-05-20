@@ -26,7 +26,7 @@ class SES {
                 
                 $body_html = $html;
                 
-                $text = str_replace('</form>', '<br/>'._('Proceed to ').'https://localhost/welcome?code='.$info['key'], $html);
+                $text = str_replace('</form>', '<br/>'._('Proceed to ').'https://hexc.meowing.cfd/welcome?code='.$info['key'], $html);
 
                 $body_text = strip_tags($text);
 

@@ -43,6 +43,4 @@ static $certs = Array(
     )
 
 );
-
-
 ?>

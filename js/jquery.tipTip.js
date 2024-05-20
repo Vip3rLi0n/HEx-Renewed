@@ -1,3 +1,4 @@
+
  /*
  * CUSTOM FILE FOR HACKER EXPERIENCE!!!
  * TipTip
@@ -20,7 +21,7 @@
  *   http://www.gnu.org/licenses/gpl.html
  */
 
-(function($){
+ (function($){
 	$.fn.tipTip = function(options) {
 		var defaults = { 
 			activation: "hover",

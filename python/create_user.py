@@ -55,6 +55,6 @@ db.commit()
 db.close()
 
 # Run profile generator
-os.system('/root/hexc/venv/bin/python ../python/profile_generator.py ' + userID + ' en')
+os.system('python ../python/profile_generator.py ' + userID)
 
 print(time.strftime("%d/%m/%y %H:%M:%S"), ' - ', __file__, ' - ', round(time.time() - start_time, 4), "s\n")

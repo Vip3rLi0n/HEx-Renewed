@@ -13,6 +13,7 @@ require 'template/contentStart.php';
 
 $mission = new Mission();
 $finances = new Finances();
+$sub = 'Missions';
 
 
 

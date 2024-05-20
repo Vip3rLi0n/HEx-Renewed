@@ -9,11 +9,13 @@ require 'classes/System.class.php';
 $session = new Session();
 $system = new System();
 ob_start();
+$sub = 'Internet';
 require 'template/contentStart.php';
 
 $player = new Player($_SESSION['id']);
 $internet = new Internet();
 $ranking = new Ranking();
+
 
 if(!$ranking->cert_have(2)){
     $session->addMsg(sprintf(_("You need the certification %s to enable this page."), '<strong>'._('Hacking 101').'</strong>'), 'error');

@@ -1,45 +1,45 @@
 # 2024: Fixed to match location of the files.
 
 # Update current profile stats, ranking stats and generate ranking.
-00 * * * *              /bin/sh              /root/hexc/cron2/updateStatsAndRanking.sh      >> /var/log/game/cron.log 2>&1
+00 * * * *              /bin/sh              /opt/hexc/cron2/updateStatsAndRanking.sh      >> /var/log/game/cron.log 2>&1
 # Remove expired logins
-05,20,35,50 * * * *     source /root/hexc/venv/bin/activate && python  /root/hexc/cron2/removeExpiredLogins.py        >> /var/log/game/cron.log 2>&1
+05,20,35,50 * * * *     source /opt/hexc/venv/bin/activate && python  /opt/hexc/cron2/removeExpiredLogins.py        >> /var/log/game/cron.log 2>&1
 # Clan war related shiz
-05,15,25,35,45,55 * * * *       /usr/local/bin/php  /root/hexc/cron/defcon2.php            >> /var/log/game/cron.log 2>&1
+05,15,25,35,45,55 * * * *       /usr/local/bin/php  /opt/hexc/cron/defcon2.php            >> /var/log/game/cron.log 2>&1
 # Clan war related shiz
-05,15,25,35,45,55 * * * *       /usr/local/bin/php  /root/hexc/cron/endWar2.php           >> /var/log/game/cron.log 2>&1
+05,15,25,35,45,55 * * * *       /usr/local/bin/php  /opt/hexc/cron/endWar2.php           >> /var/log/game/cron.log 2>&1
 # Delete expired html pages, this is usually in ranking and profile folders.
-40 * * * *              source /root/hexc/venv/bin/activate && python  /root/hexc/cron2/removeExpiredHTMLPages.py    >> /var/log/game/cron.log 2>&1
+40 * * * *              source /opt/hexc/venv/bin/activate && python  /opt/hexc/cron2/removeExpiredHTMLPages.py    >> /var/log/game/cron.log 2>&1
 # Run antivirus to clean NPCs
-10 */3 * * *            source /root/hexc/venv/bin/activate && python  /root/hexc/cron2/antivirusNPC.py             >> /var/log/game/cron.log 2>&1
+10 */3 * * *            source /opt/hexc/venv/bin/activate && python  /opt/hexc/cron2/antivirusNPC.py             >> /var/log/game/cron.log 2>&1
 # Restore NPCs back to original state
-*/15 * * * *            source /root/hexc/venv/bin/activate && python  /root/hexc/cron2/restoreNPC.py               >> /var/log/game/cron.log 2>&1
+*/15 * * * *            source /opt/hexc/venv/bin/activate && python  /opt/hexc/cron2/restoreNPC.py               >> /var/log/game/cron.log 2>&1
 # Not sure what this shit is, but I guess important?
-12 * * * *             source /root/hexc/venv/bin/activate && python  /root/hexc/python/query_counter.py 500         >> /var/log/game/cron.log 2>&1
+12 * * * *             source /opt/hexc/venv/bin/activate && python  /opt/hexc/python/query_counter.py 500         >> /var/log/game/cron.log 2>&1
 # Generate mission
-*/15 * * * *            /usr/local/bin/php  /root/hexc/cron/generateMissions.php          >> /var/log/game/cron.log 2>&1
+*/15 * * * *            /usr/local/bin/php  /opt/hexc/cron/generateMissions.php          >> /var/log/game/cron.log 2>&1
 # Update safenet lists in the game
-*/30 * * * *            /usr/local/bin/php  /root/hexc/cron/safenetUpdate.php             >> /var/log/game/cron.log 2>&1
+*/30 * * * *            /usr/local/bin/php  /opt/hexc/cron/safenetUpdate.php             >> /var/log/game/cron.log 2>&1
 # Doom related shiz
-* * * * *               /usr/local/bin/php  /root/hexc/cron/doomUpdater.php              >> /var/log/game/cron.log 2>&1
+* * * * *               /usr/local/bin/php  /opt/hexc/cron/doomUpdater.php              >> /var/log/game/cron.log 2>&1
 # New script replacing newRoundUpdater.py, to start new round. (Disabled since not sure if it check if the round has ended or not)
-# * * * * *              source /root/hexc/venv/bin/activate && python /root/hexc/cron2/startNewRound.py             >> /var/log/game/cron.log 2>&1
+# * * * * *              source /opt/hexc/venv/bin/activate && python /opt/hexc/cron2/startNewRound.py             >> /var/log/game/cron.log 2>&1
 
 # Remove expired bank accounts
-09 * * * *             source /root/hexc/venv/bin/activate && python  /root/hexc/cron2/removeExpiredAccs.py         >> /var/log/game/cron.log 2>&1
+09 * * * *             source /opt/hexc/venv/bin/activate && python  /opt/hexc/cron2/removeExpiredAccs.py         >> /var/log/game/cron.log 2>&1
 # Remove expired NPCs
-19 * * * *             source /root/hexc/venv/bin/activate && python  /root/hexc/cron2/removeExpiredNPC.py          >> /var/log/game/cron.log 2>&1
+19 * * * *             source /opt/hexc/venv/bin/activate && python  /opt/hexc/cron2/removeExpiredNPC.py          >> /var/log/game/cron.log 2>&1
 # Remove expired Premium
-09 * * * *             source /root/hexc/venv/bin/activate && python  /root/hexc/cron2/removeExpiredPremium.py      >> /var/log/game/cron.log 2>&1
+09 * * * *             source /opt/hexc/venv/bin/activate && python  /opt/hexc/cron2/removeExpiredPremium.py      >> /var/log/game/cron.log 2>&1
 # Update server stats
-10 * * * *             /usr/local/bin/php  /root/hexc/cron/updateServerStats.php          >> /var/log/game/cron.log 2>&1
+10 * * * *             /usr/local/bin/php  /opt/hexc/cron/updateServerStats.php          >> /var/log/game/cron.log 2>&1
 # Update and give badges to players
-19,49 * * * *          source /root/hexc/venv/bin/activate && python  /root/hexc/python/badge_hunter.py             >> /var/log/game/cron.log 2>&1
+19,49 * * * *          source /opt/hexc/venv/bin/activate && python  /opt/hexc/python/badge_hunter.py             >> /var/log/game/cron.log 2>&1
 # Update and give badges to players 2.0
-19 * * * *             source /root/hexc/venv/bin/activate && python  /root/hexc/python/badge_hunter_all.py         >> /var/log/game/cron.log 2>&1
+19 * * * *             source /opt/hexc/venv/bin/activate && python  /opt/hexc/python/badge_hunter_all.py         >> /var/log/game/cron.log 2>&1
 # Remove down NPCs
-02 * * * *             source /root/hexc/venv/bin/activate && python  /root/hexc/cron2/removeDownNPC.py             >> /var/log/game/cron.log 2>&1
+02 * * * *             source /opt/hexc/venv/bin/activate && python  /opt/hexc/cron2/removeDownNPC.py             >> /var/log/game/cron.log 2>&1
 # Update FBI list in the game.
-*/5 * * * *            source /root/hexc/venv/bin/activate && python  /root/hexc/cron2/fbiUpdate.py                  >> /var/log/game/cron.log 2>&1
+*/5 * * * *            source /opt/hexc/venv/bin/activate && python  /opt/hexc/cron2/fbiUpdate.py                  >> /var/log/game/cron.log 2>&1
 # Backup the game database.
-29 * * * *             /usr/local/bin/php  /root/hexc/cron/backup_game.php                >> /var/log/game/cron.log 2>&1
+29 * * * *             /usr/local/bin/php  /opt/hexc/cron/backup_game.php                >> /var/log/game/cron.log 2>&1

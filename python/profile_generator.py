@@ -156,9 +156,9 @@ for login, premium, clanID, clanName, clanTag, clanOwner, ranking, gameAge, repu
 			if not friendReputation:
 				friendReputation = 0
 
-			friendPic = 'images/profile/thumbnail/'+str(hashlib.md5(str(friendName+friendID)).hexdigest())+'.jpg'
+			friendPic = './images/profile/thumbnail/'+str(hashlib.md5(str(friendName+friendID)).hexdigest())+'.jpg'
 			if not os.path.isfile('../'+friendPic):
-				friendPic = 'images/profile/thumbnail/unsub.jpg'
+				friendPic = './images/profile/thumbnail/unsub.jpg'
 
 			friendsHTML += '\n\
 						<ul class="list">\n\
@@ -211,7 +211,7 @@ for login, premium, clanID, clanName, clanTag, clanOwner, ranking, gameAge, repu
 		if badgeInfo[2]:
 			badgeStr += '<br/><br/>'+trans.ngettext('Awarded %d time', 'Awarded %d times', badgeTotal) % badgeTotal
 
-		htmlBadges += '<img src="images/badges/'+str(badgeID)+'.png" class="profile-tip" title="'+badgeStr+'" value="'+str(badgeID)+'"/>'
+		htmlBadges += '<img src="./images/badges/'+str(badgeID)+'.png" class="profile-tip" title="'+badgeStr+'" value="'+str(badgeID)+'"/>'
 
 
 	if not totalBadges:
@@ -225,9 +225,9 @@ for login, premium, clanID, clanName, clanTag, clanOwner, ranking, gameAge, repu
 	userID_bytes = userID.encode('utf-8')
 	hash_value = hashlib.md5(login_bytes + userID_bytes).hexdigest()
 
-	pic = 'images/profile/' + str(hash_value) + '.jpg'
+	pic = './images/profile/' + str(hash_value) + '.jpg'
 	if not os.path.isfile('../' + pic):
-		pic = 'images/profile/unsub.jpg'
+		pic = './images/profile/unsub.jpg'
 
 	html = '\n\
 	<span id="modal"></span>\n\

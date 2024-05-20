@@ -58,10 +58,9 @@ if (isset($_SESSION['EXEC_TIME'])) {
 }
 ?>
         </div>
-        <!--[if IE]><script src="js/excanvas.min.js"></script><![endif]-->
         <script src="js/jquery.min.js"></script>
-        <script src="js/select2.js"></script>
-        <link rel="stylesheet" href="css/select2.css" />
+        <!--<script src="js/select2.js"></script>
+        <link rel="stylesheet" href="css/select2.css"/>-->
         <script src="js/bootstrap.min.js"></script>
         <script src="js/jquery.flot.min.js"></script>
         <!--<script src="js/jquery.flot.resize.min.js"></script>-->
@@ -131,11 +130,6 @@ if($queryProcess || $issetPLoad || $issetPDoom){
     if($valid){
 
 ?>
-<script src="js/jquery.min.js"></script>
-<script src="js/jquery-ui.js"></script>
-<link rel="stylesheet" href="js/jquery-ui.css" />
-<link rel="stylesheet" href="js/jquery-ui.structure.css" />
-<link rel="stylesheet" href="js/jquery-ui.theme.css" />
 <script src="js/jquery.ui.custom.js"></script>
 <script type="text/javascript">
 
@@ -298,7 +292,7 @@ if($crudePage == 'internet'){
 
 if(array_key_exists('BUFFER_QUERY', $_SESSION)){
     if($_SESSION['BUFFER_QUERY'] >= 500 || rand(1,20) == 1){
-        exec('python htdocs/python/query_counter.py '.$_SESSION['BUFFER_QUERY']); // CHANGE TO ABSOLUTE GAME PATH
+        exec('python /root/hexc/python/query_counter.py '.$_SESSION['BUFFER_QUERY']); // CHANGE TO ABSOLUTE GAME PATH
         $_SESSION['BUFFER_QUERY'] = 0;
     }
 }

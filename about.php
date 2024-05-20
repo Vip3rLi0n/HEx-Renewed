@@ -13,7 +13,7 @@ $system = new System();
 ?>
 
 <html>
-<?php require 'template/templateTop.php';
+<?php require 'template/contentStart.php';
 
 if($session->issetLogin()){
 

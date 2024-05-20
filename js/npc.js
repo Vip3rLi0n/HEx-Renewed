@@ -1,3 +1,4 @@
+
 function bitcoin(){
 
 	$('<link rel="stylesheet" type="text/css" href="css/tipTip.css" >').appendTo("head");
@@ -103,19 +104,19 @@ function bitcoin(){
 
                             $('#btc-total').html(moneyFormat(Math.ceil(unmasked * value)));
                         }
-                        if(unmasked < 1){
-                            if(!cg.hasClass('error')){
-                                cg.addClass('error');
-                            }
-                            if(cg.hasClass('success')){
-                                cg.removeClass('success');
-                            }
-                        } else {
-                            if(cg.hasClass('error')){
-                                cg.removeClass('error');
-                                cg.addClass('success');
-                            }
-                        }
+                        // if(unmasked < 1){
+                        //     if(!cg.hasClass('error')){
+                        //         cg.addClass('error');
+                        //     }
+                        //     if(cg.hasClass('success')){
+                        //         cg.removeClass('success');
+                        //     }
+                        // } else {
+                        //     if(cg.hasClass('error')){
+                        //         cg.removeClass('error');
+                        //         cg.addClass('success');
+                        //     }
+                        // }
 
                     });
 
@@ -123,9 +124,9 @@ function bitcoin(){
 
                         var unmasked = $('#btc-amount').maskMoney('unmasked')[0]
 
-                        if(unmasked < 1){
-                            return false;
-                        }
+                        // if(unmasked < 1){
+                        //     return false;
+                        // }
 
                         $.ajax({
                         type: "POST",
@@ -182,7 +183,7 @@ function bitcoin(){
 
                     $('#btc-total').html(moneyFormat(Math.ceil(amount * value)));
 
-                    if($('#btc-amount').attr('value') >= 1){
+                    if($('#btc-amount').attr('value') >= 0.1){
                         getBankAcc();
                     } else {
                         $('#btc-submit').addClass('disabled');
@@ -225,8 +226,8 @@ function bitcoin(){
 
                         var unmasked = $('#btc-amount').maskMoney('unmasked')[0]
 
-                        if(unmasked < 1){
-                            alert("Minimum amount to sell: 1 BTC")
+                        if(unmasked < 0.1){
+                            alert("Minimum amount to sell: 0.1 BTC")
                             return false;
                         }
 
@@ -361,7 +362,7 @@ function bitcoin(){
         var h =
         '<div id="gen-modal" class="modal hide" tabindex="0">\
         <div class="modal-header">\
-        <button data-dismiss="modal" class="close" type="button">×</button>\
+        <button data-dismiss="modal" class="close" type="button">Ã—</button>\
         <h3>'+opts.title+'</h3>\
         </div>\
         <form action="" method="POST" id="modal-form">\

@@ -6649,6 +6649,36 @@ class LogVPC extends Player {
         }
     }
 
+    public function editLog($uid, $npc) {
+        // Check if log is VPC or NPC
+        if ($npc == 1 || $npc === 'NPC') {
+            if ($this->npc->issetNPC($uid)) {
+                $valid = '1';
+                $npc = '1';
+            }
+        } elseif (parent::verifyID($uid)) {
+            $valid = '1';
+            $npc = '0';
+        }
+        $this->session->newQuery();
+        $sqlSelect = "SELECT logText FROM log_edit WHERE editorID = :uid AND isNPC = :npc";
+        $stmt = $this->pdo->prepare($sqlSelect);
+        $stmt->bindParam(':uid', $uid, PDO::PARAM_INT);
+        $stmt->bindParam(':npc', $npc, PDO::PARAM_INT);
+        $stmt->execute();
+        $logText = $stmt->fetchColumn();
+    
+        if ($valid == 1) {
+            $this->session->newQuery();
+            $sql = "UPDATE log SET text = :logText WHERE userID = :uid AND isNPC = :npc";
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->bindParam(':logText', $logText, PDO::PARAM_STR);
+            $stmt->bindParam(':uid', $uid, PDO::PARAM_INT);
+            $stmt->bindParam(':npc', $npc, PDO::PARAM_INT);
+            $stmt->execute();
+        }
+    }
+
     public function addLog($uid, $logText, $npc) {
         $logFinal = date('Y-m-d H:i') . ' - ';
         $logFinal .= $logText;
@@ -6689,11 +6719,28 @@ class LogVPC extends Player {
     }
 
     public function tmpLog($uid, $npc, $text) {
+        // Start a new query session
         $this->session->newQuery();
+    
+        // SQL query to insert a new log entry into the log_edit table
         $sql = 'INSERT INTO log_edit (vicID, isNPC, editorID, logText) VALUES (:uid, :npc, :id, :text)';
+    
+        // Prepare the SQL statement
         $stmt = $this->pdo->prepare($sql);
-        $stmt->execute(array(':uid' => $uid, ':npc' => $npc, ':id' => $_SESSION['id'], ':text' => $text));
-        return $this->pdo->lastInsertId();
+    
+        // Execute the prepared statement with bound values
+        $stmt->execute(array(
+            ':uid' => $uid,
+            ':npc' => $npc,
+            ':id' => $_SESSION['id'],
+            ':text' => $text
+        ));
+    
+        // Retrieve the ID of the newly inserted row
+        $insertedId = $this->pdo->lastInsertId();
+    
+        // Return the ID of the newly inserted row
+        return $insertedId;
     }
 
     public function deleteTmpLog($logID) {
@@ -6708,24 +6755,9 @@ class LogVPC extends Player {
         $sql = "SELECT logText FROM log_edit WHERE id = :logID LIMIT 1";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(array(':logID' => $logID));
-        return $stmt->fetch(PDO::FETCH_OBJ)->logText;
-    }
-
-    public function showLog($logID, $uid) {
-        $logText = $this->getTmpLog($logID);
-
-        ?>
-        <div class="span2 center"></div>
-        <div class="span8 center">
-            <form action="logEdit" method="POST" class="log">
-                <input type="hidden" name="id" value="<?php echo $logID; ?>">
-                <textarea class="logarea" rows="15" name="log" spellcheck="false"><?php echo $logText; ?></textarea><br/><br/>
-                <input class="btn btn-inverse" type="submit" value="<?php echo _('Edit log file'); ?>">
-            </form>
-            <br/>
-        </div>
-        <div class="span2"></div>
-        <?php
+        $result = $stmt->fetch(PDO::FETCH_OBJ);
+    
+        return $result->logText;
     }
 
     public function issetLog($logID) {

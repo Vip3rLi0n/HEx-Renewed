@@ -8,6 +8,7 @@ require_once 'classes/Player.class.php';
 $session = new Session();
 $system = new System();
 ob_start();
+$sub = 'Profile';
 require 'template/contentStart.php';
 
 $player = new Player();

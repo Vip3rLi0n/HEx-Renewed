@@ -8,6 +8,7 @@ require 'classes/Process.class.php';
 
 $session = new Session();
 $system = new System();
+$sub = 'Log';
 ob_start();
 require 'template/contentStart.php';
 
@@ -55,7 +56,6 @@ if($gotGet == '2'){ //existe get
 
                 $log->listLog($_SESSION['id'], '', '1');
 
-                $log->showLog($getIDInfo['GET_VALUE'], $_SESSION['id']);
 
                 break;
             case 'edit':
@@ -73,9 +73,9 @@ if($gotGet == '2'){ //existe get
 
                         $process->getProcessInfo($process->getPID($_SESSION['id'], 'D_LOG', '', 'local', '', $getIDInfo['GET_VALUE'], '', '0'));
 
-                        require 'template/templateTop.php';
+                        require 'template/contentStart.php';
                         $process->showProcess();
-                        require 'template/templateBot.php';
+                        require 'template/contentEnd.php';
 
                     }
 
@@ -105,8 +105,6 @@ if($gotGet == '2'){ //existe get
     $log->listLog($_SESSION['id'], '', '1');
 
 }
-ob_end_flush();
-ob_start();
 require 'template/contentEnd.php';
 ob_end_flush();
 ?>

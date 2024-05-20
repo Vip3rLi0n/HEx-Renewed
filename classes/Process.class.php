@@ -1,7 +1,4 @@
 <?php
-
-// 2019: This is the most complex part of Legacy and HE2.
-
 require_once 'Session.class.php';
 require_once 'Player.class.php';
 require_once 'PC.class.php';
@@ -22,7 +19,6 @@ class Process {
     public $pTimeLeft;
     public $pInfo;
     public $pInfoStr;
-    public $bestSoft;
     public $pNPC;
     public $cpuUsage;
     public $netUsage;
@@ -44,7 +40,6 @@ class Process {
 
         
         $this->pdo = PDO_DB::factory();
-
         $this->session = new Session();
         $this->player = new Player();
         $this->software = new SoftwareVPC();
@@ -688,26 +683,20 @@ class Process {
 
     }
 
-    public function newProcess($userID, $pAction, $victimID, $host, $pSoftID, $pInfo, $pInfoStr, $pNPC){
-
-        if($this->player->verifyID($userID)){
-            //$pInfo = $pInfoStr;
-            if(!$this->issetProcess($userID, $pAction, $victimID, $host, $pSoftID, $pInfo)){
-                
+    public function newProcess($userID, $pAction, $victimID, $host, $pSoftID, $pInfo, $pInfoStr, $pNPC) {
+        if ($this->player->verifyID($userID)) {
+            if (!$this->issetProcess($userID, $pAction, $victimID, $host, $pSoftID, $pInfo)) {
                 $numericHost = $this->getHostID($host);
-                $pNumericAction = $this->pNumericAction($pAction);                
+                $pNumericAction = $this->pNumericAction($pAction);
                 $pInformation = $this->processDuration($pAction, $userID, $victimID, $numericHost, $pNPC, $pSoftID, $pInfo);
-                
-                if(strlen($pInformation['pError']) > '0'){ //se existir algum erro nos requerimentos do processDuration();
-
+    
+                if (strlen($pInformation['pError']) > 0) { // if there is an error in processDuration requirements
                     self::processErrorMsg($pInformation['pError']);
-
                     return FALSE;
-
                 }
-                
+    
                 $resInfo = self::resourceableInfo($pNumericAction);
-                if($resInfo['IS_RES']){
+                if ($resInfo['IS_RES']) {
                     $usageInfo = self::updateProcessUsage(1, '1', $resInfo['COLUMN_ACTIVE'], $pInformation['pTime']);
                     $pDuration = $pInformation['pTime'] + $usageInfo['ADDITIONAL_TIME'];
                 } else {
@@ -715,38 +704,37 @@ class Process {
                     $pDuration = $pInformation['pTime'];
                 }
 
-                $this->session->newQuery();
-                $sqlQuery = "INSERT INTO processes (pid, pCreatorID, pVictimID, pAction, pSoftID, pInfo, pInfoStr, pTimeStart, pTimeEnd, pTimeIdeal, pLocal, pNPC, ".$resInfo['COLUMN_ACTIVE'].", ".$resInfo['COLUMN_INACTIVE'].") 
-                            VALUES ('', ?, ?, ?, ?, ?, ?, NOW(), DATE_ADD(NOW(), INTERVAL '".$pDuration."' SECOND), ?, ?, ?, ?, '0')";
-                $sqlReg = $this->pdo->prepare($sqlQuery);
-                $sqlReg->execute(array($userID, $victimID, $pNumericAction, $pSoftID, $pInfo, $pInfoStr, $pInformation['pTime'], $numericHost, $pNPC, $usageInfo['COLUMN_USAGE']));
-
-                if($sqlReg->rowCount() == '1'){
-
-                    $pid = $this->getPID($userID, $pAction, $victimID, $host, $pSoftID, $pInfo, $pInfoStr, $pNPC);
-
-                    $this->session->processID('add', $pid);
-
-                    return TRUE;
-
-                } else {
-
-                    return FALSE;
-
+                if ($victimID == null or '') {
+                    $victimID = $userID;
                 }
 
-            } else { //já existe um processo idêntico
+                if ($pSoftID == null or '') {
+                    $pSoftID = 0;
+                }
 
+                if ($pInfoStr == null or '') {
+                    $pInfoStr = '';
+                }
+    
+                $this->session->newQuery();
+                $sqlQuery = "INSERT INTO processes (pCreatorID, pVictimID, pAction, pSoftID, pInfo, pInfoStr, pTimeStart, pTimeEnd, pTimeIdeal, pLocal, pNPC, " . $resInfo['COLUMN_ACTIVE'] . ", " . $resInfo['COLUMN_INACTIVE'] . ") 
+                            VALUES (?, ?, ?, ?, ?, ?, NOW(), DATE_ADD(NOW(), INTERVAL ? SECOND), ?, ?, ?, ?, '0')";
+                $sqlReg = $this->pdo->prepare($sqlQuery);
+                $sqlReg->execute(array($userID, $victimID, $pNumericAction, $pSoftID, $pInfo, $pInfoStr, $pDuration, $pInformation['pTime'], $numericHost, $pNPC, $usageInfo['COLUMN_USAGE']));
+    
+                if ($sqlReg->rowCount() == 1) {
+                    $pid = $this->getPID($userID, $pAction, $victimID, $host, $pSoftID, $pInfo, $pInfoStr, $pNPC);
+                    $this->session->processID('add', $pid);
+                    return TRUE;
+                } else {
+                    return FALSE;
+                }
+            } else { // an identical process already exists
                 return FALSE;
-
-            } 
-
+            }
         } else {
-
             header("Location:logout");
-
         }
-
     }
 
     // 2019: Function to update my processes time when my hardware is changed
@@ -1419,28 +1407,6 @@ if($this->pAction == 27){ $replace = TRUE; $newTime = 300 - $pInfo[$i]['pduratio
 
     }
 
-    // 2019: Kids, don't do this
-    public function currentTimeToSec($date, $hour){
-//DEPRECATED
-        if(strlen($date) == '0' && strlen($hour) == '0'){
-            
-            date_default_timezone_set('America/Chicago');
-            $date = date("Y-m-d");
-            $hour = date("H:i:s");
-
-        }
-
-        $anoSec = (substr($date, 0, 4)) * 31536000;
-        $mesSec = (substr($date, 5, 2)) * 2592200; //precisa verificar se o mes tem 30 ou 31 dias;
-        $diaSec = (substr($date, 8, 2)) * 86400;
-        $horSec = (substr($hour, 0, 2)) * 3600;
-        $minSec = (substr($hour, 3, 2)) * 60;
-        $secSec = (substr($hour, 6, 2));
-
-        return $secondsNow = $anoSec + $mesSec + $diaSec + $horSec + $minSec + $secSec;
-
-    }
-
     public function issetPID($pid){
 
         if(is_numeric($pid)){
@@ -1774,7 +1740,6 @@ if($this->pAction == 27){ $replace = TRUE; $newTime = 300 - $pInfo[$i]['pduratio
         }
 
     }
-
     public function completeProcess($pid){
 
         // 2019: This is the function that is executed when a process finishes. It also includes all the side effects.
@@ -1849,7 +1814,7 @@ if($this->pAction == 27){ $replace = TRUE; $newTime = 300 - $pInfo[$i]['pduratio
         
         $playerInfo = $this->player->getPlayerInfo($this->pCreatorID);
 
-        require_once 'Mission.class.php'; 
+        require_once './classes/Mission.class.php'; 
 
         $this->mission = new Mission();
         
@@ -1895,7 +1860,7 @@ if($this->pAction == 27){ $replace = TRUE; $newTime = 300 - $pInfo[$i]['pduratio
                                     
                                     if($valid){
                                     
-                                        require_once 'Mission.class.php';
+                                        require_once './classes/Mission.class.php';
                                         $mission = new Mission();                                    
 
                                         if($this->session->issetMissionSession()){
@@ -1912,7 +1877,7 @@ if($this->pAction == 27){ $replace = TRUE; $newTime = 300 - $pInfo[$i]['pduratio
                                 
                                 if($softInfo->softtype == 29){
 
-                                    require_once 'Mission.class.php';
+                                    require_once './classes/Mission.class.php';
                                     $mission = new Mission();                                    
                                     
                                     if($this->session->issetMissionSession()){
@@ -2016,7 +1981,7 @@ if($this->pAction == 27){ $replace = TRUE; $newTime = 300 - $pInfo[$i]['pduratio
                                     
                                     if($softInfo->softtype == 1 && $softInfo->softversion >= 9200 && $this->pNPC == 0){
                                     
-                                        require_once 'Mission.class.php';
+                                        require_once './classes/Mission.class.php';
                                         $mission = new Mission();                                    
 
                                         
@@ -2037,7 +2002,7 @@ if($this->pAction == 27){ $replace = TRUE; $newTime = 300 - $pInfo[$i]['pduratio
                                         
                                         if($this->pNPC == 0){ //upando em um VPC
                                         
-                                            require_once 'Mission.class.php';
+                                            require_once './classes/Mission.class.php';
                                             $mission = new Mission();                                             
                                             
                                             if($mission->playerOnMission($this->pVictimID)){
@@ -2060,7 +2025,7 @@ if($this->pAction == 27){ $replace = TRUE; $newTime = 300 - $pInfo[$i]['pduratio
                                                     
                                                     if($this->mission->issetMission($_SESSION['MISSION_ID'])){
 
-                                                        require 'Clan.class.php';
+                                                        require './classes/Clan.class.php';
                                                         $clan = new Clan();
 
                                                         if($clan->playerHaveClan()){
@@ -2197,7 +2162,7 @@ if($this->pAction == 27){ $replace = TRUE; $newTime = 300 - $pInfo[$i]['pduratio
                                 $uid = $this->pVictimID;
                                 $npc = $this->pNPC;
                                 
-                                require_once 'Storyline.class.php';
+                                require_once './classes/Storyline.class.php';
                                 $storyline = new Storyline();
   
                                 $odds = (5 + (($softInfo->softversion)/10))*10;
@@ -2308,7 +2273,7 @@ if($this->pAction == 27){ $replace = TRUE; $newTime = 300 - $pInfo[$i]['pduratio
                                 
                                 if($softInfo->softtype == 18){
 
-                                    require_once 'Internet.class.php';
+                                    require_once './classes/Internet.class.php';
                                     $internet = new Internet();
                                     
                                     $internet->webserver_shutdown($uid);
@@ -2535,36 +2500,25 @@ if($this->pAction == 27){ $replace = TRUE; $newTime = 300 - $pInfo[$i]['pduratio
                     
                     break;
                 case '8': //edit log
-
-                    if($this->pLocal == '1'){ //edit em localhost
+                    // VictimID if localhost
+                    if($this->pLocal == '1'){
                         $vid = $this->pCreatorID;
-                    } else { //edit remoto
+                    } else {
+                        // VictimID if its remote/internet
                         $vid = $this->pVictimID;
                     }
-                    
                     if($this->pInfo != ''){
+                        if ($vid == $_SESSION['id']) {
+                            $npc = 0;
+                        } else {
+                            $npc = 1;
+                        }
+                        $tmpLogID = $this->pInfo;
+                        $log->editLog($_SESSION['id'], $npc);
 
-                        $log = new LogVPC();
-                        
-                        $newLog = $log->getTmpLog($this->pInfo);
-                        
-                        $log->deleteTmpLog($this->pInfo);
-                                                
-                    } else {
-                        $newLog = '';
+                        $this->session->addMsg('Log successfully edited.', 'notice');
+                        $this->session->exp_add('EDIT_LOG', Array($this->pLocal));
                     }
-                    
-                    $this->session->newQuery();
-                    $sql = "UPDATE log
-                            SET text = :newLog
-                            WHERE userID = :uid AND isNPC = :npc
-                            LIMIT 1";
-                    $stmt = $this->pdo->prepare($sql);
-                    $stmt->execute(array(':newLog' => $newLog, ':uid' => $vid, ':npc' => $this->pNPC));
-
-                    $this->session->addMsg('Log successfully edited.', 'notice');
-                    $this->session->exp_add('EDIT_LOG', Array($this->pLocal));
-                    
                     break;
                 case '10': //format
                     break;
@@ -2934,7 +2888,7 @@ if($this->pAction == 27){ $replace = TRUE; $newTime = 300 - $pInfo[$i]['pduratio
                                     
                                     if($softInfo->softtype == 18){
                                         
-                                        require_once 'Internet.class.php';
+                                        require_once './classes/Internet.class.php';
                                         $internet = new Internet();
                                         
                                         $internet->webserver_shutdown($id);
@@ -3467,6 +3421,7 @@ if($this->pAction == 27){ $replace = TRUE; $newTime = 300 - $pInfo[$i]['pduratio
                             break;
                         default:
                             die("Invalid ID!");
+                    
                     }
                     
                     $victimHardware = $this->hardware->getHardwareInfo($id, $pcType);
@@ -3775,7 +3730,7 @@ if($this->pAction == 27){ $replace = TRUE; $newTime = 300 - $pInfo[$i]['pduratio
                     break;
                 case '28': //edit webserver
                     
-                    require 'Internet.class.php';
+                    require './classes/Internet.class.php';
                     $internet = new Internet();
                     
                     if($this->pVictimID == 0){
@@ -3790,7 +3745,8 @@ if($this->pAction == 27){ $replace = TRUE; $newTime = 300 - $pInfo[$i]['pduratio
                     
                     break;
                 default:
-                    die("Error! Process.class.php - completeProcess");
+                    die("errerro");
+
             }
 
             self::deleteProcess($this->pID);
@@ -4018,25 +3974,7 @@ if($this->pAction == 27){ $replace = TRUE; $newTime = 300 - $pInfo[$i]['pduratio
             case 7: //av
                 return 200;
             case 8: //edit log
-                
-                $log = new LogVPC();
-                
-                $curLog = $log->getLogValue($id, $pcType);
-                
-                if($info != ''){
-                    $tmpLog = $log->getTmpLog($info);
-                } else {
-                    $tmpLog = '';
-                }
-                
-                $lenCur = strlen($curLog);
-                $lenTmp = strlen($tmpLog);                
-                
-                if($lenCur > $lenTmp){
-                    $len = $lenCur;
-                } else {
-                    $len = $lenTmp;
-                }
+                $len = 1;
                 
                 $hardwareInfo = $this->hardware->getHardwareInfo($_SESSION['id'], 'VPC');
                 $cpu = $hardwareInfo['CPU'];
@@ -4466,20 +4404,6 @@ if($this->pAction == 27){ $replace = TRUE; $newTime = 300 - $pInfo[$i]['pduratio
         $sql = "SELECT COUNT(*) AS total FROM processes WHERE pCreatorID = '".$_SESSION['id']."' AND isPaused = 0";
         
         return $this->pdo->query($sql)->fetch(PDO::FETCH_OBJ)->total;
-        
-    }
-    
-    public function issetDDoSProcess(){
-        
-        $this->session->newQuery();
-        $sql = "SELECT pid FROM processes WHERE pAction = 27 AND pCreatorID = '".$_SESSION['id']."' LIMIT 1";
-        $data = $this->pdo->query($sql)->fetchAll();
-        
-        if(sizeof($data) == 1){
-            return $data['0']['pid'];
-        } else {
-            return 0;
-        }
         
     }
 

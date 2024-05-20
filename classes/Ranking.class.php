@@ -490,7 +490,6 @@ class Ranking extends Player {
             default:
                 die("Error! Ranking.class.php - cert_totalPages");
         }
-        
     }
  
     public function cert_validate2learn($cid){
@@ -515,7 +514,7 @@ class Ranking extends Player {
         
     }
     
-    public function cert_add(){
+    public function cert_add($cid){
         
         $uid = $_SESSION['id'];        
 
@@ -526,7 +525,7 @@ class Ranking extends Player {
         $this->session->certSession($this->session->getCert() + 1);
         
         if($this->session->getCert() == 5){
-            require 'Social.class.php';
+            require './classes/Social.class.php';
             $social = new Social();
             $social->badge_add(54, $_SESSION['id']);
         }
@@ -568,7 +567,7 @@ class Ranking extends Player {
         
         if($cid == 2){
             
-            require 'Storyline.class.php';
+            require './classes/Storyline.class.php';
             $storyline = new Storyline();
             
             $storyline->tutorial_start();
@@ -580,23 +579,17 @@ class Ranking extends Player {
     }
     
     public function cert_have($cid){
-        
         if($cid > $this->session->getCert()){
             return FALSE;
         }
-        
-        return TRUE;        
-        
+        return TRUE;
     }
     
     public function cert_haveReq($cid){
-        
         if($this->session->getCert() == $cid - 1){
             return TRUE;
         }
-
         return FALSE;
-        
     }
 
     public function ranking_display($display){

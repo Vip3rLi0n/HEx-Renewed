@@ -6,6 +6,7 @@ require 'classes/Finances.class.php';
 
 $session = new Session();
 ob_start();
+$sub = 'Finances';
 require 'template/contentStart.php';
 
 ?>

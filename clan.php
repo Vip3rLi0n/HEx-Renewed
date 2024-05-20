@@ -11,6 +11,7 @@ require 'classes/Clan.class.php';
 $session = new Session();
 $system = new System();
 ob_start();
+$sub = 'Clan';
 require 'template/contentStart.php';
 
 $clan = new Clan();

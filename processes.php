@@ -9,6 +9,7 @@ require 'classes/Process.class.php';
 $session = new Session();
 $system = new System();
 ob_start();
+$sub = 'Processes';
 require 'template/contentStart.php';
    
 $process = new Process();

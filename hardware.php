@@ -10,11 +10,11 @@ require 'classes/Finances.class.php';
 $session = new Session();
 $system = new System();
 ob_start();
+$sub = 'Hardware';
 require 'template/contentStart.php';
 
 $hardware = new HardwareVPC($_SESSION['id']);
 $hardware->getHardwareInfo('', 'VPC');
-
 
 $myHardware = 'active';
 $myPC = '';

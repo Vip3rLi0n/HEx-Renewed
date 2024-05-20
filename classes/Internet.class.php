@@ -2432,26 +2432,6 @@ if($xpDisable){
 ?>
                     </div>
                         <div style="text-align: center;">
-<?php if($_SESSION['premium'] != 1) { ?>
-<style type="text/css">
-@media (min-width : 320px) { .adslot_internet_un { width: 234px; height: 60px;} }
-@media (min-width : 360px) and (max-width : 480px) { .adslot_internet_un { width: 320px; height: 50px;} }
-@media (min-width : 768px) and (max-width : 1024px) { .adslot_internet_un { width: 320px; height: 50px; } }
-@media (min-width:1024px) { .adslot_internet_un { width: 125px; height: 125px;} }
-@media (min-width:1280px) { .adslot_internet_un { width: 234px; height: 60px; margin-top: 20px} }
-@media (min-width:1366px) { .adslot_internet_un { width: 234px; height: 60px; margin-top: 20px} }
-@media (min-width:1824px) { .adslot_internet_un { width: 320px; height: 100px; margin-top: 0px} }
-</style>
-<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- internet responsive -->
-<ins class="adsbygoogle adslot_internet_un"
-     style="display:inline-block"
-     data-ad-client="ca-pub-7193007468156667"
-     data-ad-slot="5776909757"></ins>
-<script>
-(adsbygoogle = window.adsbygoogle || []).push({});
-</script>
-<?php } ?>
                         </div>
 <div class="widget-box">
                         <div class="widget-title">

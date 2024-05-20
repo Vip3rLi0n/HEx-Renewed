@@ -1100,17 +1100,6 @@ class Mission {
 @media (min-width:1366px) { .adslot_mission { width: 250px; height: 250px; } }
 @media (min-width:1824px) { .adslot_mission { width: 336px; height: 280px; } }
 </style>
-<div class="center">
-<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- missions responsive -->
-<ins class="adsbygoogle adslot_mission"
-     style="display:inline-block"
-     data-ad-client="ca-pub-7193007468156667"
-     data-ad-slot="7907947758"></ins>
-<script>
-(adsbygoogle = window.adsbygoogle || []).push({});
-</script>
-</div>
 <?php } ?>
 
                                 </div>

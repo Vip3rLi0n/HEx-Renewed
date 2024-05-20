@@ -13,7 +13,7 @@ class Python {
 
     public function __construct() {
         $this->pythonPath = '/usr/bin/python'; // Path to Python executable within the venv
-        $this->gamePath = '/root/hexc';
+        $this->gamePath = '/opt/hexc';
         $this->path = 'python/';
         $this->args = '';
         $this->log = ' 2>&1 ';

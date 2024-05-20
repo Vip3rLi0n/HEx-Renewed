@@ -1,12 +1,13 @@
 <?php
-require 'classes/System.class.php';
-require 'classes/Session.class.php';
-require 'classes/Player.class.php';
-require 'classes/PC.class.php';
+require './classes/System.class.php';
+require './classes/Session.class.php';
+require './classes/Player.class.php';
+require './classes/PC.class.php';
 
 $session = new Session();
 $system = new System();
-ob_start();
+$sub = 'University';
+
 require 'template/contentStart.php';
 
 $software = new SoftwareVPC();
@@ -16,54 +17,46 @@ $cert = '';
 $center = '';
 
 if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST)){
-
     $software->handlePost('university');
-
 }
 
-if($system->issetGet('opt')){
-
+// Check for 'opt' GET parameter
+if ($system->issetGet('opt')) {
     $optInfo = $system->verifyStringGet('opt');
-
-    if($optInfo['IS_NUMERIC'] == 1){
+    if ($optInfo['IS_NUMERIC'] == 1 || $optInfo['GET_VALUE'] != 'certification') {
         $system->handleError('Invalid get.', 'university.php');
     }
-    
-    if($optInfo['GET_VALUE'] != 'certification'){
-        $system->handleError('Invalid get.', 'university.php');
-    }
-
     $research = '';
     $cert = 'active';
     $center = ' center';
-
 }
 
-if($system->issetGet('learn')){
-    //página da certificação
+// Check for 'learn' GET parameter
+if ($system->issetGet('learn')) {
+    // Handle page for learning certification
     $center = '';
-    
 }
 
 ?>
-                    <div class="span12<?php echo $center; ?>">
-<?php
-
-if($session->issetMsg()){
-    $session->returnMsg();
-}
-
-?>
-                        <div class="widget-box">
-                            <div class="widget-title">
-                                <ul class="nav nav-tabs">
-                                    <li class="link <?php echo $research; ?>"><a href="university.php"><span class="icon-tab he16-research"></span><span class="hide-phone"><?php echo _("Research softwares"); ?></span></a></li>
-                                    <li class="link <?php echo $cert; ?>"><a href="university?opt=certification"><span class="icon-tab he16-certs"></span><span class="hide-phone"><?php echo _("Certifications"); ?></span></a></li>
-                                    <a href="<?php echo $session->help('university', 'research'); ?>"><span class="label label-info"><?php echo _("Help"); ?></span></a>
-                                </ul>
-                            </div>
-                            <div class="cert-complete"></div>
-                            <div class="widget-content padding noborder">
+<!-- Start HTML structure -->
+<div class="span12<?php echo $center; ?>">
+    <?php
+    // Display session message if set
+    if ($session->issetMsg()) {
+        $session->returnMsg();
+    }
+    ?>
+    <!-- Widget box for certification content -->
+    <div class="widget-box">
+        <div class="widget-title">
+            <ul class="nav nav-tabs">
+                <li class="link <?php echo $research; ?>"><a href="university.php"><span class="icon-tab he16-research"></span><span class="hide-phone"><?php echo _("Research softwares"); ?></span></a></li>
+                <li class="link <?php echo $cert; ?>"><a href="university?opt=certification"><span class="icon-tab he16-certs"></span><span class="hide-phone"><?php echo _("Certifications"); ?></span></a></li>
+                <a href="<?php echo $session->help('university', 'research'); ?>"><span class="label label-info"><?php echo _("Help"); ?></span></a>
+            </ul>
+        </div>
+        <div class="cert-complete"></div>
+        <div class="widget-content padding noborder">
 <?php
 
 if($system->issetGet('opt')){
@@ -182,8 +175,7 @@ if($system->issetGet('opt')){
                             <div style="clear: both;" class="nav nav-tabs">&nbsp;</div>
                                 
 <?php                                
-ob_end_flush();
-ob_start();
+
 require 'template/contentEnd.php';
-ob_end_flush();
+
 ?>

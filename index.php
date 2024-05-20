@@ -5,6 +5,7 @@ require 'classes/System.class.php';
 session_start();
 //$session = new Session();
 $remembered = FALSE;
+$sub = 'Home';
 
 
 if(isset($_COOKIE['PHPSESSID'])){

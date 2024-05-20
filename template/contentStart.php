@@ -1101,7 +1101,7 @@ $clock = date('Y-m-d H:i');
 <!DOCTYPE html>
 <html lang="en">
     <head>
-    <title><?php echo _($sub);?> - Hacker Experience</title>
+    <title><?php echo _($sub);?> - Hacker Apocalypse</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
@@ -1109,13 +1109,10 @@ $clock = date('Y-m-d H:i');
     <link rel="stylesheet" href="css/bootstrap.min.css" />
     <link rel="stylesheet" href="css/bootstrap-responsive.min.css" />
     <link rel="stylesheet" href="css/he.css" />
-    <script src="js/jquery.min.js"></script>
-    <script src="js/select2.js"></script>
-    <link rel="stylesheet" href="css/select2.css" />
-    <script src="js/jquery-ui.js"></script>
-    <link rel="stylesheet" href="js/jquery-ui.css" />
-    <link rel="stylesheet" href="js/jquery-ui.structure.css" />
-    <link rel="stylesheet" href="js/jquery-ui.theme.css" />
+    
+    <?php if ($css['select2'] == 1) { ?>
+        <link rel="stylesheet" href="css/select2.css" />
+    <?php } ?>
     
     <?php if ($css['login'] == 1) { ?>
         <link rel="stylesheet" href="css/he_login.css" />
@@ -1139,7 +1136,7 @@ $clock = date('Y-m-d H:i');
     </head>
     <body class="<?php echo $bodyClass; ?>">
     <div id="header">
-        <h1><a href="#">Hacker Experience</a></h1>
+        <h1><a href="#">Hacker Apocalypse</a></h1>
     </div>
     <div id="user-nav" class="navbar navbar-inverse">
         <ul class="nav btn-group">

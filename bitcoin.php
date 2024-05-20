@@ -13,8 +13,6 @@ $result['msg'] = 'STOP SPYING ON ME!';
 if($session->issetLogin()){
 
     $result['status'] = 'OK';
-        
-    require 'template/gameHeader.php'; //TODO: is it really needed? (perhaps for set_time, but..)
     
     if(isset($_POST['func'])){
 

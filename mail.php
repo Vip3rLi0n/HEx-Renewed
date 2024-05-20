@@ -9,6 +9,7 @@ require_once 'classes/Player.class.php';
 $session = new Session();
 $system = new System();
 ob_start();
+$sub = 'Mail';
 require 'template/contentStart.php';
 
 $mail = new Mail();
