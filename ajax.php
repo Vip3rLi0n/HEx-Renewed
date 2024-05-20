@@ -1,4 +1,5 @@
 <?php
+session_start(); // Start the session
 require './classes/Session.class.php';
 $session = new Session();
 
@@ -19,109 +20,116 @@ if (isset($_POST['func'])) {
     }
 }
 
-function handleAjaxRequest($data)
+if ($session->issetLogin() || $loggedOut)
 {
-    $func = $_POST['func'];
-    switch ($func) {
-        case 'reportBug':
-            $result = handleReportBug($data);
-            break;
-        case 'getBadge':
-            $result = handleGetBadge($data);
-            break;
-        case 'getText':
-            $result = handleGetText($data);
-            break;
-        case 'mission':
-            $result = handleMission($data);
-            break;
-        case 'action':
-            $result = handleAction($data);
-            break;
-        case 'certification':
-            $result = handleCertification($data);
-            break;
-        case 'bankCloseAcc':
-            $result = handleBankCloseAcc($data);
-            break;
-        case 'credits':
-            $result = handleCredits($data);
-            break;
-        case 'premium':
-            $result = handlePremium($data);
-            break;
-        case 'deleteDdos':
-            $result = handleDeleteDdos($data);
-            break;
-        case 'bankChangePass':
-            $result = handleBankChangePass($data);
-            break;
-        case 'buyLicense':
-            $result = handleBuyLicense($data);
-            break;
-        case 'check-user':
-            // Not sure why its empty, but its there and empty in original codebase.
-        case 'check-mail':
-            $result = handleCheckMail($data);
-            break;
-        case 'getResearchStats':
-            $result = handleGetResearchStats($data);
-            break;
-        case 'getFileActionsModal':
-            $result = handleGetFileActionsModal($data);
-            break;
-        case 'getPwdInfo':
-            $result = handleGetPwdInfo($data);
-            break;
-        case 'getPartModal':
-            $result = handleGetPartModal($data);
-            break;
-        case 'getStatic':
-            $result = handleGetStatic($data);
-            break;
-        case 'getCommon':
-            $result = handleGetCommon($data);
-            break;
-        case 'getTutorialVirusID':
-            $result = handleGetTutorialVirusID($data);
-            break;
-        case 'getTutorialFirstVictim':
-            $result = handleGetTutorialFirstVictim($data);
-            break;
-        case 'getPlayerLearning':
-            $result = handleGetPlayerLearning($data);
-            break;
-        case 'getTotalMoney':
-            $result = handleGetTotalMoney($data);
-            break;
-        case 'getBankAccs':
-            $result = handleGetBankAccs($data);
-            break;
-        case 'manageViruses':
-            $result = handleManageViruses($data);
-            break;
-        case 'searchClan':
-            $result['msg'] = handleSearchClan($data);
-            break;
-        case 'warHistory':
-            $result['msg'] = fetchWarHistory($data);
-            break;
-        case 'loadSoftware':
-            $result = handleLoadSoftware($data);
-            break;
-        case 'loadHistory':
-            $result = handleLoadHistory($data);
-            break;
-        case 'completeProcess':
-            $result = handleCompleteProcess($data);
-            break;
-        default:
-            $result['status'] = 'ERROR';
-            break;
+    $result['status'] = 'OK';
+    if (isset($_POST['func'])) {
+        $func = $_POST['func'];
+        switch ($func) {
+            case 'reportBug':
+                $result = handleReportBug($result);
+                break;
+            case 'getBadge':
+                $result = handleGetBadge($result);
+                break;
+            case 'getText':
+                $result = handleGetText($result);
+                break;
+            case 'mission':
+                $result = handleMission($result);
+                break;
+            case 'action':
+                $result = handleAction($result);
+                break;
+            case 'certification':
+                $result = handleCertification($result);
+                break;
+            case 'bankCloseAcc':
+                $result = handleBankCloseAcc($result);
+                break;
+            case 'credits':
+                $result = handleCredits($result);
+                break;
+            case 'premium':
+                $result = handlePremium($result);
+                break;
+            case 'deleteDdos':
+                $result = handleDeleteDdos($result);
+                break;
+            case 'bankChangePass':
+                $result = handleBankChangePass($result);
+                break;
+            case 'buyLicense':
+                $result = handleBuyLicense($result);
+                break;
+            case 'check-user':
+                // Not sure why its empty, but its there and empty in original codebase.
+            case 'check-mail':
+                $result = handleCheckMail($result);
+                break;
+            case 'getResearchStats':
+                $result = handleGetResearchStats($result);
+                break;
+            case 'getFileActionsModal':
+                $result = handleGetFileActionsModal($result);
+                break;
+            case 'getPwdInfo':
+                $result = handleGetPwdInfo($result);
+                break;
+            case 'getPartModal':
+                $result = handleGetPartModal($result);
+                break;
+            case 'getStatic':
+                $result = handleGetStatic($result);
+                break;
+            case 'getCommon':
+                $result = handleGetCommon($result);
+                break;
+            case 'getTutorialVirusID':
+                $result = handleGetTutorialVirusID($result);
+                break;
+            case 'getTutorialFirstVictim':
+                $result = handleGetTutorialFirstVictim($result);
+                break;
+            case 'getPlayerLearning':
+                $result = handleGetPlayerLearning($result);
+                break;
+            case 'getTotalMoney':
+                $result = handleGetTotalMoney($result);
+                break;
+            case 'getBankAccs':
+                $result = handleGetBankAccs($result);
+                break;
+            case 'manageViruses':
+                $result = handleManageViruses($result);
+                break;
+            case 'searchClan':
+                $result['msg'] = handleSearchClan($result);
+                break;
+            case 'warHistory':
+                $result['msg'] = fetchWarHistory($result);
+                break;
+            case 'loadSoftware':
+                $result = handleLoadSoftware($result);
+                break;
+            case 'loadHistory':
+                $result = handleLoadHistory($result);
+                break;
+            case 'completeProcess':
+                $result = handleCompleteProcess($result);
+                break;
+            default:
+                $result['status'] = 'ERROR';
+                break;
+            
+        }
+    } else {
+        $result['status'] = 'ERROR';
     }
-
-    return $result;
 }
+
+header('Content-type: application/json');
+die(json_encode($result));
 
 function handleReportBug($result)
 {
@@ -1134,45 +1142,36 @@ function handleGetPartModal($result)
     return $result;
 }
 
-function handleGetStatic($result)
-{
-    $result['status'] = 'ERROR';
-
-    if (!isset($_POST['id'])) {
-        return $result;
-    }
-
+// Define the handleGetStatic function
+function handleGetStatic($result) {
     $pdo = PDO_DB::factory();
-    require './classes/Session.class.php';
+    global $session;
+
     $session->newQuery();
     $sql = "SELECT gameip, login, cache.reputation, ranking_user.rank
             FROM users
-            LEFT JOIN cache ON cache.userID = users.id
-            LEFT JOIN ranking_user ON ranking_user.userID = users.id
+            LEFT JOIN cache
+            ON cache.userID = users.id
+            LEFT JOIN ranking_user
+            ON ranking_user.userID = users.id
             WHERE id = '".$_SESSION['id']."'";
     $staticInfo = $pdo->query($sql)->fetch(PDO::FETCH_OBJ);
 
     $return = '[{"ip":"'.long2ip($staticInfo->gameip).'","user":"'.$staticInfo->login.'","reputation":"'.number_format($staticInfo->reputation).'","rank":"'.number_format($staticInfo->rank).'","rep_title":"'._('Reputation').'","rank_title":"'._('Ranking').'"}]';
 
     $result['msg'] = $return;
-
     return $result;
 }
 
-function handleGetCommon($result)
-{
-    $result['status'] = 'ERROR';
-
-    if (!isset($_POST['id'])) {
-        return $result;
-    }
-
+// Define the handleGetCommon function
+function handleGetCommon($result) {
     require './classes/Mail.class.php';
     require './classes/Finances.class.php';
 
     $mail = new Mail();
     $player = new Player();
     $finances = new Finances();
+    global $session;
 
     $common['online'] = $player->countLoggedInUsers();
     $common['unread'] = $mail->countUnreadMails();
@@ -1200,7 +1199,6 @@ function handleGetCommon($result)
     $return = substr($return, 0, -1).'}]';
 
     $result['msg'] = $return;
-
     return $result;
 }
 
@@ -1799,8 +1797,3 @@ function handleLoadHistory($result)
 
     $result['msg'] = $internet->history_getJSON();
 }
-
-$session = $_SESSION['id'];  // Your session
-$response = handleAjaxRequest($result);
-header('Content-type: application/json');
-die(json_encode($response));
