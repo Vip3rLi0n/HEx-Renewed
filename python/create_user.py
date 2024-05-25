@@ -32,8 +32,15 @@ cur.execute("INSERT INTO users (login, password, gamePass, email, gameIP, realIP
 last_inserted_id = cur.lastrowid
 userID = str(last_inserted_id)
 
+characters = string.ascii_letters + string.digits
+bankNum = ''.join(str(random.randint(0, 9)) for _ in range(6))
+bankPass = ''.join(random.choice(characters) for _ in range(6))
+cur.execute("SELECT npcID FROM npc_info_en WHERE name = 'First International Bank' LIMIT 1")
+bankFetchID = cur.fetchone()
+bankID = bankFetchID[0]
 cur.execute("INSERT INTO users_stats (uid, dateJoined) VALUES (%s, NOW())", (userID,))
 cur.execute("INSERT INTO hardware (userID, name) VALUES (%s, 'Server #1')", (userID,))
+cur.execute("INSERT INTO bankAccounts (bankAcc, bankPass, bankID, bankUser, cash, dateCreated) VALUES (%s, %s, %s, %s, '1000', NOW())", (bankNum, bankPass, bankID, userID))
 cur.execute("INSERT INTO log (userID, text) VALUES (%s, CONCAT(SUBSTRING(NOW(), 1, 16), ' - localhost installed current operating system'))", (userID,))
 cur.execute("INSERT INTO cache (userID) VALUES (%s)", (userID,))
 cur.execute("INSERT INTO cache_profile (userID, expireDate) VALUES (%s, NOW())", (userID,))
@@ -55,6 +62,6 @@ db.commit()
 db.close()
 
 # Run profile generator
-os.system('python ../python/profile_generator.py ' + userID)
+os.system(f'python ./profile_generator.py {userID}')
 
 print(time.strftime("%d/%m/%y %H:%M:%S"), ' - ', __file__, ' - ', round(time.time() - start_time, 4), "s\n")

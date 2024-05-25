@@ -105,62 +105,83 @@ $(document).ready(function(){
 
 	}
 
-	function validateSignUp(){
-
+	function validateSignUp() {
 		$('#signup-form').validate({
-
-            rules:{
-                username: {
-                	required: true,
-                	rangelength: [3, 15],
+			rules: {
+				username: {
+					required: true,
+					rangelength: [3, 15],
 					remote: {
 						url: "ajax.php",
 						type: "post",
-						dataType:"json",
+						dataType: "json",
 						data: {
-							func: 'check-user'
+							func: 'check-user',
+							user: function() {
+								return $('#username').val();
+							}
+						},
+						dataFilter: function(response) {
+							var data = JSON.parse(response);
+							if (data.status === 'OK' && data.user_exists === 0) {
+								return true;
+							} else {
+								return false;
+							}
 						}
 					}
-                },
-                password: {
-                	required: true,
-                	minlength: 6
-                },
-                email: {
-                	required: true,
-                	email: true,
+				},
+				password: {
+					required: true,
+					minlength: 6
+				},
+				email: {
+					required: true,
+					email: true,
 					remote: {
 						url: "ajax.php",
 						type: "post",
+						dataType: "json",
 						data: {
-							func: 'check-mail'
+							func: 'check-mail',
+							email: function() {
+								return $('#email').val();
+							}
+						},
+						dataFilter: function(response) {
+							var data = JSON.parse(response);
+							if (data.status === 'OK' && data.email_exists === 0) {
+								return true;
+							} else {
+								return false;
+							}
 						}
 					}
-                },
-                terms: {
-                	required: true
-                }
-            },
-            errorPlacement: function(){},
-		    highlight: function(element) {
-		        $(element).closest('.form-group').addClass('has-error');
-		        $(element).closest('.form-group').removeClass('has-success');
-		    },
-		    unhighlight: function(element) {
-		        $(element).closest('.form-group').removeClass('has-error');
-		        $(element).parents('.form-group').addClass('has-success');
-		    },
-		    errorElement: 'span',
-		    errorClass: 'help-block',
-		    validClass: 'has-success',
-		    errorPlacement: function(error, element) {
-		    	if($(element).attr('id') != 'terms'){
-			        if(element.parent('.input-group').length) {
-			            error.insertAfter(element.parent());
-			        } else {
-			            error.insertAfter(element);
-			        }
-		    	}
+				},
+				terms: {
+					required: true
+				}
+			},
+			errorPlacement: function() {},
+			highlight: function(element) {
+				$(element).closest('.form-group').addClass('has-error');
+				$(element).closest('.form-group').removeClass('has-success');
+			},
+			unhighlight: function(element) {
+				$(element).closest('.form-group').removeClass('has-error');
+				$(element).parents('.form-group').addClass('has-success');
+			},
+			errorElement: 'span',
+			errorClass: 'help-block',
+			validClass: 'has-success',
+			errorPlacement: function(error, element) {
+				if ($(element).attr('id') != 'terms') {
+					if (element.parent('.input-group').length) {
+						error.insertAfter(element.parent());
+					} else {
+						error.insertAfter(element);
+					}
+				}
 			},
 			messages: {
 				username: {
@@ -170,9 +191,7 @@ $(document).ready(function(){
 					remote: 'This email is in use.'
 				}
 			}
-
 		});
-
 	}
 
 	function validateLogin(){

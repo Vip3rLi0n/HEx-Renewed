@@ -153,7 +153,7 @@ static $hddItens = Array(
     '1' => Array(
         'NAME' => 'Scrap HDD',
         'DESC' => 'Old...',
-        'POW' => '1000',
+        'POW' => '100',
         'PRICE' => '99'
     ),
     

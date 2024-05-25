@@ -1089,19 +1089,6 @@ class Mission {
 <?php 
             } 
 ?>
-                                    
-
-<?php if($_SESSION['premium'] == 0){ ?>
-<style type="text/css">
-@media (min-width : 320px) and (max-width : 480px) { .adslot_mission { width: 250px; height: 250px; } }
-@media (min-width : 768px) and (max-width : 1024px) { .adslot_mission { width: 336px; height: 280px; } }
-@media (min-width:1024px) { .adslot_mission { width: 120px; height: 240px; } }
-@media (min-width:1280px) { .adslot_mission { width: 200px; height: 200px; } }
-@media (min-width:1366px) { .adslot_mission { width: 250px; height: 250px; } }
-@media (min-width:1824px) { .adslot_mission { width: 336px; height: 280px; } }
-</style>
-<?php } ?>
-
                                 </div>
 <?php
         

@@ -35,12 +35,6 @@ if ($session->issetLogin() || $loggedOut)
             case 'getText':
                 $result = handleGetText($result);
                 break;
-            case 'mission':
-                $result = handleMission($result);
-                break;
-            case 'action':
-                $result = handleAction($result);
-                break;
             case 'certification':
                 $result = handleCertification($result);
                 break;
@@ -64,6 +58,8 @@ if ($session->issetLogin() || $loggedOut)
                 break;
             case 'check-user':
                 // Not sure why its empty, but its there and empty in original codebase.
+                $result = handleCheckUserExists($result);
+                break;
             case 'check-mail':
                 $result = handleCheckMail($result);
                 break;
@@ -130,6 +126,37 @@ if ($session->issetLogin() || $loggedOut)
 
 header('Content-type: application/json');
 die(json_encode($result));
+
+function handleCheckUserExists($result)
+{
+    if (!isset($_POST['username'])) {
+        $result['status'] = 'ERROR';
+        return $result;
+    }
+
+    $user = $_POST['username'];
+
+    $pdo = PDO_DB::factory();
+    
+    $sql = 'SELECT login FROM users WHERE login = :user LIMIT 1';
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([':user' => $user]);
+
+    // Fetch the result
+    $userExists = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if ($userExists) {
+        $result['status'] = 'OK';
+        $result['msg'] = 'User exists!';
+        $result['user_exists'] = 1;
+    } else {
+        $result['status'] = 'OK';
+        $result['msg'] = 'User can register!';
+        $result['user_exists'] = 0;
+    }
+
+    return $result;
+}
 
 function handleReportBug($result)
 {
@@ -523,61 +550,6 @@ function handleGetText($result)
     return $result;
 }
 
-function handleMission($result)
-{
-    // Validate if session user and mission ID is set
-    if (!isset($_POST['id'])) {
-        $result['status'] = 'ERROR';
-        return $result;
-    }
-
-    $missionId = $_POST['id'];
-
-    // Perform actions related to mission, for example:
-    switch ($missionId) {
-        case 'accept':
-            // Add logic to accept mission
-            $result['status'] = 'OK';
-            $result['message'] = 'Mission accepted.';
-            break;
-        case 'abort':
-            // Add logic to abort mission
-            $result['status'] = 'OK';
-            $result['message'] = 'Mission aborted.';
-            break;
-        default:
-            $result['status'] = 'ERROR';
-            break;
-    }
-
-    return $result;
-}
-
-function handleAction($result)
-{
-    // Validate if session user and action is set
-    if (!isset($_POST['id'])) {
-        $result['status'] = 'ERROR';
-        return $result;
-    }
-
-    $actionId = $_POST['id'];
-
-    // Perform actions related to action, for example:
-    switch ($actionId) {
-        case 'do_something':
-            // Add logic to perform an action
-            $result['status'] = 'OK';
-            $result['message'] = 'Action performed.';
-            break;
-        default:
-            $result['status'] = 'ERROR';
-            break;
-    }
-
-    return $result;
-}
-
 function handleCertification($result)
 {
     // Validate if session user and certification ID is set
@@ -823,35 +795,29 @@ function handleBuyLicense($result)
 
 function handleCheckMail($result)
 {
-    $result['status'] = 'ERROR';
-
-    if (!isset($_POST['id'])) {
-        return $result;
-    }
-
-    require './classes/System.class.php';
-    $pdo = PDO_DB::factory();
-    $system = new System();
-    $result = ['status' => 'ERROR']; // Default result
-
     if (!isset($_POST['email'])) {
+        $result['status'] = 'ERROR';
         return $result;
     }
 
-    $mail = $_POST['email'];
+    $email = $_POST['email'];
 
-    if (strlen($mail) < 1 || !$system->validate($mail, 'email')) {
-        return $result;
-    }
+    $pdo = PDO_DB::factory();
+    $session = new Session(); // Assuming you need to instantiate Session class
+    $session->newQuery();
+    
+    $sql = 'SELECT email FROM users WHERE email = :email LIMIT 1';
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([':email' => $email]);
 
-    $sql = 'SELECT id FROM users WHERE email = ? LIMIT 1';
-    $sqlReg = $pdo->prepare($sql);
-    $sqlReg->execute([$mail]);
+    $emailExists = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    if ($sqlReg->rowCount() == 1) {
-        $result['status'] = 'ERROR'; // Assuming it should be 'ERROR' when email exists
+    if ($emailExists) {
+        $result['status'] = 'OK';
+        $result['email_exists'] = 1;
     } else {
-        $result['status'] = 'SUCCESS'; // Assuming it should be 'SUCCESS' when email doesn't exist
+        $result['status'] = 'OK';
+        $result['email_exists'] = 0;
     }
 
     return $result;
@@ -899,152 +865,138 @@ function handleGetResearchStats($result)
 
 function handleGetFileActionsModal($result)
 {
-    $result['status'] = 'ERROR';
-
-    if (!isset($_POST['id'])) {
-        return $result;
-    }
-
-    require './classes/System.class.php';
-
-    if (!isset($_POST['type']) || !isset($_POST['action'])) {
-        $result['status'] = 'ERROR';
-        return $result;
-    }
-
-    if ($_POST['type'] == 'text') {
-        $type = 'text';
-    } else {
-        $type = 'folder';
-    }
-
-    $remote = isset($_POST['remote']) ? ($_POST['remote'] == 0 ? false : true) : false;
-
-    $action = $_POST['action'];
-
-    if ($remote) {
-        $host = long2ip($_SESSION['LOGGED_IN']);
-    } else {
-        $host = 'localhost';
-    }
-
-    $pdo = PDO_DB::factory();
-
-    $id = $_POST['id'];
-
-    if (!ctype_digit($id) && $action != 'create') {
-        $result['status'] = 'ERROR';
-        return $result;
-    }
-
-    // Handling action for text type
-    if ($type == 'text') {
-        switch ($action) {
-            case 'create':
-                // Create text file logic
-                $title = _('Create text file at ').$host;
-                $text = '<div class=\"control-group\"><div class=\"input-prepend\"><div class=\"controls\"><input class=\"name\" type=\"text\" name=\"name\" placeholder=\"'._('File name').'\" style=\"width: 67%;\"/><span class=\"add-on\" style=\"width: 10%;\">.txt</span></div></div></div><div class=\"control-group\"><div class=\"controls\"><textarea id=\"wysiwyg\" class=\"text\" name=\"text\" rows=\"5\" placeholder=\"'._('Content').'\" style=\"width: 80%;\"></textarea><br/><span class=\"small pull-left link text-show-editor\" style=\"margin-left: 9%;\">'._('Show editor').'</span></div></div>';
-                $btn = '<input type=\"submit\" class=\"btn btn-primary\" value=\"'._('Create text file').'\"><a data-dismiss=\"modal\" class=\"btn\" href=\"#\">'._('Cancel').'</a>';
-                break;
-            case 'edit':
-                // Edit text file logic
-                $session->newQuery();
-                $sql = "SELECT software_texts.text, software.softName
-                        FROM software_texts 
-                        INNER JOIN software ON software.id = software_texts.id
-                        WHERE software_texts.id = '".$id."' 
-                        LIMIT 1";
-                $txtInfo = $pdo->query($sql)->fetchAll();     
-
-                if(sizeof($txtInfo) == 0){
-                    $result['status'] = 'ERROR';
-                    break;
-                }
-                
-                $txtName = str_replace('"', '\"', $txtInfo['0']['softname']);
-                $txtContent = str_replace('"', '\"', $txtInfo['0']['text']);
-                
-                $txtContent = str_replace("\r\n", "\n", $txtContent);
-                $txtContent = str_replace("\r", "\n", $txtContent);
-                
-                $txtContent = str_replace("\n", "\\n", $txtContent);
-                
-                $title = _('Edit text file at ').$host;
-                $text = '<div class=\"control-group\"><div class=\"input-prepend\"><div class=\"controls\"><input class=\"name\" type=\"text\" name=\"name\" value=\"'.$txtName.'\" style=\"width: 67%;\"/><span class=\"add-on\" style=\"width: 10%;\">.txt</span></div></div></div><div class=\"control-group\"><div class=\"controls\"><textarea id=\"wysiwyg\" name=\"text\" rows=\"5\" style=\"width: 80%;\">'.$txtContent.'</textarea><br/><span class=\"small pull-left link text-show-editor\" style=\"margin-left: 9%;\">'._('Show editor').'</span></div></div>';
-                $btn = '<input type=\"submit\" class=\"btn btn-primary\" value=\"'._('Edit text file').'\"><a data-dismiss=\"modal\" class=\"btn\" href=\"#\">'._('Cancel').'</a>';
-
-                break;
-            default:
-                $result['status'] = 'ERROR';
-                break;
+    if(isset($_POST['type'])){
+                    
+        if($_POST['type'] == 'text'){
+            $type = 'text';
+        } else {
+            $type = 'folder';
         }
-    }
-    // Handling action for folder type
-    else {
-        switch ($action) {
-            case 'create':
-                // Create folder logic
-                $title = _('Create folder at ').$host;
-                $text = '<div class=\"control-group\"><div class=\"controls\"><input class=\"name\" type=\"text\" name=\"name\" placeholder=\"'._('Folder name').'\" style=\"width: 80%;\"/></div></div>';
-                $btn = '<input type=\"submit\" class=\"btn btn-primary\" value=\"'._('Create folder').'\"><a data-dismiss=\"modal\" class=\"btn\" href=\"#\">'._('Cancel').'</a>';
-                break;
-            case 'edit':
-                // Edit folder logic
-                $session->newQuery();
-                $sql = "SELECT softname FROM software WHERE id = '".$id."' LIMIT 1";
-                $folderInfo = $pdo->query($sql)->fetchAll();
-                
-                if(sizeof($folderInfo) == 0){
-                    $result['status'] = 'ERROR';
-                    break;
-                }
-                
-                $folderName = str_replace('"', '\"', $folderInfo['0']['softname']);
-                
-                $title = _('Edit folder at ').$host;
-                $text = '<div class=\"control-group\"><div class=\"controls\"><input class=\"name\" type=\"text\" name=\"name\" value=\"'.$folderInfo['0']['softname'].'\" placeholder=\"Folder name\" style=\"width: 80%;\"/></div></div>';
-                $btn = '<input type=\"submit\" class=\"btn btn-primary\" value=\"'._('Edit folder').'\"><a data-dismiss=\"modal\" class=\"btn\" href=\"#\">'._('Cancel').'</a>';
-                break;
-            case 'delete':
-                // Delete folder logic
-                $session->newQuery();
-                $sql = "SELECT softname, softversion FROM software WHERE id = '".$id."' LIMIT 1";
-                $data = $pdo->query($sql)->fetchAll();
-
-                if(sizeof($data) == 0){
-                    $result['status'] = 'ERROR';
-                    break;
-                }
-                
-                $folderName = $data['0']['softname'];
-                
-                if($remote){
-                    $link = 'internet?view=software';
-                } else {
-                    $link = 'software';
-                }
-
-                $title = 'Delete folder '.$folderName;
-
-                if($data['0']['softversion'] > 0){
-                    $text = 'Folder <strong>'.$folderName.'</strong> have softwares and they must be deleted before.';
-                    $btn = '<a data-dismiss=\"modal\" class=\"btn\" href=\"#\">'._('Ok').'</a>';
-                } else {
-                    $text = 'Are you sure you want to delete the folder <strong>'.$folderName.'</strong>?';
-                    $btn = '<input type=\"submit\" class=\"btn btn-primary\" value=\"'._('Delete folder').'\"><a data-dismiss=\"modal\" class=\"btn\" href=\"#\">'._('Cancel').'</a>';
-                }
-                break;
-            default:
-                $result['status'] = 'ERROR';
-                break;
+        
+        if(isset($_POST['remote'])){
+            $remote = TRUE;
+            if($_POST['remote'] == 0){
+                $remote = FALSE;
+            }
+        } else {
+            $remote = FALSE;
         }
-    }
+        
+        if(!isset($_POST['action'])){
+            $result['status'] = 'ERROR';
+            return $result;
+        }
+        
+        $action = $_POST['action'];
+        
+        if($remote){
+            $host = long2ip($_SESSION['LOGGED_IN']);
+        } else {
+            $host = 'localhost';
+        }
 
-    if ($result['status'] == 'ERROR') {
-        return $result;
-    }
+        $pdo = PDO_DB::factory();
 
-    return $result;
+        $id = $_POST['id'];
+
+        if(!ctype_digit($id)){      
+            if($action != 'create'){
+                $result['status'] = 'ERROR';
+                return $result;
+            }
+        }
+
+        if($type == 'text'){
+            require_once 'classes/Session.class.php';
+            switch($action){
+                case 'create':
+                    $title = _('Create text file at ').$host;
+                    $text = '<div class=\"control-group\"><div class=\"input-prepend\"><div class=\"controls\"><input class=\"name\" type=\"text\" name=\"name\" placeholder=\"'._('File name').'\" style=\"width: 67%;\"/><span class=\"add-on\" style=\"width: 10%;\">.txt</span></div></div></div><div class=\"control-group\"><div class=\"controls\"><textarea id=\"wysiwyg\" class=\"text\" name=\"text\" rows=\"5\" placeholder=\"'._('Content').'\" style=\"width: 80%;\"></textarea><br/><span class=\"small pull-left link text-show-editor\" style=\"margin-left: 9%;\">'._('Show editor').'</span></div></div>';
+                    $btn = '<input type=\"submit\" class=\"btn btn-primary\" value=\"'._('Create text file').'\"><a data-dismiss=\"modal\" class=\"btn\" href=\"#\">'._('Cancel').'</a>';
+                    break;
+                case 'edit':
+                    $session->newQuery();
+                    $sql = "SELECT software_texts.text, software.softName
+                            FROM software_texts 
+                            INNER JOIN software ON software.id = software_texts.id
+                            WHERE software_texts.id = '".$id."' 
+                            LIMIT 1";
+                    $txtInfo = $pdo->query($sql)->fetchAll();     
+
+                    if(sizeof($txtInfo) == 0){
+                        $result['status'] = 'ERROR';
+                        break;
+                    }
+                    $txtName = str_replace('"', '\"', $txtInfo['0']['softname']);
+                    $txtContent = str_replace('"', '\"', $txtInfo['0']['text']);
+                    $txtContent = str_replace("\r\n", "\n", $txtContent);
+                    $txtContent = str_replace("\r", "\n", $txtContent);
+                    $txtContent = str_replace("\n", "\\n", $txtContent);
+                    $title = _('Edit text file at ').$host;
+                    $text = '<div class=\"control-group\"><div class=\"input-prepend\"><div class=\"controls\"><input class=\"name\" type=\"text\" name=\"name\" value=\"'.$txtName.'\" style=\"width: 67%;\"/><span class=\"add-on\" style=\"width: 10%;\">.txt</span></div></div></div><div class=\"control-group\"><div class=\"controls\"><textarea id=\"wysiwyg\" name=\"text\" rows=\"5\" style=\"width: 80%;\">'.$txtContent.'</textarea><br/><span class=\"small pull-left link text-show-editor\" style=\"margin-left: 9%;\">'._('Show editor').'</span></div></div>';
+                    $btn = '<input type=\"submit\" class=\"btn btn-primary\" value=\"'._('Edit text file').'\"><a data-dismiss=\"modal\" class=\"btn\" href=\"#\">'._('Cancel').'</a>';
+                    break;
+                default:
+                    $result['status'] = 'ERROR';
+                    break;
+            }
+        } else {
+            require_once 'classes/Session.class.php';
+            switch($action){
+                case 'create':
+                    $title = _('Create folder at ').$host;
+                    $text = '<div class=\"control-group\"><div class=\"controls\"><input class=\"name\" type=\"text\" name=\"name\" placeholder=\"'._('Folder name').'\" style=\"width: 80%;\"/></div></div>';
+                    $btn = '<input type=\"submit\" class=\"btn btn-primary\" value=\"'._('Create folder').'\"><a data-dismiss=\"modal\" class=\"btn\" href=\"#\">'._('Cancel').'</a>';    
+                    break;
+                case 'edit':
+                    $session->newQuery();
+                    $sql = "SELECT softname FROM software WHERE id = '".$id."' LIMIT 1";
+                    $folderInfo = $pdo->query($sql)->fetchAll();
+                    if(sizeof($folderInfo) == 0){
+                        $result['status'] = 'ERROR';
+                        break;
+                    }
+                    $folderName = str_replace('"', '\"', $folderInfo['0']['softname']);
+                    $title = _('Edit folder at ').$host;
+                    $text = '<div class=\"control-group\"><div class=\"controls\"><input class=\"name\" type=\"text\" name=\"name\" value=\"'.$folderInfo['0']['softname'].'\" placeholder=\"Folder name\" style=\"width: 80%;\"/></div></div>';
+                    $btn = '<input type=\"submit\" class=\"btn btn-primary\" value=\"'._('Edit folder').'\"><a data-dismiss=\"modal\" class=\"btn\" href=\"#\">'._('Cancel').'</a>';                                
+                    break;
+                case 'delete':
+                    $session->newQuery();
+                    $sql = "SELECT softname, softversion FROM software WHERE id = '".$id."' LIMIT 1";
+                    $data = $pdo->query($sql)->fetchAll();
+                    if(sizeof($data) == 0){
+                        $result['status'] = 'ERROR';
+                        break;                    
+                    }
+                    $folderName = $data['0']['softname'];
+                    if($remote){
+                        $link = 'internet?view=software';
+                    } else {
+                        $link = 'software';
+                    }
+                    $title = 'Delete folder '.$folderName;
+                    if($data['0']['softversion'] > 0){
+                        $text = 'Folder <strong>'.$folderName.'</strong> have softwares and they must be deleted before.';
+                        $btn = '<a data-dismiss=\"modal\" class=\"btn\" href=\"#\">'._('Ok').'</a>';
+                    } else {
+                        $text = 'Are you sure you want to delete the folder <strong>'.$folderName.'</strong>?';
+                        $btn = '<input type=\"submit\" class=\"btn btn-primary\" value=\"'._('Delete folder').'\"><a data-dismiss=\"modal\" class=\"btn\" href=\"#\">'._('Cancel').'</a>';
+                    }
+                    break;
+                default:
+                    $result['status'] = 'ERROR';
+                    break;
+            }
+
+        }
+        
+        if($result['status'] == 'ERROR'){
+            return $result;
+        }
+        
+        $result['msg'] = '[{"title":"'.$title.'","text":"'.$text.'","btn":"'.$btn.'"}]';
+    }
 }
 
 function handleGetPwdInfo($result)

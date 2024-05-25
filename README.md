@@ -9,34 +9,24 @@
 - python-is-python3 (If you need to use python3 instead of python, then this is needed!)
 - python3-pip
 - PHP-FPM 8
-- php8.1-mysql (Install with your OS installer)
 - Apache2
-- Python venv
+- Python venv (Included in codebase)
 - bcrypt (Python module)
 - numpy (Python module)
 - mysql-connector-python (Python module)
-- ipaddress (Python module)
 
 # Tutorial on how to start the round
-- Move this folder to /opt and rename as hexc
+- Move this folder to /root and rename as hexc
 - Create database called hexc, and root user with root password.
-- Import game.sql to the new database with (mysql -p hexc < /opt/hexc/game.sql)
+- Import game.sql to the new database with (mysql -p hexc < /root/hexc/game.sql)
 - Copy the apache-hexc.conf or symlink to /etc/apache2/sites-enabled or /etc/httpd/conf.d
 - Change ServerName inside the config to point to your domain or 127.0.0.1
-- Create Python venv with (cd /opt/hexc && python -m venv venv)
-- Activate the python venv with (source /opt/hexc/venv/bin/activate)
+- Activate the python venv with (source /root/hexc/venv/bin/activate)
 - Install python modules with (pip install bcrypt numpy mysql-connector-python)
-- Start the round with (python /opt/hexc/cron2/startNewRound.py)
+- Start the round with (python /root/hexc/cron2/startNewRound.py)
 - Done! Enjoy the hell of bugs and unfixed stuff :D
 
 # Update
-[20 May 2024]
-- Fixed logEdit where it breaks on live machine(Somehow)
-- Refactored ajax.php for readability and easier to debug.
-- Better looking index page?
-- Removed unnecessary codes
-- Fixed some vulnerable codes that allows database dump
-
 [28 April 2024]
 - Fixed registration again
 - Removed files and code to reduce codebase overall size.

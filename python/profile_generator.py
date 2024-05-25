@@ -86,11 +86,7 @@ db = mysql.connector.connect(host="localhost", port="3306", user="root", passwd=
 cur = db.cursor()
 
 userID = str(sys.argv[1])
-
-try:
-	lang = str(sys.argv[2])
-except:
-	lang = 'en'
+lang = 'en'
 
 install_gettext(lang)
 

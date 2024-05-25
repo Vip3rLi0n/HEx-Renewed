@@ -1615,7 +1615,7 @@ class HardwareVPC extends Player {
                         ?>
                         
                             <tr id="net<?php echo $netItens[$i]['POW']; ?>" class="<?php echo $i; ?>">
-                                <td><span class="he16-internet"></span></td>
+                                <td><span class="he16-net"></span></td>
                                 <td><?php echo $name; ?></td>
                                 <td><?php echo $power; ?></td>
                                 <td><font color="green"><?php echo $price; ?></font></td>

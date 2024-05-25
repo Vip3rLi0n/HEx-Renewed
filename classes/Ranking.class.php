@@ -157,31 +157,6 @@ class Ranking extends Player {
         
     }
     
-    public function exp_getLevel($exp){
-        
-        if($exp < 100){
-            return 1;
-        } elseif($exp < 500){
-            return 2;
-        } elseif($exp < 1000){
-            return 3;
-        } elseif($exp < 2500){
-            return 4;
-        } elseif($exp < 5000){
-            return 5;
-        } elseif($exp < 10000){
-            return 6;
-        } elseif($exp < 20000){
-            return 7;
-        } elseif($exp < 40000){
-            return 8;
-        } elseif($exp < 80000){
-            return 9;
-        } else {
-            return 10;
-        }
-        
-    }
     
     public function getResearchRank($uid, $alltime = false)
     {
